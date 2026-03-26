@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory_screen.dart';
-import 'package:shelfo/screens/settings_screen.dart';
+import 'package:shelfo/screens/pos_screen.dart';
+import 'package:shelfo/screens/settings/settings_screen.dart';
 import '../../provider/navigation_provider.dart';
 import '../../screens/home_screen.dart';
+import '../../screens/sales_order_screen.dart';
 
 class BottomNavbarWidget extends StatelessWidget {
   const BottomNavbarWidget({super.key});
 
-  final _pages = const [HomeScreen(), InventoryScreen(), SettingsScreen()];
+  final _pages = const [HomeScreen(),PosScreen(),SalesOrderScreen(), InventoryScreen(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,14 @@ class BottomNavbarWidget extends StatelessWidget {
             icon: Icon(Icons.monitor_outlined),
             activeIcon: Icon(Icons.monitor_rounded),
             label: "POS",
+          ), BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart_outlined),
+            activeIcon: Icon(Icons.shopping_cart_rounded),
+            label: "Sales",
+          ), BottomNavigationBarItem(
+            icon: Icon(Icons.inventory_2_outlined),
+            activeIcon: Icon(Icons.inventory_2_rounded),
+            label: "Stock",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
