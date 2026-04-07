@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shelfo/routes/app_routes.dart';
 
+import '../widgets/splash/stack_cards_splash.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -45,41 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: 70),
-                decoration: ShapeDecoration(
-                  color: const Color(0x4C16A34A),
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(30),
-                    ),
-                  ),
-                ),
-                child: Container(
-                  padding: EdgeInsets.only(top: 70),
-                  decoration: ShapeDecoration(
-                    color: const Color(0x7F16A34A),
-                    shape: RoundedSuperellipseBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(30),
-                      ),
-                    ),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 70),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xB216A34A),
-                      shape: RoundedSuperellipseBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(30),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            CardStacksSplash(),
           ],
         ),
       ),
