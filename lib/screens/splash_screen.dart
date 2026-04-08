@@ -4,34 +4,21 @@ import 'package:shelfo/routes/app_routes.dart';
 
 import '../widgets/splash/stack_cards_splash.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
+  void _splash(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 3));
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _splash();
-  }
+    if (!context.mounted) return;
 
-  void _splash() async {
-    await Future.delayed(Duration(seconds: 3));
-
-    // --- THIS IS THE FIX Async Gaps ---
-    if (!mounted) return;
-    // -----------------------
-
-    // Now it is safe to use context
     Navigator.pushReplacementNamed(context, AppRoutes.businessInfo);
     debugPrint("Splash");
   }
 
   @override
   Widget build(BuildContext context) {
+    _splash(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -39,15 +26,19 @@ class _SplashScreenState extends State<SplashScreen> {
             Expanded(
               child: Row(
                 spacing: 8,
-                mainAxisSize: .max,
-                crossAxisAlignment: .center,
-                mainAxisAlignment: .center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset("assets/logo/app_logo_Primary.svg",height: 48,fit: BoxFit.fitWidth,)
+                  SvgPicture.asset(
+                    "assets/logo/app_logo_Primary.svg",
+                    height: 48,
+                    fit: BoxFit.fitWidth,
+                  )
                 ],
               ),
             ),
-            CardStacksSplash(),
+            const CardStacksSplash(),
           ],
         ),
       ),
