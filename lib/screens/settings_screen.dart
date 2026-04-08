@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
 
@@ -48,7 +49,9 @@ class SettingsScreen extends StatelessWidget {
                   title: "Business Information",
                   subtitle: "Store name, address, currency",
                   isDark: isDark,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.businessDetails);
+                  },
                 ),
                 dividerWidget(isDark),
                 settingsListTile(
