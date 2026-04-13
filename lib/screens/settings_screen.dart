@@ -63,6 +63,16 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 dividerWidget(isDark),
                 settingsListTile(
+                  icon: Icons.category_outlined,
+                  title: "Product Categories",
+                  subtitle: "Manage category categories",
+                  isDark: isDark,
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.categoriesSettings);
+                  },
+                ),
+                dividerWidget(isDark),
+                settingsListTile(
                   icon: Icons.history_outlined,
                   title: "Sales History",
                   isDark: isDark,

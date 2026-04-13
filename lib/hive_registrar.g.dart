@@ -5,6 +5,7 @@
 import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/business/business_model.dart';
 import 'package:shelfo/models/currency/currency.dart';
+import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/models/invoice/invoice_config_model.dart';
 import 'package:shelfo/models/tax/tax_config_model.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
@@ -12,6 +13,7 @@ import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(BusinessAdapter());
+    registerAdapter(CategoryAdapter());
     registerAdapter(CurrencyAdapter());
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(TaxConfigAdapter());
@@ -22,6 +24,7 @@ extension HiveRegistrar on HiveInterface {
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(BusinessAdapter());
+    registerAdapter(CategoryAdapter());
     registerAdapter(CurrencyAdapter());
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(TaxConfigAdapter());

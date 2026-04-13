@@ -11,7 +11,7 @@ class BusinessDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final isDark = theme.brightness == Brightness.light;
     final businessProvider = Provider.of<BusinessProvider>(context);
 
     return Scaffold(
