@@ -4,15 +4,24 @@
 
 import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/business/business_model.dart';
+import 'package:shelfo/models/currency/currency.dart';
+import 'package:shelfo/models/tax/tax_config_model.dart';
+import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(BusinessAdapter());
+    registerAdapter(CurrencyAdapter());
+    registerAdapter(TaxConfigAdapter());
+    registerAdapter(TaxPricingModeAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(BusinessAdapter());
+    registerAdapter(CurrencyAdapter());
+    registerAdapter(TaxConfigAdapter());
+    registerAdapter(TaxPricingModeAdapter());
   }
 }
