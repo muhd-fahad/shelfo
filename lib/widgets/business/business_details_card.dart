@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
 import 'package:shelfo/widgets/input_widget.dart';
 
-import '../../models/currency.dart';
+import '../../models/currency/currency.dart';
 
 class BusinessDetailsCard extends StatelessWidget {
   final TextEditingController nameController;

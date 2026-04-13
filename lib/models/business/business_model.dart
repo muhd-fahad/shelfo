@@ -1,5 +1,5 @@
 import 'package:hive_ce/hive.dart';
-import '../currency.dart';
+import '../currency/currency.dart';
 
 part 'business_model.g.dart';
 
