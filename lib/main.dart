@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shelfo/hive_registrar.g.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/navigation_provider.dart';
+import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(create: (_) => BusinessProvider()),
         ChangeNotifierProvider(create: (_) => TaxProvider()),
+        ChangeNotifierProvider(create: (_) => InvoiceProvider()),
       ],
       child: MaterialApp(
         title: 'Shelfo inventory',
