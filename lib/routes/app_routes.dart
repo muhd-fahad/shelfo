@@ -12,7 +12,7 @@ import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 import '../screens/home_screen.dart';
 import '../screens/inventory_screen.dart';
 import '../screens/report_screen.dart';
-import '../screens/settings_screen.dart';
+import '../screens/settings/settings_screen.dart';
 import '../screens/splash_screen.dart';
 
 class AppRoutes {

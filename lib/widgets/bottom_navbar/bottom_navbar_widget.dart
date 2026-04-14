@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory_screen.dart';
-import 'package:shelfo/screens/settings_screen.dart';
+import 'package:shelfo/screens/settings/settings_screen.dart';
 import '../../provider/navigation_provider.dart';
 import '../../screens/home_screen.dart';
 
