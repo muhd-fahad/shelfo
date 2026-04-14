@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-import 'package:shelfo/widgets/input_widget.dart';
 
 import '../../models/currency/currency.dart';
+import '../sfo_common/sfo_button.dart';
+import '../sfo_common/sfo_dropdown.dart';
+import '../sfo_common/sfo_input_field.dart';
 
 class BusinessDetailsCard extends StatelessWidget {
   final TextEditingController nameController;
@@ -41,86 +43,46 @@ class BusinessDetailsCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 20,
         children: [
-          InputWidget(
-            title: "Store Name",
+          SFOInputField(
+            label: "Store Name",
             hint: "Enter store name",
             controller: nameController,
           ),
-          const SizedBox(height: 20),
           
-          InputWidget(
-            title: "Phone Number",
+          SFOInputField(
+            label: "Phone Number",
             hint: "Enter phone number",
             controller: phoneController,
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 20),
 
-          _buildFieldLabel("Currency", isDark),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: ShapeDecoration(
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppRadius.md,
-                side: BorderSide(
-                  color: isDark ? AppColors.darkBorder : AppColors.border,
-                ),
-              ),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<Currency>(
-                value: selectedCurrency,
-                isExpanded: true,
-                icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
-                onChanged: onCurrencyChanged,
-                items: Currency.values.map<DropdownMenuItem<Currency>>((Currency value) {
-                  return DropdownMenuItem<Currency>(
-                    value: value,
-                    child: Text("${value.code} (${value.symbol})"),
-                  );
-                }).toList(),
-              ),
-            ),
+          SFODropdown<Currency>(
+            label: "Currency",
+            value: selectedCurrency,
+            items: Currency.values.map((Currency value) {
+              return DropdownMenuItem<Currency>(
+                value: value,
+                child: Text("${value.code} (${value.symbol})"),
+              );
+            }).toList(),
+            onChanged: onCurrencyChanged,
           ),
-          const SizedBox(height: 20),
 
-          InputWidget(
-            title: "Address",
+          SFOInputField(
+            label: "Address",
             hint: "Enter store address",
             controller: addressController,
             maxLines: 3,
           ),
-          const SizedBox(height: 24),
 
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: onSave,
-              icon: const Icon(Icons.save_outlined, size: 20),
-              label: const Text("Save Changes"),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: AppRadius.md,
-                ),
-              ),
-            ),
+          SFOButton(
+            text: "Save Changes",
+            icon: Icons.save_outlined,
+            onPressed: onSave,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildFieldLabel(String label, bool isDark) {
-    return Text(
-      label,
-      style: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
       ),
     );
   }

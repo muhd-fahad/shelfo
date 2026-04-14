@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shelfo/routes/app_routes.dart';
-import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-
-import '../widgets/divider_widget.dart';
-import '../widgets/section_header_widget.dart';
-import '../widgets/settings/settings_switch_tile_widget.dart';
-import '../widgets/settings/settings_card_widget.dart';
-import '../widgets/settings/settings_list_tile_widget.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_divider.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -41,117 +38,105 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              sectionHeaderWidget("General", isDark),
+              const SFOSectionHeader(title: "General"),
               const SizedBox(height: 12),
-              settingsCardWidget([
-                settingsListTile(
+              SFOCard(children: [
+                SFOTile(
                   icon: Icons.store_outlined,
                   title: "Business Information",
                   subtitle: "Store name, address, currency",
-                  isDark: isDark,
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.businessDetails);
                   },
                 ),
-                dividerWidget(isDark),
-                settingsListTile(
-                  icon: Icons.receipt_long_outlined,
-                  title: "Tax & Invoice",
-                  subtitle: "Tax rates, invoice numbering",
-                  isDark: isDark,
-                  onTap: () {},
-                ),
-                dividerWidget(isDark),
-                settingsListTile(
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.category_outlined,
                   title: "Product Categories",
-                  subtitle: "Manage category categories",
-                  isDark: isDark,
+                  subtitle: "Manage inventory categories",
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.categoriesSettings);
                   },
                 ),
-                dividerWidget(isDark),
-                settingsListTile(
+                const SFODivider(),
+                SFOTile(
+                  icon: Icons.receipt_long_outlined,
+                  title: "Tax & Invoice",
+                  subtitle: "Tax rates, invoice numbering",
+                  onTap: () {},
+                ),
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.history_outlined,
                   title: "Sales History",
-                  isDark: isDark,
                   onTap: () {},
                 ),
-                dividerWidget(isDark),
-                settingsListTile(
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.bar_chart_outlined,
                   title: "Reports & Analysis",
-                  isDark: isDark,
                   onTap: () {},
                 ),
-              ], isDark),
+              ]),
 
               const SizedBox(height: 32),
-              sectionHeaderWidget("Module Configuration", isDark),
+              const SFOSectionHeader(title: "Module Configuration"),
               const SizedBox(height: 12),
-              settingsCardWidget([
-                settingsSwitchTile(
+              SFOCard(children: [
+                SFOSwitchTile(
                   title: "POS Terminal",
                   subtitle: "Enable Point of Sale interface for fast billing",
                   value: true,
-                  isDark: isDark,
                   onChanged: (v) {},
                 ),
-                dividerWidget(isDark),
-                settingsSwitchTile(
+                const SFODivider(),
+                SFOSwitchTile(
                   title: "Service & Repairs",
                   subtitle: "Track repair jobs, technicians, and service history",
                   value: true,
-                  isDark: isDark,
                   onChanged: (v) {},
                 ),
-                dividerWidget(isDark),
-                settingsSwitchTile(
+                const SFODivider(),
+                SFOSwitchTile(
                   title: "Warranty Management",
                   subtitle: "Track product warranties and policies",
                   value: true,
-                  isDark: isDark,
                   onChanged: (v) {},
                 ),
-                dividerWidget(isDark),
-                settingsSwitchTile(
+                const SFODivider(),
+                SFOSwitchTile(
                   title: "Loyalty Program",
                   subtitle: "Enable customer points and rewards",
                   value: true,
-                  isDark: isDark,
                   onChanged: (v) {},
                 ),
-                dividerWidget(isDark),
-                settingsSwitchTile(
+                const SFODivider(),
+                SFOSwitchTile(
                   title: "Multi-Warehouse",
                   subtitle: "Manage stock across multiple locations",
                   value: false,
-                  isDark: isDark,
                   onChanged: (v) {},
                 ),
-              ], isDark),
+              ]),
 
               const SizedBox(height: 32),
-              sectionHeaderWidget("System", isDark),
+              const SFOSectionHeader(title: "System"),
               const SizedBox(height: 12),
-              settingsCardWidget([
-                settingsListTile(
+              SFOCard(children: [
+                SFOTile(
                   icon: Icons.storage_outlined,
                   title: "Backup & Restore",
                   subtitle: "Export data, import backups",
-                  isDark: isDark,
                   onTap: () {},
                 ),
-                dividerWidget(isDark),
-                settingsListTile(
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.settings_suggest_outlined,
                   title: "App Preferences",
                   subtitle: "Theme, language, sounds",
-                  isDark: isDark,
                   onTap: () {},
                 ),
-              ], isDark),
+              ]),
               const SizedBox(height: 40),
             ],
           ),

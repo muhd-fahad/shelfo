@@ -4,7 +4,9 @@ import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-import 'package:shelfo/widgets/input_widget.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 
 import '../../utils/theme/theme.dart';
 
@@ -57,10 +59,11 @@ class BusinessInfoScreen extends StatelessWidget {
               child: const Icon(Icons.add_a_photo_outlined, color: Colors.grey),
             ),
     
-            InputWidget(
-              title: "Store Name",
+            SFOInputField(
+              label: "Store Name",
               hint: "e.g. Techno Mobiles",
               controller: businessProvider.nameController,
+              isRequired: true,
             ),
     
             Row(
@@ -68,82 +71,47 @@ class BusinessInfoScreen extends StatelessWidget {
               spacing: AppSpacing.lg,
               children: [
                 Expanded(
-                  child: InputWidget(
-                    title: "Phone Number",
+                  child: SFOInputField(
+                    label: "Phone Number",
                     hint: "+1 (555) 000-0000",
                     controller: businessProvider.phoneController,
                     keyboardType: TextInputType.phone,
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Currency",
-                        style: SFOAppTheme.light.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: ShapeDecoration(
-                          shape: RoundedSuperellipseBorder(
-                            borderRadius: AppRadius.md,
-                            side: const BorderSide(color: AppColors.border),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<Currency>(
-                            value: businessProvider.selectedCurrency,
-                            isExpanded: true,
-                            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                            onChanged: (Currency? newValue) {
-                              if (newValue != null) {
-                                businessProvider.setCurrency(newValue);
-                              }
-                            },
-                            items: Currency.values.map<DropdownMenuItem<Currency>>((Currency value) {
-                              return DropdownMenuItem<Currency>(
-                                value: value,
-                                child: Text("${value.code} (${value.symbol})"),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: SFODropdown<Currency>(
+                    label: "Currency",
+                    value: businessProvider.selectedCurrency,
+                    items: Currency.values.map((Currency value) {
+                      return DropdownMenuItem<Currency>(
+                        value: value,
+                        child: Text("${value.code} (${value.symbol})"),
+                      );
+                    }).toList(),
+                    onChanged: (Currency? newValue) {
+                      if (newValue != null) {
+                        businessProvider.setCurrency(newValue);
+                      }
+                    },
                   ),
                 ),
               ],
             ),
-            InputWidget(
-              title: "Address",
+            SFOInputField(
+              label: "Address",
               hint: "Store address...",
               controller: businessProvider.addressController,
               maxLines: 3,
             ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: () async {
-                  await businessProvider.saveBusiness();
-                  if (context.mounted) {
-                    Navigator.pushNamed(context, AppRoutes.taxConfig);
-                  }
-                },
-                child: const Row(
-                  spacing: AppSpacing.sm,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Continue"),
-                    Icon(Icons.arrow_forward_rounded),
-                  ],
-                ),
-              ),
+            SFOButton(
+              text: "Continue",
+              icon: Icons.arrow_forward_rounded,
+              onPressed: () async {
+                await businessProvider.saveBusiness();
+                if (context.mounted) {
+                  Navigator.pushNamed(context, AppRoutes.taxConfig);
+                }
+              },
             ),
           ],
         ),

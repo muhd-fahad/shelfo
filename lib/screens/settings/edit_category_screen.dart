@@ -4,7 +4,7 @@ import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-import 'package:shelfo/widgets/input_widget.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 
 class EditCategoryScreen extends StatelessWidget {
   final Category? category;
@@ -75,13 +75,13 @@ class EditCategoryScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 24,
             children: [
-              InputWidget(
-                title: "Category Name",
+              SFOInputField(
+                label: "Category Name",
                 hint: "e.g. Smartphones",
                 controller: provider.nameController,
               ),
-              InputWidget(
-                title: "Description",
+              SFOInputField(
+                label: "Description",
                 hint: "e.g. Mobile devices and phones",
                 controller: provider.descController,
                 maxLines: 3,

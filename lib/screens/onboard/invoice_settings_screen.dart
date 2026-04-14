@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-import 'package:shelfo/widgets/input_widget.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
 import 'package:shelfo/widgets/invoice_preview_widget.dart';
 
 class InvoiceSettingsScreen extends StatelessWidget {
@@ -46,19 +47,19 @@ class InvoiceSettingsScreen extends StatelessWidget {
           children: [
             const InvoicePreviewWidget(),
             Row(
-              mainAxisSize: .max,
+              mainAxisSize: MainAxisSize.max,
               spacing: AppSpacing.lg,
               children: [
                 Expanded(
-                  child: InputWidget(
-                    title: "Invoice Prefix",
+                  child: SFOInputField(
+                    label: "Invoice Prefix",
                     hint: "INV-",
                     controller: invoiceProvider.prefixController,
                   ),
                 ),
                 Expanded(
-                  child: InputWidget(
-                    title: "Starting Number",
+                  child: SFOInputField(
+                    label: "Starting Number",
                     hint: "1001",
                     controller: invoiceProvider.startingNumberController,
                     keyboardType: TextInputType.number,
@@ -66,56 +67,32 @@ class InvoiceSettingsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            InputWidget(
-              title: "Footer Text",
+            SFOInputField(
+              label: "Footer Text",
               hint: "Thank you for your business!",
               controller: invoiceProvider.footerTextController,
             ),
-            Card(
-              elevation: 0,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppRadius.md,
-                side: const BorderSide(color: AppColors.border),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                child: Row(
-                  mainAxisAlignment: .spaceBetween,
-                  children: [
-                    const Text("Show Logo on Receipt"),
-                    CupertinoSwitch(
-                      value: invoiceProvider.showLogo,
-                      onChanged: (value) {
-                        invoiceProvider.toggleShowLogo(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            SFOSwitchTile(
+              title: "Show Logo on Receipt",
+              subtitle: "Include your business logo in the printed receipt",
+              value: invoiceProvider.showLogo,
+              onChanged: (value) {
+                invoiceProvider.toggleShowLogo(value);
+              },
             ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: () async {
-                  await invoiceProvider.saveInvoiceConfig();
-                  if (context.mounted) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AppRoutes.bottomNavbar,
-                      (route) => false,
-                    );
-                  }
-                },
-                child: const Row(
-                  spacing: AppSpacing.sm,
-                  crossAxisAlignment: .center,
-                  mainAxisAlignment: .center,
-                  children: [
-                    Text("Complete Setup"),
-                    Icon(Icons.check_rounded),
-                  ],
-                ),
-              ),
+            SFOButton(
+              text: "Complete Setup",
+              icon: Icons.check_rounded,
+              onPressed: () async {
+                await invoiceProvider.saveInvoiceConfig();
+                if (context.mounted) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.bottomNavbar,
+                    (route) => false,
+                  );
+                }
+              },
             ),
           ],
         ),

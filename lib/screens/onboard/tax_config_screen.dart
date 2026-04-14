@@ -6,7 +6,9 @@ import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-import 'package:shelfo/widgets/input_widget.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
 
 class TaxConfigScreen extends StatelessWidget {
   const TaxConfigScreen({super.key});
@@ -44,40 +46,30 @@ class TaxConfigScreen extends StatelessWidget {
           mainAxisAlignment: .start,
           crossAxisAlignment: .center,
           children: [
-            Card(
-              elevation: 0,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppRadius.md,
-                side: const BorderSide(color: AppColors.border),
-              ),
-              child: ListTile(
-                title: const Text("Enable Tax Calculation"),
-                subtitle: const Text("Automatically calculate tax on sales"),
-                subtitleTextStyle: SFOAppTheme.light.textTheme.bodyMedium,
-                trailing: CupertinoSwitch(
-                  value: taxProvider.isTaxEnabled,
-                  onChanged: (value) {
-                    taxProvider.toggleTaxEnabled(value);
-                  },
-                ),
-              ),
+            SFOSwitchTile(
+              title: "Enable Tax Calculation",
+              subtitle: "Automatically calculate tax on sales",
+              value: taxProvider.isTaxEnabled,
+              onChanged: (value) {
+                taxProvider.toggleTaxEnabled(value);
+              },
             ),
             if (taxProvider.isTaxEnabled) ...[
               Row(
-                mainAxisSize: .max,
+                mainAxisSize: MainAxisSize.max,
                 spacing: AppSpacing.lg,
                 children: [
                   Expanded(
-                    child: InputWidget(
-                      title: "Default Tax Rate (%)",
+                    child: SFOInputField(
+                      label: "Default Tax Rate (%)",
                       hint: "8.5",
                       controller: taxProvider.taxRateController,
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ),
                   Expanded(
-                    child: InputWidget(
-                      title: "Tax Label",
+                    child: SFOInputField(
+                      label: "Tax Label",
                       hint: "Sales Tax",
                       controller: taxProvider.taxLabelController,
                     ),
@@ -133,25 +125,15 @@ class TaxConfigScreen extends StatelessWidget {
                 ],
               ),
             ],
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: () async {
-                  await taxProvider.saveTaxConfig();
-                  if (context.mounted) {
-                    Navigator.pushNamed(context, AppRoutes.invoiceSettings);
-                  }
-                },
-                child: const Row(
-                  spacing: AppSpacing.sm,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Continue"),
-                    Icon(Icons.arrow_forward_rounded),
-                  ],
-                ),
-              ),
+            SFOButton(
+              text: "Continue",
+              icon: Icons.arrow_forward_rounded,
+              onPressed: () async {
+                await taxProvider.saveTaxConfig();
+                if (context.mounted) {
+                  Navigator.pushNamed(context, AppRoutes.invoiceSettings);
+                }
+              },
             ),
           ],
         ),
