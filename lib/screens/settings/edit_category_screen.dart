@@ -5,6 +5,7 @@ import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
 
 class EditCategoryScreen extends StatelessWidget {
   final Category? category;
@@ -142,8 +143,10 @@ class EditCategoryScreen extends StatelessWidget {
 
   void _save(BuildContext context, CategoryProvider provider) async {
     if (provider.nameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a category name")),
+      SFOSnackbar.show(
+        context,
+        message: "Please enter a category name",
+        isError: true,
       );
       return;
     }

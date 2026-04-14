@@ -5,6 +5,7 @@ import 'package:shelfo/screens/settings/edit_category_screen.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
 
+import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
 import '../../models/category/category_model.dart';
 
 class CategoriesSettingsScreen extends StatelessWidget {
@@ -83,25 +84,17 @@ class CategoriesSettingsScreen extends StatelessWidget {
   }
 
   void _showDeleteConfirmation(BuildContext context, Category category) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Delete Category"),
-        content: Text("Are you sure you want to delete '${category.name}'?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              Provider.of<CategoryProvider>(context, listen: false).deleteCategory(category);
-              Navigator.pop(context);
-            },
-            child: const Text("Delete", style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+    SFODialog.show(
+      context,
+      title: "Delete Category",
+      message: "Are you sure you want to delete '${category.name}'?",
+      primaryActionText: "Delete",
+      onPrimaryAction: () {
+        Provider.of<CategoryProvider>(context, listen: false).deleteCategory(category);
+        Navigator.pop(context);
+      },
+      secondaryActionText: "Cancel",
+      isDestructive: true,
     );
   }
 }
