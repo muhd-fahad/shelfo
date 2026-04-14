@@ -60,10 +60,21 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SFODivider(),
                 SFOTile(
+                  icon: Icons.percent_outlined,
+                  title: "Tax Configuration",
+                  subtitle: "Manage tax rates and calculation",
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.taxSettings);
+                  },
+                ),
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.receipt_long_outlined,
-                  title: "Tax & Invoice",
-                  subtitle: "Tax rates, invoice numbering",
-                  onTap: () {},
+                  title: "Invoice Settings",
+                  subtitle: "Customize receipts and numbering",
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.invoiceDetails);
+                  },
                 ),
                 const SFODivider(),
                 SFOTile(

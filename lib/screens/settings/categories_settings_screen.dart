@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/screens/settings/edit_category_screen.dart';
-import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
 
 import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
