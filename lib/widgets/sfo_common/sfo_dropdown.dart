@@ -44,8 +44,9 @@ class SFODropdown<T> extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: ShapeDecoration(
+            color: isDark ? AppColors.darkSurface : Colors.white,
             shape: RoundedSuperellipseBorder(
               borderRadius: AppRadius.md,
               side: BorderSide(
