@@ -12,11 +12,35 @@ class CategoriesSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Product Categories"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Product Categories",
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              "Organize your products",
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.add_rounded),
@@ -27,6 +51,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: categoryProvider.isLoading
@@ -37,31 +62,59 @@ class CategoriesSettingsScreen extends StatelessWidget {
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final category = categoryProvider.categories[index];
-                return Card(
-                  elevation: 0,
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: AppRadius.md,
-                    side: const BorderSide(color: AppColors.border),
+                return Container(
+                  decoration: ShapeDecoration(
+                    color: isDark ? AppColors.darkSurface : Colors.white,
+                    shape: RoundedSuperellipseBorder(
+                      borderRadius: AppRadius.md,
+                      side: BorderSide(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                        width: 1,
+                      ),
+                    ),
                   ),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    leading: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Icon(
                         category.iconCode != null
                             ? IconData(category.iconCode!, fontFamily: 'MaterialIcons')
                             : Icons.category_rounded,
                         color: AppColors.primary,
+                        size: 22,
                       ),
                     ),
-                    title: Text(category.name),
+                    title: Text(
+                      category.name,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     subtitle: category.description != null && category.description!.isNotEmpty
-                        ? Text(category.description!)
+                        ? Text(
+                            category.description!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                            ),
+                          )
                         : null,
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit_outlined, size: 20),
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            size: 20,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                          ),
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -70,7 +123,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: Colors.red),
+                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: Colors.redAccent),
                           onPressed: () => _showDeleteConfirmation(context, category),
                         ),
                       ],
