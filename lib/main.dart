@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
       ],
       child: MaterialApp(
-        title: 'Shelfo category',
+        title: 'Shelfo inventory',
         theme: SFOAppTheme.light,
         darkTheme: SFOAppTheme.dark,
         themeMode: ThemeMode.light,
