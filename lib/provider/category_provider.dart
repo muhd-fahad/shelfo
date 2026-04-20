@@ -29,11 +29,11 @@ class CategoryProvider extends ChangeNotifier {
     
     if (box.isEmpty) {
       final defaultCategories = [
-        Category(id: '1', name: 'Smartphones', iconCode: Icons.smartphone.codePoint),
-        Category(id: '2', name: 'Laptops', iconCode: Icons.laptop.codePoint),
-        Category(id: '3', name: 'Accessories', iconCode: Icons.headphones.codePoint),
-        Category(id: '4', name: 'Tablets', iconCode: Icons.tablet.codePoint),
-        Category(id: '5', name: 'Smart Watches', iconCode: Icons.watch.codePoint),
+        Category(name: 'Smartphones', iconCode: Icons.smartphone.codePoint),
+        Category(name: 'Laptops', iconCode: Icons.laptop.codePoint),
+        Category(name: 'Accessories', iconCode: Icons.headphones.codePoint),
+        Category(name: 'Tablets', iconCode: Icons.tablet.codePoint),
+        Category(name: 'Smart Watches', iconCode: Icons.watch.codePoint),
       ];
       await box.addAll(defaultCategories);
     }
@@ -66,19 +66,19 @@ class CategoryProvider extends ChangeNotifier {
     
     if (existingCategory == null) {
       final category = Category(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
         name: nameController.text,
         description: descController.text,
         iconCode: _selectedIconCode,
       );
       await box.add(category);
     } else {
-      final updated = existingCategory.copyWith(
+      final updated = Category(
         name: nameController.text,
         description: descController.text,
         iconCode: _selectedIconCode,
       );
-      await updated.save();
+      // Use the Hive key to update the existing entry
+      await box.put(existingCategory.key, updated);
     }
     
     _categories = box.values.toList();
