@@ -7,6 +7,8 @@ import 'package:shelfo/screens/purchase_order_screen.dart';
 import 'package:shelfo/screens/sales_order_screen.dart';
 import 'package:shelfo/screens/settings/business_details_screen.dart';
 import 'package:shelfo/screens/settings/categories_settings_screen.dart';
+import 'package:shelfo/screens/settings/invoice_settings_detail_screen.dart';
+import 'package:shelfo/screens/settings/tax_settings_screen.dart';
 import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 
 import '../screens/home_screen.dart';
@@ -23,6 +25,8 @@ class AppRoutes {
   static const String businessInfo = '/businessInfo';
   static const String taxConfig = '/taxConfig';
   static const String invoiceSettings = '/invoice';
+  static const String taxSettings = '/taxSettings';
+  static const String invoiceDetails = '/invoiceDetails';
 
   static const String notification = '/notification';
   static const String inventory = '/category';
@@ -46,6 +50,8 @@ class AppRoutes {
     settings: (context) => const SettingsScreen(),
     businessDetails: (context) => const BusinessDetailsScreen(),
     categoriesSettings: (context) => const CategoriesSettingsScreen(),
+    taxSettings: (context) => const TaxSettingsScreen(),
+    invoiceDetails: (context) => const InvoiceSettingsDetailScreen(),
     pos: (context) => const HomeScreen(),
     reports: (context) => const ReportScreen(),
     salesOrder: (context) => const SalesOrderScreen(),

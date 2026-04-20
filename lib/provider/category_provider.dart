@@ -29,11 +29,11 @@ class CategoryProvider extends ChangeNotifier {
     
     if (box.isEmpty) {
       final defaultCategories = [
-        Category(id: '1', name: 'Smartphones', iconCode: Icons.smartphone.codePoint),
-        Category(id: '2', name: 'Laptops', iconCode: Icons.laptop.codePoint),
-        Category(id: '3', name: 'Accessories', iconCode: Icons.headphones.codePoint),
-        Category(id: '4', name: 'Tablets', iconCode: Icons.tablet.codePoint),
-        Category(id: '5', name: 'Smart Watches', iconCode: Icons.watch.codePoint),
+        Category(name: 'Smartphones', iconCode: Icons.smartphone.codePoint),
+        Category(name: 'Laptops', iconCode: Icons.laptop.codePoint),
+        Category(name: 'Accessories', iconCode: Icons.headphones.codePoint),
+        Category(name: 'Tablets', iconCode: Icons.tablet.codePoint),
+        Category(name: 'Smart Watches', iconCode: Icons.watch.codePoint),
       ];
       await box.addAll(defaultCategories);
     }
@@ -61,28 +61,39 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCategory(Category? existingCategory) async {
+  Future<bool> saveCategory(Category? existingCategory) async {
     final box = await Hive.openBox<Category>(_boxName);
-    
+    final newName = nameController.text.trim();
+
+    // Check for duplication
+    final isDuplicate = box.values.any((category) =>
+        category.name.toLowerCase() == newName.toLowerCase() &&
+        (existingCategory == null || category.key != existingCategory.key));
+
+    if (isDuplicate) {
+      return false;
+    }
+
     if (existingCategory == null) {
       final category = Category(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: nameController.text,
-        description: descController.text,
+        name: newName,
+        description: descController.text.trim(),
         iconCode: _selectedIconCode,
       );
       await box.add(category);
     } else {
-      final updated = existingCategory.copyWith(
-        name: nameController.text,
-        description: descController.text,
+      final updated = Category(
+        name: newName,
+        description: descController.text.trim(),
         iconCode: _selectedIconCode,
       );
-      await updated.save();
+      // Use the Hive key to update the existing entry
+      await box.put(existingCategory.key, updated);
     }
-    
+
     _categories = box.values.toList();
     notifyListeners();
+    return true;
   }
 
   Future<void> deleteCategory(Category category) async {
