@@ -12,42 +12,6 @@ class EditCategoryScreen extends StatelessWidget {
   final Category? category;
   const EditCategoryScreen({super.key, this.category});
 
-  static const List<IconData> _availableIcons = [
-    // General/Shop
-    Icons.category_rounded,
-    Icons.shopping_bag_rounded,
-    Icons.shopping_cart_rounded,
-    Icons.store_rounded,
-    Icons.inventory_2_rounded,
-    Icons.label_rounded,
-    Icons.sell_rounded,
-    // Electronics
-    Icons.smartphone_rounded,
-    Icons.phone_iphone_rounded,
-    Icons.laptop_rounded,
-    Icons.laptop_mac_rounded,
-    Icons.desktop_windows_rounded,
-    Icons.tablet_rounded,
-    Icons.watch_rounded,
-    Icons.headphones_rounded,
-    Icons.earbuds_rounded,
-    Icons.tv_rounded,
-    Icons.camera_alt_rounded,
-    Icons.mouse_rounded,
-    Icons.keyboard_rounded,
-    Icons.speaker_rounded,
-    Icons.print_rounded,
-    Icons.router_rounded,
-    Icons.electrical_services_rounded,
-    Icons.cable_rounded,
-    Icons.battery_charging_full_rounded,
-    Icons.memory_rounded,
-    Icons.sd_card_rounded,
-    Icons.home_max_rounded,
-    Icons.videogame_asset_rounded,
-    Icons.power_rounded,
-  ];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -124,9 +88,9 @@ class EditCategoryScreen extends StatelessWidget {
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 12,
                         ),
-                        itemCount: _availableIcons.length,
+                        itemCount: Category.availableIcons.length,
                         itemBuilder: (context, index) {
-                          final icon = _availableIcons[index];
+                          final icon = Category.availableIcons[index];
                           final isSelected = provider.selectedIconCode == icon.codePoint;
                           return InkWell(
                             onTap: () => provider.setIconCode(icon.codePoint),
