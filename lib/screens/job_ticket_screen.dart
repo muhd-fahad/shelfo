@@ -6,6 +6,9 @@ class JobTicketScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Service Jobs"),
+      ),
       body: Center(
         child: Text("Service and Jobs screen"),
       ),

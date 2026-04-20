@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../widgets/screen_title_widget.dart';
 
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+class PosScreen extends StatelessWidget {
+  const PosScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ScreenTitleWidget("Notifications"),
+        title: ScreenTitleWidget("POS"),
       ),
       body: Center(
-        child: Text("Notification screen"),
+        child: Text("POS screen"),
       ),
     );
   }
