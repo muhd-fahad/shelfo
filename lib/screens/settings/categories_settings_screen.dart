@@ -83,9 +83,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        category.iconCode != null
-                            ? IconData(category.iconCode!, fontFamily: 'MaterialIcons')
-                            : Icons.category_rounded,
+                        category.icon,
                         color: AppColors.primary,
                         size: 22,
                       ),

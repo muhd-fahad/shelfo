@@ -29,11 +29,11 @@ class CategoryProvider extends ChangeNotifier {
     
     if (box.isEmpty) {
       final defaultCategories = [
-        Category(name: 'Smartphones', iconCode: Icons.smartphone.codePoint),
-        Category(name: 'Laptops', iconCode: Icons.laptop.codePoint),
-        Category(name: 'Accessories', iconCode: Icons.headphones.codePoint),
-        Category(name: 'Tablets', iconCode: Icons.tablet.codePoint),
-        Category(name: 'Smart Watches', iconCode: Icons.watch.codePoint),
+        Category(name: 'Smartphones', iconCode: Icons.smartphone_rounded.codePoint),
+        Category(name: 'Laptops', iconCode: Icons.laptop_rounded.codePoint),
+        Category(name: 'Accessories', iconCode: Icons.headphones_rounded.codePoint),
+        Category(name: 'Tablets', iconCode: Icons.tablet_rounded.codePoint),
+        Category(name: 'Smart Watches', iconCode: Icons.watch_rounded.codePoint),
       ];
       await box.addAll(defaultCategories);
     }
