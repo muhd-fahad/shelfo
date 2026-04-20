@@ -61,28 +61,39 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCategory(Category? existingCategory) async {
+  Future<bool> saveCategory(Category? existingCategory) async {
     final box = await Hive.openBox<Category>(_boxName);
-    
+    final newName = nameController.text.trim();
+
+    // Check for duplication
+    final isDuplicate = box.values.any((category) =>
+        category.name.toLowerCase() == newName.toLowerCase() &&
+        (existingCategory == null || category.key != existingCategory.key));
+
+    if (isDuplicate) {
+      return false;
+    }
+
     if (existingCategory == null) {
       final category = Category(
-        name: nameController.text,
-        description: descController.text,
+        name: newName,
+        description: descController.text.trim(),
         iconCode: _selectedIconCode,
       );
       await box.add(category);
     } else {
       final updated = Category(
-        name: nameController.text,
-        description: descController.text,
+        name: newName,
+        description: descController.text.trim(),
         iconCode: _selectedIconCode,
       );
       // Use the Hive key to update the existing entry
       await box.put(existingCategory.key, updated);
     }
-    
+
     _categories = box.values.toList();
     notifyListeners();
+    return true;
   }
 
   Future<void> deleteCategory(Category category) async {

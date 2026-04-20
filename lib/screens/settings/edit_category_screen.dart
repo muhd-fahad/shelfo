@@ -176,9 +176,18 @@ class EditCategoryScreen extends StatelessWidget {
       return;
     }
 
-    await provider.saveCategory(category);
+    final success = await provider.saveCategory(category);
+    
     if (context.mounted) {
-      Navigator.pop(context);
+      if (!success) {
+        SFOSnackbar.show(
+          context,
+          message: "Category with this name already exists",
+          isError: true,
+        );
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 }
