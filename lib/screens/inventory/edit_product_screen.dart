@@ -123,36 +123,59 @@ class EditProductScreen extends StatelessWidget {
                     SFOCard(
                       padding: const EdgeInsets.all(16),
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SFOInputField(
-                                label: "Initial Stock",
-                                hint: "0",
-                                controller: provider.initialStockController,
-                                keyboardType: TextInputType.number,
+                        if (product == null)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SFOInputField(
+                                  label: "Initial Stock",
+                                  hint: "0",
+                                  controller: provider.initialStockController,
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: SFOInputField(
-                                label: "Min Stock",
-                                hint: "5",
-                                controller: provider.minStockController,
-                                keyboardType: TextInputType.number,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: SFOInputField(
+                                  label: "Min Stock",
+                                  hint: "5",
+                                  controller: provider.minStockController,
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: SFOInputField(
-                                label: "Reorder Point",
-                                hint: "10",
-                                controller: provider.reorderPointController,
-                                keyboardType: TextInputType.number,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: SFOInputField(
+                                  label: "Reorder Point",
+                                  hint: "10",
+                                  controller: provider.reorderPointController,
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          )
+                        else
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SFOInputField(
+                                  label: "Min Stock",
+                                  hint: "5",
+                                  controller: provider.minStockController,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: SFOInputField(
+                                  label: "Reorder Point",
+                                  hint: "10",
+                                  controller: provider.reorderPointController,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                            ],
+                          ),
                         const SizedBox(height: 16),
                         SFOInputField(
                           label: "SKU",

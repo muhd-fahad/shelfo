@@ -99,8 +99,14 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               text: widget.isAddition ? "Confirm Add Stock" : "Confirm Remove",
               onPressed: () {
                 final qty = int.tryParse(_quantityController.text) ?? 0;
-                // Note: provider.adjustStock might need updates if we want to save cost/notes
-                widget.provider.adjustStock(widget.product, qty, isAddition: widget.isAddition);
+                final cost = double.tryParse(_costController.text);
+                
+                widget.provider.adjustStock(
+                  widget.product, 
+                  qty, 
+                  isAddition: widget.isAddition,
+                  newCostPrice: widget.isAddition ? cost : null,
+                );
                 Navigator.pop(context);
               },
             ),

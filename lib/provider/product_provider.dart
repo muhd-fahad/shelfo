@@ -140,7 +140,9 @@ class ProductProvider with ChangeNotifier {
       name: nameController.text,
       price: double.tryParse(mrpController.text) ?? 0.0,
       costPrice: double.tryParse(purchasePriceController.text) ?? 0.0,
-      stockQuantity: int.tryParse(initialStockController.text) ?? 0,
+      stockQuantity: existingProduct != null 
+          ? existingProduct.stockQuantity 
+          : (int.tryParse(initialStockController.text) ?? 0),
       sku: skuController.text,
       categoryName: selectedCategory,
       brandName: selectedBrand,
@@ -164,11 +166,14 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> adjustStock(Product product, int quantity, {bool isAddition = true}) async {
+  Future<void> adjustStock(Product product, int quantity, {bool isAddition = true, double? newCostPrice}) async {
     final index = _products.indexWhere((p) => p.id == product.id);
     if (index != -1) {
       final newQuantity = isAddition ? product.stockQuantity + quantity : product.stockQuantity - quantity;
-      final updatedProduct = product.copyWith(stockQuantity: newQuantity);
+      final updatedProduct = product.copyWith(
+        stockQuantity: newQuantity,
+        costPrice: newCostPrice ?? product.costPrice,
+      );
       await _productBox.putAt(index, updatedProduct);
       _products[index] = updatedProduct;
       notifyListeners();
