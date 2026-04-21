@@ -60,6 +60,15 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SFODivider(),
                 SFOTile(
+                  icon: Icons.branding_watermark_outlined,
+                  title: "Product Brands",
+                  subtitle: "Manage your product brands",
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.brandsSettings);
+                  },
+                ),
+                const SFODivider(),
+                SFOTile(
                   icon: Icons.percent_outlined,
                   title: "Tax Configuration",
                   subtitle: "Manage tax rates and calculation",

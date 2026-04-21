@@ -29,6 +29,7 @@ class SFOCard extends StatelessWidget {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
       ),
     );

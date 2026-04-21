@@ -92,9 +92,8 @@ class EditCategoryScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final icon = Category.availableIcons[index];
                           final isSelected = provider.selectedIconCode == icon.codePoint;
-                          return InkWell(
+                          return GestureDetector(
                             onTap: () => provider.setIconCode(icon.codePoint),
-                            borderRadius: BorderRadius.circular(12),
                             child: Container(
                               decoration: ShapeDecoration(
                                 color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.transparent,
