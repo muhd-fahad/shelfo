@@ -4,6 +4,7 @@ import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
@@ -46,17 +47,12 @@ class BusinessInfoScreen extends StatelessWidget {
           mainAxisAlignment: .start,
           crossAxisAlignment: .center,
           children: [
-            Container(
-              height: 96,
-              width: 96,
-              decoration: ShapeDecoration(
-                color: Colors.grey.shade200,
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: AppRadius.xl,
-                  side: const BorderSide(width: 2, color: AppColors.border),
-                ),
-              ),
-              child: const Icon(Icons.add_a_photo_outlined, color: Colors.grey),
+            SFOLogoPicker(
+              logoPath: businessProvider.logoPath,
+              isDark: Theme.of(context).brightness == Brightness.dark,
+              onPick: (source) => businessProvider.pickLogo(source),
+              onRemove: () => businessProvider.removeLogo(),
+              size: 96,
             ),
     
             SFOInputField(

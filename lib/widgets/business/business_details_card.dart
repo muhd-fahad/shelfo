@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/utils/theme/theme_constants.dart';
-
+import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import '../../models/currency/currency.dart';
-import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_dropdown.dart';
 import '../sfo_common/sfo_input_field.dart';
 
@@ -10,6 +11,9 @@ class BusinessDetailsCard extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController addressController;
+  final String? logoPath;
+  final Function(ImageSource) onLogoPicked;
+  final VoidCallback onLogoRemoved;
   final Currency selectedCurrency;
   final ValueChanged<Currency?> onCurrencyChanged;
   final VoidCallback onSave;
@@ -19,6 +23,9 @@ class BusinessDetailsCard extends StatelessWidget {
     required this.nameController,
     required this.phoneController,
     required this.addressController,
+    this.logoPath,
+    required this.onLogoPicked,
+    required this.onLogoRemoved,
     required this.selectedCurrency,
     required this.onCurrencyChanged,
     required this.onSave,
@@ -45,6 +52,19 @@ class BusinessDetailsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 20,
         children: [
+          Text("Business Logo",
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              )),
+          SFOLogoPicker(
+            logoPath: logoPath,
+            isDark: isDark,
+            onPick: onLogoPicked,
+            onRemove: onLogoRemoved,
+            size: 96,
+          ),
+
           SFOInputField(
             label: "Store Name",
             hint: "Enter store name",

@@ -48,6 +48,9 @@ class BusinessDetailsScreen extends StatelessWidget {
           nameController: businessProvider.nameController,
           phoneController: businessProvider.phoneController,
           addressController: businessProvider.addressController,
+          logoPath: businessProvider.logoPath,
+          onLogoPicked: (source) => businessProvider.pickLogo(source),
+          onLogoRemoved: () => businessProvider.removeLogo(),
           selectedCurrency: businessProvider.selectedCurrency,
           onCurrencyChanged: (Currency? value) {
             if (value != null) {

@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/product/product_model.dart';
+import '../utils/image_service.dart';
 
 class ProductProvider with ChangeNotifier {
   late Box<Product> _productBox;
@@ -109,6 +112,26 @@ class ProductProvider with ChangeNotifier {
   void setProductType(ProductType type) {
     selectedType = type;
     notifyListeners();
+  }
+
+  Future<void> pickAndAddImage(ImageSource source) async {
+    final File? pickedFile = await ImageService.pickImage(source);
+    if (pickedFile != null) {
+      final String? savedPath = await ImageService.saveImageToLocalDirectory(pickedFile);
+      if (savedPath != null) {
+        imagePaths.add(savedPath);
+        notifyListeners();
+      }
+    }
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < imagePaths.length) {
+      // We might want to delete the file from storage too
+      ImageService.deleteImage(imagePaths[index]);
+      imagePaths.removeAt(index);
+      notifyListeners();
+    }
   }
 
   Future<void> saveProduct(Product? existingProduct) async {

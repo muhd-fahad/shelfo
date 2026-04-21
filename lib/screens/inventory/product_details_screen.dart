@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
@@ -12,6 +13,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_badge.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_price_row.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_metric_card.dart';
 import 'package:shelfo/widgets/inventory/stock_adjustment_dialog.dart';
+import 'package:shelfo/widgets/inventory/product_image_carousel.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -63,18 +65,9 @@ class ProductDetailsScreen extends StatelessWidget {
                 Center(
                   child: Column(
                     children: [
-                      Container(
-                        width: 140,
-                        height: 140,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: isDark ? AppColors.darkSurface : Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: isDark ? AppColors.darkBorder : AppColors.border),
-                        ),
-                        child: currentProduct.imagePaths != null && currentProduct.imagePaths!.isNotEmpty
-                            ? Image.asset(currentProduct.imagePaths![0], fit: BoxFit.contain)
-                            : Icon(Icons.inventory_2_outlined, size: 60, color: AppColors.primary.withOpacity(0.2)),
+                      ProductImageCarousel(
+                        imagePaths: currentProduct.imagePaths ?? [],
+                        isDark: isDark,
                       ),
                       const SizedBox(height: 24),
                       Text(

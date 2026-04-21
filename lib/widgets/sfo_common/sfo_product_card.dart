@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../utils/theme/theme_constants.dart';
 
@@ -56,22 +57,22 @@ class SFOProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image Container
-              AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  decoration: ShapeDecoration(
-                    color: isDark ? AppColors.darkBackground : AppColors.surface,
-                    shape: const RoundedSuperellipseBorder(
-                      borderRadius: AppRadius.md,
-                    ),
-                  ),
-                  child: Center(
-                    child: imagePath != null
-                        ? Image.asset(imagePath!, fit: BoxFit.contain)
-                        : Icon(Icons.inventory_2_outlined,
-                            size: 32, color: AppColors.primary.withOpacity(0.2)),
+              Container(
+                width: .maxFinite,
+                height: 140,
+                clipBehavior: .antiAlias,
+                decoration: ShapeDecoration(
+                  color: isDark ? AppColors.darkBackground : AppColors.surface,
+                  shape: const RoundedSuperellipseBorder(
+                    borderRadius: AppRadius.md,
                   ),
                 ),
+                child: imagePath != null
+                    ? (imagePath!.startsWith('assets/')
+                        ? Image.asset(imagePath!, fit: BoxFit.contain)
+                        : Image.file(File(imagePath!), fit: BoxFit.cover))
+                    : Icon(Icons.inventory_2_outlined,
+                        size: 32, color: AppColors.primary.withOpacity(0.2)),
               ),
               const SizedBox(height: 12),
               
@@ -116,11 +117,11 @@ class SFOProductCard extends StatelessWidget {
                   fontSize: 12,
                   fontFamily: 'Inter',
                   color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                  height: 1.4,
+                  height: 1.3,
                 ),
               ),
               
-              const Spacer(),
+              const SizedBox(height: 4),
               
               // Bottom Row: Price and Stock Badge
               Row(

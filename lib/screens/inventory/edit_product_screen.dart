@@ -112,9 +112,8 @@ class EditProductScreen extends StatelessWidget {
                         SFOImagePicker(
                           imagePaths: provider.imagePaths,
                           isDark: isDark,
-                          onAddImage: () {
-                            // Logic to pick image
-                          },
+                          onAddImage: (source) => provider.pickAndAddImage(source),
+                          onRemoveImage: (index) => provider.removeImage(index),
                         ),
                       ],
                     ),
