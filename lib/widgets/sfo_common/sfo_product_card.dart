@@ -78,6 +78,7 @@ class SFOProductCard extends StatelessWidget {
               
               // SKU and Status Dot
               Row(
+                spacing: 4,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (sku != null)
@@ -103,6 +104,22 @@ class SFOProductCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkBackground : AppColors.borderLight,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      "$stockCount left",
+                      style: TextStyle(
+                        color: isDark ? AppColors.darkTextSecondary : const Color(0xFF475569),
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Inter',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 4),
@@ -122,53 +139,15 @@ class SFOProductCard extends StatelessWidget {
               ),
               
               const SizedBox(height: 4),
-              
-              // Bottom Row: Price and Stock Badge
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        price,
-                        style: const TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          fontFamily: 'Inter',
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        "$stockCount in stock",
-                        style: TextStyle(
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkBackground : AppColors.borderLight,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      "$stockCount left",
-                      style: TextStyle(
-                        color: isDark ? AppColors.darkTextSecondary : const Color(0xFF475569),
-                        fontSize: 9,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Inter',
-                      ),
-                    ),
-                  ),
-                ],
+
+              Text(
+                price,
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                  fontFamily: 'Inter',
+                ),
               ),
             ],
           ),
