@@ -44,8 +44,8 @@ class SFOProductCard extends StatelessWidget {
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.lg,
             side: BorderSide(
-              color: isSelected 
-                  ? AppColors.primary 
+              color: isSelected
+                  ? AppColors.primary
                   : (isDark ? AppColors.darkBorder : AppColors.borderLight),
               width: isSelected ? 1.5 : 1,
             ),
@@ -54,6 +54,7 @@ class SFOProductCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(13),
           child: Column(
+            spacing: AppSpacing.xs,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image Container
@@ -74,8 +75,8 @@ class SFOProductCard extends StatelessWidget {
                     : Icon(Icons.inventory_2_outlined,
                         size: 32, color: AppColors.primary.withOpacity(0.2)),
               ),
-              const SizedBox(height: 12),
-              
+              const SizedBox(height: AppSpacing.xs),
+
               // SKU and Status Dot
               Row(
                 spacing: 4,
@@ -122,7 +123,6 @@ class SFOProductCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
 
               // Product Name
               Text(
@@ -137,8 +137,6 @@ class SFOProductCard extends StatelessWidget {
                   height: 1.3,
                 ),
               ),
-              
-              const SizedBox(height: 4),
 
               Text(
                 price,

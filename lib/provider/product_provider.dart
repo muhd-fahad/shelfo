@@ -140,9 +140,7 @@ class ProductProvider with ChangeNotifier {
       name: nameController.text,
       price: double.tryParse(mrpController.text) ?? 0.0,
       costPrice: double.tryParse(purchasePriceController.text) ?? 0.0,
-      stockQuantity: existingProduct != null 
-          ? existingProduct.stockQuantity 
-          : (int.tryParse(initialStockController.text) ?? 0),
+      stockQuantity: int.tryParse(initialStockController.text) ?? 0,
       sku: skuController.text,
       categoryName: selectedCategory,
       brandName: selectedBrand,
