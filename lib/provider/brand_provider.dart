@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/brand/brand_model.dart';
+import 'package:shelfo/services/hive/brand_service.dart';
 
 class BrandProvider extends ChangeNotifier {
-  static const String _boxName = 'brandsBox';
-
   final TextEditingController nameController = TextEditingController();
 
   List<Brand> _brands = [];
@@ -21,11 +19,10 @@ class BrandProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final box = await Hive.openBox<Brand>(_boxName);
+    _brands = await BrandHiveService.getBrands();
     
-    if (box.isEmpty) {
+    if (_brands.isEmpty) {
       final defaultBrands = [
-        // Tech & Smartphones
         Brand(name: 'Apple'),
         Brand(name: 'Samsung'),
         Brand(name: 'Google'),
@@ -36,8 +33,6 @@ class BrandProvider extends ChangeNotifier {
         Brand(name: 'OnePlus'),
         Brand(name: 'Realme'),
         Brand(name: 'Nothing'),
-
-        // Laptops & Computing
         Brand(name: 'Dell'),
         Brand(name: 'HP'),
         Brand(name: 'Lenovo'),
@@ -45,32 +40,26 @@ class BrandProvider extends ChangeNotifier {
         Brand(name: 'Acer'),
         Brand(name: 'MSI'),
         Brand(name: 'Razer'),
-
-        // Consumer Electronics & Cameras
         Brand(name: 'Sony'),
         Brand(name: 'LG'),
         Brand(name: 'Panasonic'),
         Brand(name: 'Canon'),
         Brand(name: 'Nikon'),
         Brand(name: 'Fujifilm'),
-
-        // Audio & Accessories
         Brand(name: 'Bose'),
         Brand(name: 'Sennheiser'),
         Brand(name: 'JBL'),
         Brand(name: 'Marshall'),
         Brand(name: 'Logitech'),
-
-        // Components & Others
         Brand(name: 'Intel'),
         Brand(name: 'AMD'),
         Brand(name: 'Nvidia'),
         Brand(name: 'TP-Link'),
       ];
-      await box.addAll(defaultBrands);
+      await BrandHiveService.saveBrands(defaultBrands);
+      _brands = await BrandHiveService.getBrands();
     }
 
-    _brands = box.values.toList();
     _isLoading = false;
     notifyListeners();
   }
@@ -85,11 +74,9 @@ class BrandProvider extends ChangeNotifier {
   }
 
   Future<bool> saveBrand(Brand? existingBrand) async {
-    final box = await Hive.openBox<Brand>(_boxName);
     final newName = nameController.text.trim();
 
-    // Check for duplication
-    final isDuplicate = box.values.any((brand) =>
+    final isDuplicate = _brands.any((brand) =>
         brand.name.toLowerCase() == newName.toLowerCase() &&
         (existingBrand == null || brand.key != existingBrand.key));
 
@@ -97,26 +84,21 @@ class BrandProvider extends ChangeNotifier {
       return false;
     }
 
+    final brand = Brand(name: newName);
+
     if (existingBrand == null) {
-      final brand = Brand(
-        name: newName,
-      );
-      await box.add(brand);
+      await BrandHiveService.addBrand(brand);
     } else {
-      final updated = Brand(
-        name: newName,
-      );
-      // Use the Hive key to update the existing entry
-      await box.put(existingBrand.key, updated);
+      await BrandHiveService.updateBrand(existingBrand.key, brand);
     }
 
-    _brands = box.values.toList();
+    _brands = await BrandHiveService.getBrands();
     notifyListeners();
     return true;
   }
 
   Future<void> deleteBrand(Brand brand) async {
-    await brand.delete();
+    await BrandHiveService.deleteBrand(brand);
     _brands.remove(brand);
     notifyListeners();
   }

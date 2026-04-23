@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/category/category_model.dart';
+import 'package:shelfo/services/hive/category_service.dart';
 
 class CategoryProvider extends ChangeNotifier {
-  static const String _boxName = 'categoriesBox';
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   
@@ -25,9 +23,9 @@ class CategoryProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final box = await Hive.openBox<Category>(_boxName);
+    _categories = await CategoryHiveService.getCategories();
     
-    if (box.isEmpty) {
+    if (_categories.isEmpty) {
       final defaultCategories = [
         Category(name: 'Smartphones', iconCode: Icons.smartphone_rounded.codePoint),
         Category(name: 'Laptops', iconCode: Icons.laptop_rounded.codePoint),
@@ -35,10 +33,10 @@ class CategoryProvider extends ChangeNotifier {
         Category(name: 'Tablets', iconCode: Icons.tablet_rounded.codePoint),
         Category(name: 'Smart Watches', iconCode: Icons.watch_rounded.codePoint),
       ];
-      await box.addAll(defaultCategories);
+      await CategoryHiveService.saveCategories(defaultCategories);
+      _categories = await CategoryHiveService.getCategories();
     }
 
-    _categories = box.values.toList();
     _isLoading = false;
     notifyListeners();
   }
@@ -62,11 +60,9 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   Future<bool> saveCategory(Category? existingCategory) async {
-    final box = await Hive.openBox<Category>(_boxName);
     final newName = nameController.text.trim();
 
-    // Check for duplication
-    final isDuplicate = box.values.any((category) =>
+    final isDuplicate = _categories.any((category) =>
         category.name.toLowerCase() == newName.toLowerCase() &&
         (existingCategory == null || category.key != existingCategory.key));
 
@@ -74,30 +70,25 @@ class CategoryProvider extends ChangeNotifier {
       return false;
     }
 
+    final category = Category(
+      name: newName,
+      description: descController.text.trim(),
+      iconCode: _selectedIconCode,
+    );
+
     if (existingCategory == null) {
-      final category = Category(
-        name: newName,
-        description: descController.text.trim(),
-        iconCode: _selectedIconCode,
-      );
-      await box.add(category);
+      await CategoryHiveService.addCategory(category);
     } else {
-      final updated = Category(
-        name: newName,
-        description: descController.text.trim(),
-        iconCode: _selectedIconCode,
-      );
-      // Use the Hive key to update the existing entry
-      await box.put(existingCategory.key, updated);
+      await CategoryHiveService.updateCategory(existingCategory.key, category);
     }
 
-    _categories = box.values.toList();
+    _categories = await CategoryHiveService.getCategories();
     notifyListeners();
     return true;
   }
 
   Future<void> deleteCategory(Category category) async {
-    await category.delete();
+    await CategoryHiveService.deleteCategory(category);
     _categories.remove(category);
     notifyListeners();
   }

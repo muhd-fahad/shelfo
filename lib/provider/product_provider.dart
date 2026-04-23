@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shelfo/services/hive/product_service.dart';
 import '../models/product/product_model.dart';
-import '../utils/image_service.dart';
+import '../services/image_service.dart';
 
-class ProductProvider with ChangeNotifier {
-  late Box<Product> _productBox;
+class ProductProvider extends ChangeNotifier {
+
   List<Product> _products = [];
   bool _isLoading = true;
 
@@ -32,12 +32,14 @@ class ProductProvider with ChangeNotifier {
   String? _filterCategory;
 
   ProductProvider() {
-    _init();
+    _loadProducts();
   }
 
-  Future<void> _init() async {
-    _productBox = await Hive.openBox<Product>('products');
-    _products = _productBox.values.toList();
+  Future<void> _loadProducts() async {
+    _isLoading = true;
+    notifyListeners();
+
+    _products = await ProductHiveService.getProducts();
     _isLoading = false;
     notifyListeners();
   }
@@ -79,24 +81,21 @@ class ProductProvider with ChangeNotifier {
       selectedCategory = product.categoryName;
       selectedBrand = product.brandName;
       selectedType = product.productType;
-      imagePaths = product.imagePaths ?? [];
+      imagePaths = List.from(product.imagePaths ?? []);
     } else {
-      clearControllers();
+      nameController.clear();
+      skuController.clear();
+      initialStockController.clear();
+      minStockController.clear();
+      reorderPointController.clear();
+      purchasePriceController.clear();
+      mrpController.clear();
+      selectedCategory = null;
+      selectedBrand = null;
+      selectedType = ProductType.stocked;
+      imagePaths = [];
     }
-  }
-
-  void clearControllers() {
-    nameController.clear();
-    skuController.clear();
-    initialStockController.clear();
-    minStockController.clear();
-    reorderPointController.clear();
-    purchasePriceController.clear();
-    mrpController.clear();
-    selectedCategory = null;
-    selectedBrand = null;
-    selectedType = ProductType.stocked;
-    imagePaths = [];
+    notifyListeners();
   }
 
   void setCategory(String? category) {
@@ -127,21 +126,31 @@ class ProductProvider with ChangeNotifier {
 
   void removeImage(int index) {
     if (index >= 0 && index < imagePaths.length) {
-      // We might want to delete the file from storage too
       ImageService.deleteImage(imagePaths[index]);
       imagePaths.removeAt(index);
       notifyListeners();
     }
   }
 
-  Future<void> saveProduct(Product? existingProduct) async {
+  Future<bool> saveProduct(Product? existingProduct) async {
+    final name = nameController.text.trim();
+    final sku = skuController.text.trim();
+
+    final isDuplicate = _products.any((p) =>
+        (p.name.toLowerCase() == name.toLowerCase() || (sku.isNotEmpty && p.sku == sku)) &&
+        (existingProduct == null || p.key != existingProduct.key));
+
+    if (isDuplicate) {
+      return false;
+    }
+
     final product = Product(
       id: existingProduct?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      name: nameController.text,
+      name: name,
       price: double.tryParse(mrpController.text) ?? 0.0,
       costPrice: double.tryParse(purchasePriceController.text) ?? 0.0,
       stockQuantity: int.tryParse(initialStockController.text) ?? 0,
-      sku: skuController.text,
+      sku: sku.isNotEmpty ? sku : null,
       categoryName: selectedCategory,
       brandName: selectedBrand,
       createdAt: existingProduct?.createdAt ?? DateTime.now(),
@@ -151,39 +160,43 @@ class ProductProvider with ChangeNotifier {
       productType: selectedType,
     );
 
-    if (existingProduct != null) {
-      final index = _products.indexWhere((p) => p.id == existingProduct.id);
-      if (index != -1) {
-        await _productBox.putAt(index, product);
-        _products[index] = product;
-      }
+    if (existingProduct == null) {
+      await ProductHiveService.addProduct(product);
     } else {
-      await _productBox.add(product);
-      _products.add(product);
+      await ProductHiveService.updateProduct(existingProduct.key, product);
     }
+    
+    _products = await ProductHiveService.getProducts();
     notifyListeners();
+    return true;
   }
 
   Future<void> adjustStock(Product product, int quantity, {bool isAddition = true, double? newCostPrice}) async {
-    final index = _products.indexWhere((p) => p.id == product.id);
-    if (index != -1) {
-      final newQuantity = isAddition ? product.stockQuantity + quantity : product.stockQuantity - quantity;
-      final updatedProduct = product.copyWith(
-        stockQuantity: newQuantity,
-        costPrice: newCostPrice ?? product.costPrice,
-      );
-      await _productBox.putAt(index, updatedProduct);
-      _products[index] = updatedProduct;
-      notifyListeners();
-    }
+    final newQuantity = isAddition ? product.stockQuantity + quantity : product.stockQuantity - quantity;
+    final updatedProduct = product.copyWith(
+      stockQuantity: newQuantity,
+      costPrice: newCostPrice ?? product.costPrice,
+    );
+    await ProductHiveService.updateProduct(product.key, updatedProduct);
+    _products = await ProductHiveService.getProducts();
+    notifyListeners();
   }
 
   Future<void> deleteProduct(Product product) async {
-    final index = _products.indexWhere((p) => p.id == product.id);
-    if (index != -1) {
-      await _productBox.deleteAt(index);
-      _products.removeAt(index);
-      notifyListeners();
-    }
+    await ProductHiveService.deleteProduct(product);
+    _products.remove(product);
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    skuController.dispose();
+    initialStockController.dispose();
+    minStockController.dispose();
+    reorderPointController.dispose();
+    purchasePriceController.dispose();
+    mrpController.dispose();
+    super.dispose();
   }
 }
