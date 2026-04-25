@@ -4,13 +4,15 @@ import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_summary_card.dart';
 import 'package:shelfo/widgets/inventory/product_grid_item.dart';
 import 'package:shelfo/widgets/inventory/inventory_filter_sheet.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
+
+import '../../utils/theme/app_constants/colors.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -18,22 +20,16 @@ class InventoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final businessProvider = Provider.of<BusinessProvider>(context);
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          "Inventory",
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-          ),
-        ),
+        title: const SFOHeader(title: "Inventory"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -63,25 +59,22 @@ class InventoryScreen extends StatelessWidget {
                     SFOSummaryCard(
                       label: "Total",
                       value: provider.totalProducts.toString(),
-                      bgColor: isDark ? const Color(0xFF1E293B) : const Color(0xFF0F172A),
-                      textColor: Colors.white,
-                      isDark: isDark,
+                      bgColor: colorScheme.onSurface,
+                      textColor: colorScheme.surface,
                     ),
                     const SizedBox(width: 12),
                     SFOSummaryCard(
                       label: "Low Stock",
                       value: provider.lowStockCount.toString(),
-                      bgColor: isDark ? const Color(0xFF451A03) : const Color(0xFFFFF7ED),
-                      textColor: isDark ? Colors.orangeAccent : Colors.orange.shade900,
-                      isDark: isDark,
+                      bgColor: Colors.orange.withOpacity(0.1),
+                      textColor: Colors.orange.shade900,
                     ),
                     const SizedBox(width: 12),
                     SFOSummaryCard(
                       label: "Out of Stock",
                       value: provider.outOfStockCount.toString(),
-                      bgColor: isDark ? const Color(0xFF450A0A) : const Color(0xFFFEF2F2),
-                      textColor: isDark ? Colors.redAccent : Colors.red.shade900,
-                      isDark: isDark,
+                      bgColor: Colors.red.withOpacity(0.1),
+                      textColor: Colors.red.shade900,
                     ),
                   ],
                 ),
@@ -91,7 +84,6 @@ class InventoryScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: SFOSearchBar(
-                  isDark: isDark,
                   hintText: "Search products...",
                   onChanged: (val) => provider.setSearchQuery(val),
                   onFilterTap: () => _showFilterSheet(context, categoryProvider, provider),
@@ -100,16 +92,16 @@ class InventoryScreen extends StatelessWidget {
 
               // Categories Scroll
               Container(
-                height: 50,
+                height: 48,
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: isDark ? AppColors.darkBorder : const Color(0xFFF1F5F9),
+                      color: theme.brightness == Brightness.dark ? colorScheme.outlineVariant : AppColors.borderLight,
                     ),
                   ),
                 ),
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   scrollDirection: Axis.horizontal,
                   itemCount: categoryProvider.categories.length + 1,
                   separatorBuilder: (context, index) => const SizedBox(width: 8),
@@ -118,10 +110,12 @@ class InventoryScreen extends StatelessWidget {
                     final isSelected = (index == 0 && provider.selectedFilterCategory == null) || 
                                      (index != 0 && provider.selectedFilterCategory == name);
                     
-                    return SFOChip(
-                      label: name,
-                      isSelected: isSelected,
-                      onSelected: (val) => provider.setFilterCategory(name == "All" ? null : name),
+                    return Center(
+                      child: SFOChip(
+                        label: name,
+                        isSelected: isSelected,
+                        onSelected: (val) => provider.setFilterCategory(name == "All" ? null : name),
+                      ),
                     );
                   },
                 ),
@@ -149,7 +143,6 @@ class InventoryScreen extends StatelessWidget {
                               return ProductGridItem(
                                 product: product,
                                 currency: currency,
-                                isDark: isDark,
                               );
                             },
                           ),

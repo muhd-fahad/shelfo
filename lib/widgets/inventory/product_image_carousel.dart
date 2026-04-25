@@ -1,16 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../sfo_common/sfo_image_viewer.dart';
-import '../../utils/theme/theme_constants.dart';
 
 class ProductImageCarousel extends StatefulWidget {
   final List<String> imagePaths;
-  final bool isDark;
 
   const ProductImageCarousel({
     super.key,
     required this.imagePaths,
-    required this.isDark,
   });
 
   @override
@@ -22,16 +19,19 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     if (widget.imagePaths.isEmpty) {
       return Container(
         width: 140,
         height: 140,
         decoration: BoxDecoration(
-          color: widget.isDark ? AppColors.darkSurface : Colors.white,
+          color: theme.cardTheme.color,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: widget.isDark ? AppColors.darkBorder : AppColors.border),
+          border: Border.all(color: colorScheme.outline),
         ),
-        child: Icon(Icons.inventory_2_outlined, size: 60, color: AppColors.primary.withOpacity(0.2)),
+        child: Icon(Icons.inventory_2_outlined, size: 60, color: colorScheme.primary.withOpacity(0.2)),
       );
     }
 
@@ -55,9 +55,9 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
-                    color: widget.isDark ? AppColors.darkSurface : Colors.white,
+                    color: theme.cardTheme.color,
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: widget.isDark ? AppColors.darkBorder : AppColors.border),
+                    border: Border.all(color: colorScheme.outline),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),
@@ -84,7 +84,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primary.withOpacity(
+                  color: colorScheme.primary.withOpacity(
                     _currentIndex == entry.key ? 0.9 : 0.2,
                   ),
                 ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/product/product_model.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class ProductTypeSelector extends StatelessWidget {
   final ProductType selectedType;
@@ -14,7 +14,9 @@ class ProductTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -28,11 +30,11 @@ class ProductTypeSelector extends StatelessWidget {
           onTap: () => onTypeSelected(type),
           child: Container(
             decoration: ShapeDecoration(
-              color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.transparent,
+              color: isSelected ? colorScheme.primary.withOpacity(0.1) : Colors.transparent,
               shape: RoundedSuperellipseBorder(
                 borderRadius: AppRadius.md,
                 side: BorderSide(
-                  color: isSelected ? AppColors.primary : (isDark ? AppColors.darkBorder : AppColors.border),
+                  color: isSelected ? colorScheme.primary : colorScheme.outline,
                   width: 1,
                 ),
               ),
@@ -40,8 +42,8 @@ class ProductTypeSelector extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               type.label,
-              style: TextStyle(
-                color: isSelected ? AppColors.primary : (isDark ? AppColors.darkTextSecondary : AppColors.textSecondary),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

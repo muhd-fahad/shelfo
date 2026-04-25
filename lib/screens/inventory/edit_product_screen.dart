@@ -5,7 +5,7 @@ import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/provider/brand_provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
@@ -22,7 +22,7 @@ class EditProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final currencySymbol = Provider.of<BusinessProvider>(context).selectedCurrency.symbol;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -30,17 +30,16 @@ class EditProductScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          product == null ? "New Product" : "Edit Product",
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        title: SFOHeader(
+          title: product == null ? "New Product" : "Edit Product",
         ),
         centerTitle: true,
       ),
@@ -95,7 +94,7 @@ class EditProductScreen extends StatelessWidget {
                         Text("Product Type",
                             style: theme.textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                             )),
                         const SizedBox(height: 8),
                         ProductTypeSelector(
@@ -106,12 +105,11 @@ class EditProductScreen extends StatelessWidget {
                         Text("Product Image",
                             style: theme.textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.w500,
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                             )),
                         const SizedBox(height: 8),
                         SFOImagePicker(
                           imagePaths: provider.imagePaths,
-                          isDark: isDark,
                           onAddImage: (source) => provider.pickAndAddImage(source),
                           onRemoveImage: (index) => provider.removeImage(index),
                         ),

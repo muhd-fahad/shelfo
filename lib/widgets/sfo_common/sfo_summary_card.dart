@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOSummaryCard extends StatelessWidget {
   final String label;
   final String value;
   final Color bgColor;
   final Color textColor;
-  final bool isDark;
 
   const SFOSummaryCard({
     super.key,
@@ -14,11 +13,13 @@ class SFOSummaryCard extends StatelessWidget {
     required this.value,
     required this.bgColor,
     required this.textColor,
-    this.isDark = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -27,7 +28,7 @@ class SFOSummaryCard extends StatelessWidget {
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.lg,
             side: BorderSide(
-              color: isDark ? AppColors.darkBorder : AppColors.border,
+              color: colorScheme.outline.withOpacity(0.5),
               width: 0.5,
             ),
           ),
@@ -37,7 +38,7 @@ class SFOSummaryCard extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(
+              style: theme.textTheme.labelMedium?.copyWith(
                 color: textColor.withOpacity(0.7),
                 fontSize: 12,
               ),
@@ -45,7 +46,7 @@ class SFOSummaryCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               value,
-              style: TextStyle(
+              style: theme.textTheme.titleLarge?.copyWith(
                 color: textColor,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

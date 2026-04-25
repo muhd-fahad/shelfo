@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOProductCard extends StatelessWidget {
   final String name;
@@ -8,7 +9,6 @@ class SFOProductCard extends StatelessWidget {
   final String price;
   final int stockCount;
   final String? imagePath;
-  final bool isDark;
   final VoidCallback? onTap;
   final bool isSelected;
   final bool showStatusDot;
@@ -20,7 +20,6 @@ class SFOProductCard extends StatelessWidget {
     required this.stockCount,
     this.sku,
     this.imagePath,
-    required this.isDark,
     this.onTap,
     this.isSelected = false,
     this.showStatusDot = true,
@@ -28,15 +27,19 @@ class SFOProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: ShapeDecoration(
-          color: isDark ? AppColors.darkSurface : Colors.white,
+          color: theme.cardTheme.color,
           shadows: isDark ? [] : [
             BoxShadow(
-              color: Colors.black.withOpacity(isSelected ? 0.1 : 0.05),
+              color: AppColors.black.withOpacity(isSelected ? 0.1 : 0.05),
               blurRadius: isSelected ? 8 : 2,
               offset: const Offset(0, 1),
             ),
@@ -45,8 +48,8 @@ class SFOProductCard extends StatelessWidget {
             borderRadius: AppRadius.lg,
             side: BorderSide(
               color: isSelected
-                  ? AppColors.primary
-                  : (isDark ? AppColors.darkBorder : AppColors.borderLight),
+                  ? colorScheme.primary
+                  : colorScheme.outlineVariant,
               width: isSelected ? 1.5 : 1,
             ),
           ),
@@ -59,11 +62,11 @@ class SFOProductCard extends StatelessWidget {
             children: [
               // Image Container
               Container(
-                width: .maxFinite,
+                width: double.maxFinite,
                 height: 140,
-                clipBehavior: .antiAlias,
+                clipBehavior: Clip.antiAlias,
                 decoration: ShapeDecoration(
-                  color: isDark ? AppColors.darkBackground : AppColors.surface,
+                  color: isDark ? colorScheme.surface : colorScheme.surfaceContainerHighest,
                   shape: const RoundedSuperellipseBorder(
                     borderRadius: AppRadius.md,
                   ),
@@ -71,9 +74,11 @@ class SFOProductCard extends StatelessWidget {
                 child: imagePath != null
                     ? (imagePath!.startsWith('assets/')
                         ? Image.asset(imagePath!, fit: BoxFit.contain)
-                        : Image.file(File(imagePath!), fit: BoxFit.cover))
+                        : (kIsWeb 
+                            ? Image.network(imagePath!, fit: BoxFit.cover)
+                            : Image.file(File(imagePath!), fit: BoxFit.cover)))
                     : Icon(Icons.inventory_2_outlined,
-                        size: 32, color: AppColors.primary.withOpacity(0.2)),
+                        size: 32, color: colorScheme.primary.withOpacity(0.2)),
               ),
               const SizedBox(height: AppSpacing.xs),
 
@@ -86,11 +91,9 @@ class SFOProductCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         sku!.toUpperCase(),
-                        style: TextStyle(
-                          color: isDark ? AppColors.darkTextSecondary.withOpacity(0.6) : AppColors.textMuted,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant.withOpacity(0.6),
                           fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Inter',
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -101,23 +104,22 @@ class SFOProductCard extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: stockCount > 0 ? AppColors.success : Colors.red,
+                        color: stockCount > 0 ? AppColors.success : AppColors.error,
                         shape: BoxShape.circle,
                       ),
                     ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkBackground : AppColors.borderLight,
+                      color: colorScheme.outlineVariant,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       "$stockCount left",
-                      style: TextStyle(
-                        color: isDark ? AppColors.darkTextSecondary : const Color(0xFF475569),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                         fontSize: 9,
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Inter',
                       ),
                     ),
                   ),
@@ -129,22 +131,19 @@ class SFOProductCard extends StatelessWidget {
                 name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
+                style: theme.textTheme.titleSmall?.copyWith(
                   fontSize: 12,
-                  fontFamily: 'Inter',
-                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  color: colorScheme.onSurface,
                   height: 1.3,
                 ),
               ),
 
               Text(
                 price,
-                style: const TextStyle(
-                  color: AppColors.primary,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: colorScheme.primary,
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
-                  fontFamily: 'Inter',
                 ),
               ),
             ],

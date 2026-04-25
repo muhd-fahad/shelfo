@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
@@ -23,23 +22,22 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final currency = Provider.of<BusinessProvider>(context).selectedCurrency;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: isDark ? Colors.white : Colors.black87),
+            icon: Icon(Icons.edit_outlined, color: colorScheme.onSurface),
             onPressed: () {
-              // Get the most fresh version of the product from the provider
               final freshProduct = Provider.of<ProductProvider>(context, listen: false)
                   .products.firstWhere((p) => p.id == product.id, orElse: () => product);
               Navigator.push(
@@ -49,7 +47,7 @@ class ProductDetailsScreen extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent),
+            icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
             onPressed: () => _confirmDelete(context),
           ),
           const SizedBox(width: 8),
@@ -57,7 +55,6 @@ class ProductDetailsScreen extends StatelessWidget {
       ),
       body: Consumer<ProductProvider>(
         builder: (context, provider, _) {
-          // Find the updated product in the provider's list if it was edited
           final currentProduct = provider.products.firstWhere((p) => p.id == product.id, orElse: () => product);
           
           return SingleChildScrollView(
@@ -70,7 +67,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     children: [
                       ProductImageCarousel(
                         imagePaths: currentProduct.imagePaths ?? [],
-                        isDark: isDark,
                       ),
                       const SizedBox(height: 24),
                       Text(
@@ -81,7 +77,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         currentProduct.sku ?? "",
-                        style: const TextStyle(color: AppColors.textMuted, fontSize: 14),
+                        style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
                       ),
                       const SizedBox(height: 16),
                       Row(
@@ -89,13 +85,12 @@ class ProductDetailsScreen extends StatelessWidget {
                         children: [
                           SFOBadge(
                             label: currentProduct.categoryName ?? "Uncategorized",
-                            bgColor: isDark ? AppColors.darkSurface : AppColors.surface,
                           ),
                           const SizedBox(width: 8),
                           SFOBadge(
                             label: currentProduct.productType.label,
-                            bgColor: isDark ? Colors.blue.withOpacity(0.1) : Colors.blue.shade50,
-                            textColor: Colors.blue,
+                            bgColor: colorScheme.primary.withOpacity(0.1),
+                            textColor: colorScheme.primary,
                           ),
                         ],
                       ),
@@ -108,11 +103,11 @@ class ProductDetailsScreen extends StatelessWidget {
                 // Stock Info Row
                 Row(
                   children: [
-                    SFOMetricCard(label: "Current", value: currentProduct.stockQuantity.toString(), isDark: isDark),
+                    SFOMetricCard(label: "Current", value: currentProduct.stockQuantity.toString()),
                     const SizedBox(width: 12),
-                    SFOMetricCard(label: "Min Level", value: currentProduct.minStock.toString(), isDark: isDark),
+                    SFOMetricCard(label: "Min Level", value: currentProduct.minStock.toString()),
                     const SizedBox(width: 12),
-                    SFOMetricCard(label: "Reorder At", value: currentProduct.reorderPoint.toString(), isDark: isDark),
+                    SFOMetricCard(label: "Reorder At", value: currentProduct.reorderPoint.toString()),
                   ],
                 ),
 
@@ -122,13 +117,13 @@ class ProductDetailsScreen extends StatelessWidget {
                 SFOCard(
                   padding: const EdgeInsets.all(20),
                   children: [
-                    const Text("Pricing", style: TextStyle(color: AppColors.textMuted, fontSize: 12, fontWeight: FontWeight.bold)),
+                    Text("Pricing", style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
-                    SFOPriceRow(label: "Cost Price", value: CurrencyFormatter.format(currentProduct.costPrice, currency), isDark: isDark),
+                    SFOPriceRow(label: "Cost Price", value: CurrencyFormatter.format(currentProduct.costPrice, currency)),
                     const SizedBox(height: 12),
-                    SFOPriceRow(label: "Selling Price", value: CurrencyFormatter.format(currentProduct.price, currency), isDark: isDark, isPrimary: true),
+                    SFOPriceRow(label: "Selling Price", value: CurrencyFormatter.format(currentProduct.price, currency), isPrimary: true),
                     const SizedBox(height: 12),
-                    SFOPriceRow(label: "Margin", value: "${_calculateMargin(currentProduct)}%", isDark: isDark),
+                    SFOPriceRow(label: "Margin", value: "${_calculateMargin(currentProduct)}%"),
                   ],
                 ),
 

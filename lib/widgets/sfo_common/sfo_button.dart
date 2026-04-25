@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 enum SFOButtonType { filled, outlined, text }
 
@@ -26,16 +26,16 @@ class SFOButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
     Widget child;
     if (isLoading) {
-      child = const SizedBox(
+      child = SizedBox(
         height: 20,
         width: 20,
         child: CircularProgressIndicator(
           strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onPrimary),
         ),
       );
     } else {
@@ -59,7 +59,7 @@ class SFOButton extends StatelessWidget {
         return FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
-            backgroundColor: isSecondary ? AppColors.textSecondary : AppColors.primary,
+            backgroundColor: isSecondary ? colorScheme.secondary : colorScheme.primary,
             minimumSize: Size(buttonWidth, 52),
           ),
           child: child,

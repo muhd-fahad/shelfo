@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 import 'package:shelfo/provider/tax_provider.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/utils/theme/theme.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
@@ -15,7 +16,7 @@ class TaxSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final taxProvider = Provider.of<TaxProvider>(context);
 
     if (taxProvider.isLoading) {
@@ -30,23 +31,9 @@ class TaxSettingsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Tax Configuration",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              "Manage tax rates and calculation",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-              ),
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Tax Configuration",
+          subtitle: "Manage tax rates and calculation",
         ),
         centerTitle: false,
       ),
@@ -97,12 +84,12 @@ class TaxSettingsScreen extends StatelessWidget {
                     "Tax Pricing Mode",
                     style: theme.textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Row(
-                    mainAxisSize: .max,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
                         child: _PricingModeCard(
@@ -124,15 +111,15 @@ class TaxSettingsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline_rounded,
                         size: 16,
-                        color: AppColors.textMuted,
+                        color: colorScheme.onSurfaceVariant.withOpacity(0.6),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         "How do you enter product prices?",
-                        style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textMuted),
+                        style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withOpacity(0.6)),
                       )
                     ],
                   )
@@ -170,16 +157,19 @@ class _PricingModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: ShapeDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.transparent,
+          color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.md,
             side: BorderSide(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? colorScheme.primary : colorScheme.outline,
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -187,8 +177,8 @@ class _PricingModeCard extends StatelessWidget {
         child: Center(
           child: Text(
             title,
-            style: TextStyle(
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),

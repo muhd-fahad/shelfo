@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOBottomSheet {
   static Future<T?> show<T>(
@@ -7,7 +7,8 @@ class SFOBottomSheet {
     required Widget child,
     String? title,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     
     return showModalBottomSheet<T>(
       context: context,
@@ -15,7 +16,7 @@ class SFOBottomSheet {
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         decoration: BoxDecoration(
-          color: isDark ? AppColors.darkSurface : AppColors.background,
+          color: theme.cardTheme.color,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         padding: EdgeInsets.only(
@@ -29,7 +30,7 @@ class SFOBottomSheet {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.darkBorder : AppColors.border,
+                color: colorScheme.outline,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -38,12 +39,13 @@ class SFOBottomSheet {
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Text(
                   title, 
-                  style: AppTextStyles.title.copyWith(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ),
-              Divider(height: 1, color: isDark ? AppColors.darkBorder : AppColors.border),
+              Divider(height: 1, color: colorScheme.outline),
             ],
             Flexible(child: child),
             const SizedBox(height: AppSpacing.xl),

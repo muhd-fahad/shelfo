@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/brand/brand_model.dart';
 import 'package:shelfo/provider/brand_provider.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
@@ -14,8 +14,6 @@ class EditBrandScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     // Initialize provider data when building the screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -28,23 +26,9 @@ class EditBrandScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              brand == null ? "Add Brand" : "Edit Brand",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              brand == null ? "Create a new product brand" : "Update brand details",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-              ),
-            ),
-          ],
+        title: SFOHeader(
+          title: brand == null ? "Add Brand" : "Edit Brand",
+          subtitle: brand == null ? "Create a new product brand" : "Update brand details",
         ),
         centerTitle: false,
       ),

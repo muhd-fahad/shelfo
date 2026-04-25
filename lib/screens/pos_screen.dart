@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/screen_title_widget.dart';
+import '../widgets/sfo_common/sfo_header.dart';
 
 class PosScreen extends StatelessWidget {
   const PosScreen({super.key});
@@ -9,9 +8,9 @@ class PosScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ScreenTitleWidget("POS"),
+        title: const SFOHeader(title: "POS"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("POS screen"),
       ),
     );

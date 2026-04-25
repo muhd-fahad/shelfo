@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shelfo/utils/theme/theme.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
 
 class InvoicePreviewWidget extends StatelessWidget {
   const InvoicePreviewWidget({super.key});

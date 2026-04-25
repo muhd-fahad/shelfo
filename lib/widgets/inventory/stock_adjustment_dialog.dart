@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/product/product_model.dart';
 import '../../provider/product_provider.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_input_field.dart';
 
@@ -45,11 +45,10 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Dialog(
       shape: const RoundedSuperellipseBorder(borderRadius: AppRadius.xl),
-      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

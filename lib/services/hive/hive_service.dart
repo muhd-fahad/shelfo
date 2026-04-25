@@ -8,6 +8,7 @@ class HiveService {
   static const String categoriesBox = 'categoriesBox';
   static const String brandsBox = 'brandsBox';
   static const String productsBox = 'productsBox';
+  static const String settingsBox = 'settingsBox';
 
   /// Opens a box with the given name
   static Future<Box<T>> getBox<T>(String boxName) async {

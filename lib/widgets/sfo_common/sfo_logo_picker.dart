@@ -1,13 +1,13 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_viewer.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOLogoPicker extends StatelessWidget {
   final String? logoPath;
-  final bool isDark;
   final Function(ImageSource) onPick;
   final VoidCallback onRemove;
   final double size;
@@ -16,7 +16,6 @@ class SFOLogoPicker extends StatelessWidget {
   const SFOLogoPicker({
     super.key,
     this.logoPath,
-    required this.isDark,
     required this.onPick,
     required this.onRemove,
     this.size = 100,
@@ -24,9 +23,12 @@ class SFOLogoPicker extends StatelessWidget {
   });
 
   void _showPicker(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+      backgroundColor: theme.cardTheme.color,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -35,36 +37,36 @@ class SFOLogoPicker extends StatelessWidget {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library, color: isDark ? Colors.white : Colors.black87),
-                title: Text('Photo Library', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+                leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
+                title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
                 onTap: () {
-                  onPick(ImageSource.gallery);
                   Navigator.of(context).pop();
+                  onPick(ImageSource.gallery);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_camera, color: isDark ? Colors.white : Colors.black87),
-                title: Text('Camera', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+                leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
+                title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
                 onTap: () {
-                  onPick(ImageSource.camera);
                   Navigator.of(context).pop();
+                  onPick(ImageSource.camera);
                 },
               ),
               if (logoPath != null) ...[
                 ListTile(
-                  leading: Icon(Icons.visibility_outlined, color: isDark ? Colors.white : Colors.black87),
-                  title: Text('View Image', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+                  leading: Icon(Icons.visibility_outlined, color: colorScheme.onSurface),
+                  title: Text('View Image', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
                   onTap: () {
                     Navigator.of(context).pop();
                     SFOImageViewer.show(context, logoPath!);
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.delete_outline, color: Colors.red),
-                  title: const Text('Remove Logo', style: TextStyle(color: Colors.red)),
+                  leading: Icon(Icons.delete_outline, color: colorScheme.error),
+                  title: Text('Remove Logo', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.error)),
                   onTap: () {
-                    onRemove();
                     Navigator.of(context).pop();
+                    onRemove();
                   },
                 ),
               ],
@@ -77,6 +79,9 @@ class SFOLogoPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     Widget? imageWidget;
     if (logoPath != null) {
       if (logoPath!.startsWith('assets/') && logoPath!.endsWith('.svg')) {
@@ -84,7 +89,9 @@ class SFOLogoPicker extends StatelessWidget {
       } else if (logoPath!.startsWith('assets/')) {
         imageWidget = Image.asset(logoPath!, fit: BoxFit.cover);
       } else {
-        imageWidget = Image.file(File(logoPath!), fit: BoxFit.cover);
+        imageWidget = kIsWeb 
+            ? Image.network(logoPath!, fit: BoxFit.cover)
+            : Image.file(File(logoPath!), fit: BoxFit.cover);
       }
     }
 
@@ -97,11 +104,11 @@ class SFOLogoPicker extends StatelessWidget {
             height: size,
             clipBehavior: Clip.antiAlias,
             decoration: ShapeDecoration(
-              color: isDark ? AppColors.darkBackground : Colors.grey.shade100,
+              color: colorScheme.surfaceContainer,
               shape: RoundedSuperellipseBorder(
                 borderRadius: AppRadius.xl,
                 side: BorderSide(
-                  color: isDark ? AppColors.darkBorder : AppColors.border,
+                  color: colorScheme.outline,
                   width: 1,
                 ),
               ),
@@ -116,14 +123,14 @@ class SFOLogoPicker extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.add_a_photo_outlined,
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        color: colorScheme.onSurfaceVariant,
                         size: size * 0.3,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         label,
-                        style: TextStyle(
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
                           fontSize: 10,
                         ),
                       ),
@@ -138,8 +145,8 @@ class SFOLogoPicker extends StatelessWidget {
                 onTap: onRemove,
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
+                  decoration: BoxDecoration(
+                    color: colorScheme.error,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.close, size: 12, color: Colors.white),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/screen_title_widget.dart';
+import '../widgets/sfo_common/sfo_header.dart';
 
 class SalesOrderScreen extends StatelessWidget {
   const SalesOrderScreen({super.key});
@@ -9,9 +8,9 @@ class SalesOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ScreenTitleWidget("Sales Order"),
+        title: const SFOHeader(title: "Sales Order"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("Sales order screen"),
       ),
     );

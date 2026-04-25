@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFODropdown<T> extends StatelessWidget {
   final String label;
@@ -20,7 +20,7 @@ class SFODropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -31,12 +31,12 @@ class SFODropdown<T> extends StatelessWidget {
             text: label,
             style: theme.textTheme.labelLarge?.copyWith(
               fontWeight: FontWeight.w500,
-              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              color: colorScheme.onSurfaceVariant,
             ),
             children: isRequired
-                ? [const TextSpan(
+                ? [TextSpan(
                       text: ' *',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: colorScheme.error),
                     ),
                   ]
                 : [],
@@ -46,11 +46,11 @@ class SFODropdown<T> extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: ShapeDecoration(
-            color: isDark ? AppColors.darkSurface : Colors.white,
+            color: theme.inputDecorationTheme.fillColor,
             shape: RoundedSuperellipseBorder(
               borderRadius: AppRadius.md,
               side: BorderSide(
-                color: isDark ? AppColors.darkBorder : AppColors.border,
+                color: colorScheme.outline,
               ),
             ),
           ),
@@ -60,11 +60,11 @@ class SFODropdown<T> extends StatelessWidget {
               isExpanded: true,
               icon: Icon(
                 Icons.keyboard_arrow_down,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                color: colorScheme.onSurfaceVariant,
               ),
               onChanged: onChanged,
               items: items,
-              dropdownColor: isDark ? AppColors.darkSurface : Colors.white,
+              dropdownColor: theme.inputDecorationTheme.fillColor,
               borderRadius: BorderRadius.circular(12),
             ),
           ),

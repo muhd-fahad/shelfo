@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/brand_provider.dart';
 import 'package:shelfo/screens/settings/edit_brand_screen.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
-
+import 'package:shelfo/utils/theme/theme.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
 import '../../models/brand/brand_model.dart';
 
@@ -13,7 +13,7 @@ class BrandsSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final brandProvider = Provider.of<BrandProvider>(context);
 
     return Scaffold(
@@ -22,23 +22,9 @@ class BrandsSettingsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Product Brands",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              "Manage your product brands",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-              ),
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Product Brands",
+          subtitle: "Manage your product brands",
         ),
         centerTitle: false,
         actions: [
@@ -64,14 +50,8 @@ class BrandsSettingsScreen extends StatelessWidget {
                 final brand = brandProvider.brands[index];
                 return Container(
                   decoration: ShapeDecoration(
-                    color: isDark ? AppColors.darkSurface : Colors.white,
-                    shape: RoundedSuperellipseBorder(
-                      borderRadius: AppRadius.md,
-                      side: BorderSide(
-                        color: isDark ? AppColors.darkBorder : AppColors.border,
-                        width: 1,
-                      ),
-                    ),
+                    color: theme.cardTheme.color,
+                    shape: theme.cardTheme.shape!,
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -88,7 +68,7 @@ class BrandsSettingsScreen extends StatelessWidget {
                           icon: Icon(
                             Icons.edit_outlined,
                             size: 20,
-                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           onPressed: () => Navigator.push(
                             context,
@@ -98,7 +78,7 @@ class BrandsSettingsScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: Colors.redAccent),
+                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: AppColors.error),
                           onPressed: () => _showDeleteConfirmation(context, brand),
                         ),
                       ],

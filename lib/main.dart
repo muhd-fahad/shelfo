@@ -8,6 +8,7 @@ import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/provider/brand_provider.dart';
 import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
+import 'package:shelfo/provider/theme_provider.dart';
 import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(create: (_) => BusinessProvider()),
         ChangeNotifierProvider(create: (_) => TaxProvider()),
@@ -35,15 +37,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BrandProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-
-        title: 'Shelfo inventory',
-        theme: SFOAppTheme.light,
-        darkTheme: SFOAppTheme.dark,
-        themeMode: ThemeMode.light,
-        initialRoute: AppRoutes.splash,
-        routes: AppRoutes.routes,
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Shelfo inventory',
+            theme: SFOAppTheme.light,
+            darkTheme: SFOAppTheme.dark,
+            themeMode: themeProvider.themeMode,
+            initialRoute: AppRoutes.splash,
+            routes: AppRoutes.routes,
+          );
+        },
       ),
     );
   }

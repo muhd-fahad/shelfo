@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_viewer.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOImagePicker extends StatelessWidget {
   final List<String> imagePaths;
-  final bool isDark;
   final Function(ImageSource) onAddImage;
   final Function(int) onRemoveImage;
   final String label;
@@ -14,16 +14,18 @@ class SFOImagePicker extends StatelessWidget {
   const SFOImagePicker({
     super.key,
     required this.imagePaths,
-    required this.isDark,
     required this.onAddImage,
     required this.onRemoveImage,
     this.label = "upload images",
   });
 
   void _showPicker(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+      backgroundColor: theme.cardTheme.color,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -32,19 +34,19 @@ class SFOImagePicker extends StatelessWidget {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library, color: isDark ? Colors.white : Colors.black87),
-                title: Text('Photo Library', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+                leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
+                title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
                 onTap: () {
-                  onAddImage(ImageSource.gallery);
                   Navigator.of(context).pop();
+                  onAddImage(ImageSource.gallery);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_camera, color: isDark ? Colors.white : Colors.black87),
-                title: Text('Camera', style: TextStyle(color: isDark ? Colors.white : Colors.black87)),
+                leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
+                title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
                 onTap: () {
-                  onAddImage(ImageSource.camera);
                   Navigator.of(context).pop();
+                  onAddImage(ImageSource.camera);
                 },
               ),
             ],
@@ -56,6 +58,9 @@ class SFOImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -72,11 +77,13 @@ class SFOImagePicker extends StatelessWidget {
                     height: 100,
                     margin: const EdgeInsets.only(right: 12, top: 8),
                     decoration: ShapeDecoration(
-                      shape: RoundedSuperellipseBorder(
+                      shape: const RoundedSuperellipseBorder(
                         borderRadius: AppRadius.md,
                       ),
                       image: DecorationImage(
-                        image: FileImage(File(path)),
+                        image: kIsWeb 
+                          ? NetworkImage(path) as ImageProvider
+                          : FileImage(File(path)),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -89,8 +96,8 @@ class SFOImagePicker extends StatelessWidget {
                     onTap: () => onRemoveImage(idx),
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
+                      decoration: BoxDecoration(
+                        color: colorScheme.error,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.close, size: 12, color: Colors.white),
@@ -107,11 +114,11 @@ class SFOImagePicker extends StatelessWidget {
               height: 100,
               margin: const EdgeInsets.only(top: 8),
               decoration: ShapeDecoration(
-                color: isDark ? AppColors.darkSurface : Colors.white,
+                color: theme.inputDecorationTheme.fillColor,
                 shape: RoundedSuperellipseBorder(
                   borderRadius: AppRadius.md,
                   side: BorderSide(
-                    color: isDark ? AppColors.darkBorder : AppColors.border,
+                    color: colorScheme.outline,
                     style: BorderStyle.solid,
                   ),
                 ),
@@ -119,11 +126,11 @@ class SFOImagePicker extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.upload_outlined, color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary),
+                  Icon(Icons.upload_outlined, color: colorScheme.onSurfaceVariant),
                   const SizedBox(height: 4),
                   Text(label, 
-                    style: TextStyle(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary, 
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                       fontSize: 10
                     )
                   ),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
 
 class SFOSwitchTile extends StatelessWidget {
   final String title;
@@ -19,7 +18,7 @@ class SFOSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -31,18 +30,17 @@ class SFOSwitchTile extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: TextStyle(
+                  style: theme.textTheme.bodySmall?.copyWith(
                     fontSize: 13,
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -51,7 +49,7 @@ class SFOSwitchTile extends StatelessWidget {
           const SizedBox(width: 8),
           CupertinoSwitch(
             value: value,
-            activeColor: AppColors.primary,
+            activeTrackColor: colorScheme.primary,
             onChanged: onChanged,
           ),
         ],

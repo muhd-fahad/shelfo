@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/screens/settings/edit_category_screen.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
-
+import 'package:shelfo/utils/theme/theme.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
 import '../../models/category/category_model.dart';
 
@@ -13,7 +13,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
@@ -22,23 +22,9 @@ class CategoriesSettingsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Product Categories",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              "Organize your products",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-              ),
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Product Categories",
+          subtitle: "Organize your products",
         ),
         centerTitle: false,
         actions: [
@@ -64,14 +50,8 @@ class CategoriesSettingsScreen extends StatelessWidget {
                 final category = categoryProvider.categories[index];
                 return Container(
                   decoration: ShapeDecoration(
-                    color: isDark ? AppColors.darkSurface : Colors.white,
-                    shape: RoundedSuperellipseBorder(
-                      borderRadius: AppRadius.md,
-                      side: BorderSide(
-                        color: isDark ? AppColors.darkBorder : AppColors.border,
-                        width: 1,
-                      ),
-                    ),
+                    color: theme.cardTheme.color,
+                    shape: theme.cardTheme.shape!,
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -79,12 +59,12 @@ class CategoriesSettingsScreen extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         category.icon,
-                        color: AppColors.primary,
+                        color: colorScheme.primary,
                         size: 22,
                       ),
                     ),
@@ -100,7 +80,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           )
                         : null,
@@ -111,7 +91,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
                           icon: Icon(
                             Icons.edit_outlined,
                             size: 20,
-                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           onPressed: () => Navigator.push(
                             context,
@@ -121,7 +101,7 @@ class CategoriesSettingsScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: Colors.redAccent),
+                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: AppColors.error),
                           onPressed: () => _showDeleteConfirmation(context, category),
                         ),
                       ],
