@@ -26,7 +26,6 @@ class ProductDetailsScreen extends StatelessWidget {
     final currency = Provider.of<BusinessProvider>(context).selectedCurrency;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

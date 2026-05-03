@@ -25,7 +25,6 @@ class InventoryScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -59,22 +58,19 @@ class InventoryScreen extends StatelessWidget {
                     SFOSummaryCard(
                       label: "Total",
                       value: provider.totalProducts.toString(),
-                      bgColor: colorScheme.onSurface,
-                      textColor: colorScheme.surface,
+                      type: SFOSummaryType.primary,
                     ),
                     const SizedBox(width: 12),
                     SFOSummaryCard(
                       label: "Low Stock",
                       value: provider.lowStockCount.toString(),
-                      bgColor: Colors.orange.withOpacity(0.1),
-                      textColor: Colors.orange.shade900,
+                      type: SFOSummaryType.warning,
                     ),
                     const SizedBox(width: 12),
                     SFOSummaryCard(
                       label: "Out of Stock",
                       value: provider.outOfStockCount.toString(),
-                      bgColor: Colors.red.withOpacity(0.1),
-                      textColor: Colors.red.shade900,
+                      type: SFOSummaryType.error,
                     ),
                   ],
                 ),

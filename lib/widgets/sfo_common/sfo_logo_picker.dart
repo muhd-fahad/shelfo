@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_viewer.dart';
 import '../../utils/theme/theme.dart';
@@ -82,17 +81,30 @@ class SFOLogoPicker extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    Widget? imageWidget;
+    Widget child;
     if (logoPath != null) {
-      if (logoPath!.startsWith('assets/') && logoPath!.endsWith('.svg')) {
-        imageWidget = SvgPicture.asset(logoPath!, fit: BoxFit.contain);
-      } else if (logoPath!.startsWith('assets/')) {
-        imageWidget = Image.asset(logoPath!, fit: BoxFit.cover);
-      } else {
-        imageWidget = kIsWeb 
-            ? Image.network(logoPath!, fit: BoxFit.cover)
-            : Image.file(File(logoPath!), fit: BoxFit.cover);
-      }
+      child = kIsWeb
+          ? Image.network(logoPath!, fit: BoxFit.cover)
+          : Image.file(File(logoPath!), fit: BoxFit.cover);
+    } else {
+      child = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.add_a_photo_outlined,
+            color: colorScheme.onSurfaceVariant,
+            size: size * 0.3,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontSize: 10,
+            ),
+          ),
+        ],
+      );
     }
 
     return GestureDetector(
@@ -113,29 +125,10 @@ class SFOLogoPicker extends StatelessWidget {
                 ),
               ),
             ),
-            child: logoPath != null
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: imageWidget,
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add_a_photo_outlined,
-                        color: colorScheme.onSurfaceVariant,
-                        size: size * 0.3,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        label,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
+            child: Padding(
+              padding: logoPath != null ? EdgeInsets.zero : const EdgeInsets.all(12.0),
+              child: child,
+            ),
           ),
           if (logoPath != null)
             Positioned(

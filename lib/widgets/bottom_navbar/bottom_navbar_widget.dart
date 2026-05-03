@@ -10,7 +10,13 @@ import '../../screens/sales_order_screen.dart';
 class BottomNavbarWidget extends StatelessWidget {
   const BottomNavbarWidget({super.key});
 
-  final _pages = const [HomeScreen(),PosScreen(),SalesOrderScreen(), InventoryScreen(), SettingsScreen()];
+  final _pages = const [
+    HomeScreen(),
+    PosScreen(),
+    SalesOrderScreen(),
+    InventoryScreen(),
+    // SettingsScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +24,10 @@ class BottomNavbarWidget extends StatelessWidget {
     return Scaffold(
       body: IndexedStack(index: navProvider.currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
-        // selected item
         currentIndex: navProvider.currentIndex,
         onTap: (index) {
           context.read<NavigationProvider>().setIndex(index);
         },
-
-        // Styling
-        selectedItemColor: Colors.green.shade700,
-        unselectedItemColor: const Color(0xff94A3B8), // unselected
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -42,20 +38,22 @@ class BottomNavbarWidget extends StatelessWidget {
             icon: Icon(Icons.monitor_outlined),
             activeIcon: Icon(Icons.monitor_rounded),
             label: "POS",
-          ), BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart_outlined),
             activeIcon: Icon(Icons.shopping_cart_rounded),
             label: "Sales",
-          ), BottomNavigationBarItem(
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.inventory_2_outlined),
             activeIcon: Icon(Icons.inventory_2_rounded),
             label: "Stock",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings_rounded),
-            label: "Settings",
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings_outlined),
+          //   activeIcon: Icon(Icons.settings_rounded),
+          //   label: "Settings",
+          // ),
         ],
       ),
     );

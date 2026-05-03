@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,26 +8,29 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SvgPicture.asset("assets/logo/app_logo_Primary.svg",height: 24,fit: BoxFit.fitWidth,),
+        title: const SFOLogo(
+          height: 24,
+          fit: BoxFit.fitWidth,
+        ),
         actions: [
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none_rounded,size: 24,)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.account_circle_outlined,size: 24,)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none_rounded, size: 24)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle_outlined, size: 24)),
             ],
           )
         ],
       ),
-      body: Center(
+      body: const Center(
         child: Column(
-          // mainAxisAlignment: .center,
           children: [
             SizedBox(
-              height: 150 ,
-              width: .infinity,
+              height: 150,
+              width: double.infinity,
               child: Placeholder(
                 child: Center(child: Text("Quick info cards")),
-              )),
+              ),
+            ),
             Text("Whereas disregard and contempt for human rights have resulted"),
           ],
         ),

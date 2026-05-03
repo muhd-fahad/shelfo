@@ -17,18 +17,17 @@ class SettingsScreen extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
+      appBar:AppBar(
+        title: const SFOHeader(
+          title: "Settings",
+        ),
+      ) ,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SFOHeader(
-                title: "Settings",
-                subtitle: "Configure your store preferences",
-              ),
-              const SizedBox(height: 32),
-
               const SFOSectionHeader(title: "General"),
               const SizedBox(height: 12),
               SFOCard(children: [

@@ -8,6 +8,7 @@ export 'app_constants/spacing.dart';
 export 'app_constants/radius.dart';
 export 'app_constants/text_styles.dart';
 export 'app_constants/shadows.dart';
+export 'app_constants/assets.dart';
 
 /// SFOAppTheme defines the global appearance of the Shelfo application.
 /// It provides both Light and Dark modes following the system's Material 3 guidelines
@@ -17,13 +18,9 @@ class SFOAppTheme {
 
   static const String _fontFamily = 'Inter';
 
-  /// ---------------- LIGHT THEME ----------------
-
   static ThemeData light = _createTheme(Brightness.light);
-
-  /// ---------------- DARK THEME ----------------
-
   static ThemeData dark = _createTheme(Brightness.dark);
+
 
   static ThemeData _createTheme(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
@@ -40,7 +37,7 @@ class SFOAppTheme {
       useMaterial3: true,
       fontFamily: _fontFamily,
       brightness: brightness,
-      scaffoldBackgroundColor: background,
+      scaffoldBackgroundColor: surface,
       dividerColor: outlineVariant,
 
       colorScheme: ColorScheme(
@@ -204,6 +201,16 @@ class SFOAppTheme {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
+      ),
+
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
+        selectedItemColor: primary,
+        unselectedItemColor: onSurfaceVariant,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+        selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
+        unselectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, fontFamily: _fontFamily),
       ),
     );
   }

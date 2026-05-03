@@ -30,7 +30,6 @@ class EditProductScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

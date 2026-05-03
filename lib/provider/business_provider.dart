@@ -36,8 +36,6 @@ class BusinessProvider extends ChangeNotifier {
       addressController.text = business.address;
       _selectedCurrency = business.currency;
       _logoPath = business.logoPath;
-    } else {
-      _logoPath = "assets/logo/app_logo_Primary.svg";
     }
 
     _isLoading = false;
