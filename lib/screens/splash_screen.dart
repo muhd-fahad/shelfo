@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shelfo/routes/app_routes.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 
 import '../widgets/splash/stack_cards_splash.dart';
 
@@ -19,7 +19,8 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _splash(context);
-    return Scaffold(
+
+    return const Scaffold(
       body: Center(
         child: Column(
           children: [
@@ -30,15 +31,14 @@ class SplashScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    "assets/logo/app_logo_Primary.svg",
+                  SFOLogo(
                     height: 48,
                     fit: BoxFit.fitWidth,
                   )
                 ],
               ),
             ),
-            const CardStacksSplash(),
+            CardStacksSplash(),
           ],
         ),
       ),

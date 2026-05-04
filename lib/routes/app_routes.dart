@@ -5,6 +5,7 @@ import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
 import 'package:shelfo/screens/purchase_order_screen.dart';
 import 'package:shelfo/screens/sales_order_screen.dart';
+import 'package:shelfo/screens/settings/brands_settings_screen.dart';
 import 'package:shelfo/screens/settings/business_details_screen.dart';
 import 'package:shelfo/screens/settings/categories_settings_screen.dart';
 import 'package:shelfo/screens/settings/invoice_settings_detail_screen.dart';
@@ -12,7 +13,7 @@ import 'package:shelfo/screens/settings/tax_settings_screen.dart';
 import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 
 import '../screens/home_screen.dart';
-import '../screens/inventory_screen.dart';
+import '../screens/inventory/inventory_screen.dart';
 import '../screens/report_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/splash_screen.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String businessDetails = '/businessDetails';
   static const String categoriesSettings = '/categoriesSettings';
+  static const String brandsSettings = '/brandsSettings';
   static const String pos = '/pos';
   static const String reports = '/reports';
   static const String salesOrder = '/salesOrder';
@@ -50,6 +52,7 @@ class AppRoutes {
     settings: (context) => const SettingsScreen(),
     businessDetails: (context) => const BusinessDetailsScreen(),
     categoriesSettings: (context) => const CategoriesSettingsScreen(),
+    brandsSettings: (context) => const BrandsSettingsScreen(),
     taxSettings: (context) => const TaxSettingsScreen(),
     invoiceDetails: (context) => const InvoiceSettingsDetailScreen(),
     pos: (context) => const HomeScreen(),

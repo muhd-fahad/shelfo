@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/sfo_common/sfo_header.dart';
 
-import '../widgets/screen_title_widget.dart';
 class PolicyScreen extends StatelessWidget {
   const PolicyScreen({super.key});
 
@@ -8,9 +8,9 @@ class PolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ScreenTitleWidget("Policies & Warranties"),
+        title: const SFOHeader(title: "Policies & Warranties"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("policy screen"),
       ),
     );

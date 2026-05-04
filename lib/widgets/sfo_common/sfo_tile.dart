@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOTile extends StatelessWidget {
   final IconData icon;
@@ -20,10 +20,11 @@ class SFOTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Row(
@@ -31,12 +32,12 @@ class SFOTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: ShapeDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                shape: RoundedSuperellipseBorder(
+                color: colorScheme.primary.withOpacity(0.1),
+                shape: const RoundedSuperellipseBorder(
                   borderRadius: AppRadius.sm,
                 ),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 22),
+              child: Icon(icon, color: colorScheme.primary, size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -45,19 +46,18 @@ class SFOTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: TextStyle(
+                      style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 13,
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -67,7 +67,7 @@ class SFOTile extends StatelessWidget {
             trailing ??
                 Icon(
                   Icons.chevron_right,
-                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                  color: colorScheme.onSurfaceVariant.withOpacity(0.6),
                   size: 20,
                 ),
           ],

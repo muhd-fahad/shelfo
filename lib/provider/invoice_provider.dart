@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/invoice/invoice_config_model.dart';
+import 'package:shelfo/services/hive/invoice_service.dart';
 
 class InvoiceProvider extends ChangeNotifier {
-  static const String _boxName = 'invoiceBox';
-  static const String _invoiceKey = 'invoiceData';
-
   final TextEditingController prefixController = TextEditingController(text: "INV-");
   final TextEditingController startingNumberController = TextEditingController(text: "1001");
   final TextEditingController footerTextController = TextEditingController(text: "Thank you for your business!");
@@ -24,8 +21,7 @@ class InvoiceProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final box = await Hive.openBox<InvoiceConfig>(_boxName);
-    final config = box.get(_invoiceKey);
+    final config = await InvoiceHiveService.getInvoiceConfig();
 
     if (config != null) {
       prefixController.text = config.prefix;
@@ -45,16 +41,15 @@ class InvoiceProvider extends ChangeNotifier {
 
   Future<void> saveInvoiceConfig() async {
     final config = InvoiceConfig(
-      prefix: prefixController.text,
+      prefix: prefixController.text.trim(),
       startingNumber: int.tryParse(startingNumberController.text) ?? 1000,
-      footerText: footerTextController.text,
+      footerText: footerTextController.text.trim(),
       showLogo: _showLogo,
     );
 
-    final box = await Hive.openBox<InvoiceConfig>(_boxName);
-    await box.put(_invoiceKey, config);
+    await InvoiceHiveService.saveInvoiceConfig(config);
     
-    debugPrint("Saved Invoice Config to Hive");
+    debugPrint("Saved Invoice Config");
     notifyListeners();
   }
 

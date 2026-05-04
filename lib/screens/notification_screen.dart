@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/screen_title_widget.dart';
+import '../widgets/sfo_common/sfo_header.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -9,9 +8,9 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ScreenTitleWidget("Notifications"),
+        title: const SFOHeader(title: "Notifications"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("Notification screen"),
       ),
     );

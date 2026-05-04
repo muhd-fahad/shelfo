@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:shelfo/models/tax/tax_config_model.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
+import 'package:shelfo/services/hive/tax_service.dart';
 
 class TaxProvider extends ChangeNotifier {
-  static const String _boxName = 'taxBox';
-  static const String _taxKey = 'taxData';
-
   final TextEditingController taxRateController = TextEditingController(text: "8.5");
   final TextEditingController taxLabelController = TextEditingController(text: "Sales Tax");
   
@@ -27,8 +24,7 @@ class TaxProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final box = await Hive.openBox<TaxConfig>(_boxName);
-    final config = box.get(_taxKey);
+    final config = await TaxHiveService.getTaxConfig();
 
     if (config != null) {
       _isTaxEnabled = config.isTaxEnabled;
@@ -55,14 +51,13 @@ class TaxProvider extends ChangeNotifier {
     final config = TaxConfig(
       isTaxEnabled: _isTaxEnabled,
       defaultTaxRate: double.tryParse(taxRateController.text) ?? 0.0,
-      taxLabel: taxLabelController.text,
+      taxLabel: taxLabelController.text.trim(),
       pricingMode: _pricingMode,
     );
 
-    final box = await Hive.openBox<TaxConfig>(_boxName);
-    await box.put(_taxKey, config);
+    await TaxHiveService.saveTaxConfig(config);
     
-    debugPrint("Saved Tax Config to Hive");
+    debugPrint("Saved Tax Config");
     notifyListeners();
   }
 

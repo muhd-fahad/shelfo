@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/provider/theme_provider.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_divider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
@@ -12,32 +14,20 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
+      appBar:AppBar(
+        title: const SFOHeader(
+          title: "Settings",
+        ),
+      ) ,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Settings",
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                "Configure your store preferences",
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 32),
-
               const SFOSectionHeader(title: "General"),
               const SizedBox(height: 12),
               SFOCard(children: [
@@ -56,6 +46,15 @@ class SettingsScreen extends StatelessWidget {
                   subtitle: "Manage inventory categories",
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.categoriesSettings);
+                  },
+                ),
+                const SFODivider(),
+                SFOTile(
+                  icon: Icons.branding_watermark_outlined,
+                  title: "Product Brands",
+                  subtitle: "Manage your product brands",
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.brandsSettings);
                   },
                 ),
                 const SFODivider(),
@@ -134,6 +133,13 @@ class SettingsScreen extends StatelessWidget {
               const SFOSectionHeader(title: "System"),
               const SizedBox(height: 12),
               SFOCard(children: [
+                SFOSwitchTile(
+                  title: "Dark Mode",
+                  subtitle: "Enable dark theme across the application",
+                  value: themeProvider.isDarkMode,
+                  onChanged: (v) => themeProvider.toggleTheme(v),
+                ),
+                const SFODivider(),
                 SFOTile(
                   icon: Icons.storage_outlined,
                   title: "Backup & Restore",

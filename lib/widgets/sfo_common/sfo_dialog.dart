@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sfo_button.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFODialog extends StatelessWidget {
   final String title;
@@ -48,13 +48,14 @@ class SFODialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return AlertDialog(
       shape: const RoundedRectangleBorder(borderRadius: AppRadius.lg),
-      backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AppColors.darkSurface 
-          : AppColors.background,
-      title: Text(title, style: AppTextStyles.title),
-      content: Text(message, style: AppTextStyles.body),
+      backgroundColor: colorScheme.surface,
+      title: Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+      content: Text(message, style: theme.textTheme.bodyMedium),
       actionsPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       actions: [
         if (secondaryActionText != null)

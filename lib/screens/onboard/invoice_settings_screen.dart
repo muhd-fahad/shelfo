@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
@@ -24,18 +24,9 @@ class InvoiceSettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Invoice Settings",
-              style: SFOAppTheme.light.textTheme.titleLarge,
-            ),
-            Text(
-              "Customize your receipts and invoices",
-              style: SFOAppTheme.light.textTheme.labelMedium,
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Invoice Settings",
+          subtitle: "Customize your receipts and invoices",
         ),
       ),
       body: SingleChildScrollView(

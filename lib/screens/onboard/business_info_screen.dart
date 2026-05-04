@@ -3,12 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/utils/theme/theme.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 
-import '../../utils/theme/theme.dart';
 
 class BusinessInfoScreen extends StatelessWidget {
   const BusinessInfoScreen({super.key});
@@ -25,18 +26,9 @@ class BusinessInfoScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Business Details",
-              style: SFOAppTheme.light.textTheme.titleLarge,
-            ),
-            Text(
-              "Tell us about your store",
-              style: SFOAppTheme.light.textTheme.labelMedium,
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Business Details",
+          subtitle: "Tell us about your store",
         ),
       ),
       body: SingleChildScrollView(
@@ -46,17 +38,11 @@ class BusinessInfoScreen extends StatelessWidget {
           mainAxisAlignment: .start,
           crossAxisAlignment: .center,
           children: [
-            Container(
-              height: 96,
-              width: 96,
-              decoration: ShapeDecoration(
-                color: Colors.grey.shade200,
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: AppRadius.xl,
-                  side: const BorderSide(width: 2, color: AppColors.border),
-                ),
-              ),
-              child: const Icon(Icons.add_a_photo_outlined, color: Colors.grey),
+            SFOLogoPicker(
+              logoPath: businessProvider.logoPath,
+              onPick: (source) => businessProvider.pickLogo(source),
+              onRemove: () => businessProvider.removeLogo(),
+              size: 96,
             ),
     
             SFOInputField(

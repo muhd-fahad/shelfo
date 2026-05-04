@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
+import '../../utils/theme/theme.dart';
 
 class SFOSnackbar {
   static void show(
@@ -8,22 +8,22 @@ class SFOSnackbar {
     bool isError = false,
     SnackBarAction? action,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(
-            color: isDark ? AppColors.darkTextPrimary : Colors.white,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: isError ? AppColors.white : colorScheme.onPrimary,
             fontWeight: FontWeight.w500,
-            fontSize: 14,
           ),
         ),
         backgroundColor: isError 
-            ? Colors.redAccent 
-            : (isDark ? AppColors.darkSurface : AppColors.primary),
+            ? colorScheme.error 
+            : colorScheme.primary,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(AppSpacing.lg),
         shape: const RoundedRectangleBorder(borderRadius: AppRadius.md),

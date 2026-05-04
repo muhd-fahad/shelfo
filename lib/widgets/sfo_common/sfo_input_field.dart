@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/theme/theme_constants.dart';
 
 class SFOInputField extends StatelessWidget {
   final String label;
@@ -22,7 +21,7 @@ class SFOInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -33,13 +32,13 @@ class SFOInputField extends StatelessWidget {
             text: label,
             style: theme.textTheme.labelLarge?.copyWith(
               fontWeight: FontWeight.w500,
-              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              color: colorScheme.onSurfaceVariant,
             ),
             children: isRequired
                 ? [
-                    const TextSpan(
+                    TextSpan(
                       text: ' *',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: colorScheme.error),
                     ),
                   ]
                 : [],

@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
@@ -25,18 +24,9 @@ class TaxConfigScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Tax Configuration",
-              style: SFOAppTheme.light.textTheme.titleLarge,
-            ),
-            Text(
-              "Set up how taxes are calculated",
-              style: SFOAppTheme.light.textTheme.labelMedium,
-            ),
-          ],
+        title: const SFOHeader(
+          title: "Tax Configuration",
+          subtitle: "Set up how taxes are calculated",
         ),
       ),
       body: SingleChildScrollView(
@@ -155,9 +145,8 @@ class _PricingModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: ShapeDecoration(

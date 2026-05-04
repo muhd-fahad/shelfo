@@ -1,18 +1,21 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/models/business/business_model.dart';
 import 'package:shelfo/models/currency/currency.dart';
+import 'package:shelfo/services/hive/business_service.dart';
+import 'package:shelfo/services/image_service.dart';
 
 class BusinessProvider extends ChangeNotifier {
-  static const String _boxName = 'businessBox';
-  static const String _businessKey = 'businessData';
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   
   Currency _selectedCurrency = Currency.inr;
   Currency get selectedCurrency => _selectedCurrency;
+
+  String? _logoPath;
+  String? get logoPath => _logoPath;
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
@@ -25,14 +28,14 @@ class BusinessProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final box = await Hive.openBox<Business>(_boxName);
-    final business = box.get(_businessKey);
+    final business = await BusinessHiveService.getBusiness();
 
     if (business != null) {
       nameController.text = business.name;
       phoneController.text = business.phoneNumber;
       addressController.text = business.address;
       _selectedCurrency = business.currency;
+      _logoPath = business.logoPath;
     }
 
     _isLoading = false;
@@ -44,18 +47,40 @@ class BusinessProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> pickLogo(ImageSource source) async {
+    final File? pickedFile = await ImageService.pickImage(source);
+    if (pickedFile != null) {
+      final String? savedPath = await ImageService.saveImageToLocalDirectory(pickedFile);
+      if (savedPath != null) {
+        if (_logoPath != null && !_logoPath!.startsWith('assets/')) {
+          await ImageService.deleteImage(_logoPath);
+        }
+        _logoPath = savedPath;
+        notifyListeners();
+      }
+    }
+  }
+
+  void removeLogo() {
+    if (_logoPath != null && !_logoPath!.startsWith('assets/')) {
+      ImageService.deleteImage(_logoPath);
+      _logoPath = null;
+      notifyListeners();
+    }
+  }
+
   Future<void> saveBusiness() async {
     final business = Business(
-      name: nameController.text,
-      phoneNumber: phoneController.text,
-      address: addressController.text,
+      name: nameController.text.trim(),
+      phoneNumber: phoneController.text.trim(),
+      address: addressController.text.trim(),
       currency: _selectedCurrency,
+      logoPath: _logoPath,
     );
 
-    final box = await Hive.openBox<Business>(_boxName);
-    await box.put(_businessKey, business);
+    await BusinessHiveService.saveBusiness(business);
     
-    debugPrint("Saved Business to Hive: ${business.name}");
+    debugPrint("Saved Business: ${business.name}");
     notifyListeners();
   }
 

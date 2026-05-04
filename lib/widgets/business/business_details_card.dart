@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shelfo/utils/theme/theme_constants.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import '../../models/currency/currency.dart';
-import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_dropdown.dart';
 import '../sfo_common/sfo_input_field.dart';
 
@@ -10,6 +10,9 @@ class BusinessDetailsCard extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController addressController;
+  final String? logoPath;
+  final Function(ImageSource) onLogoPicked;
+  final VoidCallback onLogoRemoved;
   final Currency selectedCurrency;
   final ValueChanged<Currency?> onCurrencyChanged;
   final VoidCallback onSave;
@@ -19,6 +22,9 @@ class BusinessDetailsCard extends StatelessWidget {
     required this.nameController,
     required this.phoneController,
     required this.addressController,
+    this.logoPath,
+    required this.onLogoPicked,
+    required this.onLogoRemoved,
     required this.selectedCurrency,
     required this.onCurrencyChanged,
     required this.onSave,
@@ -27,24 +33,30 @@ class BusinessDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: ShapeDecoration(
-        color: isDark ? AppColors.darkSurface : Colors.white,
-        shape: RoundedSuperellipseBorder(
-          borderRadius: AppRadius.lg,
-          side: BorderSide(
-            color: isDark ? AppColors.darkBorder : AppColors.border,
-            width: 1,
-          ),
-        ),
+        color: theme.cardTheme.color,
+        shape: theme.cardTheme.shape!,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 20,
         children: [
+          Text("Business Logo",
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: colorScheme.onSurfaceVariant,
+              )),
+          SFOLogoPicker(
+            logoPath: logoPath,
+            onPick: onLogoPicked,
+            onRemove: onLogoRemoved,
+            size: 96,
+          ),
+
           SFOInputField(
             label: "Store Name",
             hint: "Enter store name",
