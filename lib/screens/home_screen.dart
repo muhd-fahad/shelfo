@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,8 +16,8 @@ class HomeScreen extends StatelessWidget {
         actions: [
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none_rounded, size: 24)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.account_circle_outlined, size: 24)),
+              IconButton(onPressed:  () => Navigator.pushNamed(context,  AppRoutes.notification), icon: const Icon(Icons.notifications_none_rounded, size: 24)),
+              IconButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.settings), icon: const Icon(Icons.account_circle_outlined, size: 24)),
             ],
           )
         ],
