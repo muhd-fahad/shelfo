@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import '../../utils/theme/theme.dart';
 
 class SFOSearchBar extends StatelessWidget {
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   final VoidCallback? onFilterTap;
   final String hintText;
 
   const SFOSearchBar({
     super.key,
-    required this.onChanged,
+    this.onChanged,
+    this.controller,
     this.onFilterTap,
     this.hintText = "Search...",
   });
@@ -31,6 +33,7 @@ class SFOSearchBar extends StatelessWidget {
               ),
             ),
             child: TextField(
+              controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: hintText,

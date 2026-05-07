@@ -11,6 +11,8 @@ class SFOButton extends StatelessWidget {
   final bool isLoading;
   final double? width;
   final bool isSecondary;
+  final Color? backgroundColor;
+  final bool iconTrailing;
 
   const SFOButton({
     super.key,
@@ -21,6 +23,8 @@ class SFOButton extends StatelessWidget {
     this.isLoading = false,
     this.width,
     this.isSecondary = false,
+    this.backgroundColor,
+    this.iconTrailing = false,
   });
 
   @override
@@ -39,16 +43,21 @@ class SFOButton extends StatelessWidget {
         ),
       );
     } else {
+      final List<Widget> children = [
+        if (icon != null && !iconTrailing) ...[
+          Icon(icon, size: 20),
+          const SizedBox(width: AppSpacing.sm),
+        ],
+        Text(text),
+        if (icon != null && iconTrailing) ...[
+          const SizedBox(width: AppSpacing.sm),
+          Icon(icon, size: 20),
+        ],
+      ];
       child = Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) ...[
-            Icon(icon, size: 20),
-            const SizedBox(width: AppSpacing.sm),
-          ],
-          Text(text),
-        ],
+        children: children,
       );
     }
 
@@ -59,7 +68,7 @@ class SFOButton extends StatelessWidget {
         return FilledButton(
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
-            backgroundColor: isSecondary ? colorScheme.secondary : colorScheme.primary,
+            backgroundColor: backgroundColor ?? (isSecondary ? colorScheme.secondary : colorScheme.primary),
             minimumSize: Size(buttonWidth, 52),
           ),
           child: child,

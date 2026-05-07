@@ -1,50 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/product/product_model.dart';
 import '../../provider/product_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_input_field.dart';
 
-class StockAdjustmentDialog extends StatefulWidget {
+class StockAdjustmentDialog extends StatelessWidget {
   final Product product;
-  final ProductProvider provider;
   final bool isAddition;
 
   const StockAdjustmentDialog({
     super.key,
     required this.product,
-    required this.provider,
     required this.isAddition,
   });
 
   @override
-  State<StockAdjustmentDialog> createState() => _StockAdjustmentDialogState();
-}
-
-class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
-  late TextEditingController _quantityController;
-  late TextEditingController _costController;
-  late TextEditingController _notesController;
-
-  @override
-  void initState() {
-    super.initState();
-    _quantityController = TextEditingController(text: "1");
-    _costController = TextEditingController(text: widget.product.costPrice.toString());
-    _notesController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _quantityController.dispose();
-    _costController.dispose();
-    _notesController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = context.watch<ProductProvider>();
 
     return Dialog(
       shape: const RoundedSuperellipseBorder(borderRadius: AppRadius.xl),
@@ -59,7 +34,7 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.isAddition ? "Add Stock" : "Remove Stock",
+                  isAddition ? "Add Stock" : "Remove Stock",
                   style: theme.textTheme.titleLarge,
                 ),
                 IconButton(
@@ -74,15 +49,15 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
             SFOInputField(
               label: "Quantity *",
               hint: "0",
-              controller: _quantityController,
+              controller: provider.adjustmentQuantityController,
               keyboardType: TextInputType.number,
             ),
-            if (widget.isAddition) ...[
+            if (isAddition) ...[
               const SizedBox(height: 16),
               SFOInputField(
                 label: "Cost Per Unit",
                 hint: "0.00",
-                controller: _costController,
+                controller: provider.adjustmentCostController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
               ),
             ],
@@ -90,21 +65,21 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
             SFOInputField(
               label: "Notes",
               hint: "Optional",
-              controller: _notesController,
+              controller: provider.adjustmentNotesController,
               maxLines: 3,
             ),
             const SizedBox(height: 32),
             SFOButton(
-              text: widget.isAddition ? "Confirm Add Stock" : "Confirm Remove",
+              text: isAddition ? "Confirm Add Stock" : "Confirm Remove",
               onPressed: () {
-                final qty = int.tryParse(_quantityController.text) ?? 0;
-                final cost = double.tryParse(_costController.text);
+                final qty = int.tryParse(provider.adjustmentQuantityController.text) ?? 0;
+                final cost = double.tryParse(provider.adjustmentCostController.text);
                 
-                widget.provider.adjustStock(
-                  widget.product, 
+                provider.adjustStock(
+                  product, 
                   qty, 
-                  isAddition: widget.isAddition,
-                  newCostPrice: widget.isAddition ? cost : null,
+                  isAddition: isAddition,
+                  newCostPrice: isAddition ? cost : null,
                 );
                 Navigator.pop(context);
               },

@@ -59,43 +59,49 @@ class ProductDetailsScreen extends StatelessWidget {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: .start,
               children: [
                 // Product Header
-                Center(
-                  child: Column(
-                    children: [
-                      ProductImageCarousel(
-                        imagePaths: currentProduct.imagePaths ?? [],
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        currentProduct.name,
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        currentProduct.sku ?? "",
-                        style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SFOBadge(
-                            label: currentProduct.categoryName ?? "Uncategorized",
-                          ),
-                          const SizedBox(width: 8),
-                          SFOBadge(
-                            label: currentProduct.productType.label,
-                            bgColor: colorScheme.primary.withOpacity(0.1),
-                            textColor: colorScheme.primary,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                ProductImageCarousel(
+                  imagePaths: currentProduct.imagePaths ?? [],
                 ),
+                const SizedBox(height: 24),
+                Text(
+                  currentProduct.name,
+                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  currentProduct.sku ?? "",
+                  style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SFOBadge(
+                      label: currentProduct.categoryName ?? "Uncategorized",
+                    ),
+                    const SizedBox(width: 8),
+                    SFOBadge(
+                      label: currentProduct.productType.label,
+                      bgColor: colorScheme.primary.withOpacity(0.1),
+                      textColor: colorScheme.primary,
+                    ),
+                  ],
+                ),
+                if (currentProduct.description != null && currentProduct.description!.isNotEmpty) ...[
+                  const SizedBox(height: 24),
+                  Text(
+                    currentProduct.description!,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
 
                 const SizedBox(height: 32),
 
@@ -165,11 +171,11 @@ class ProductDetailsScreen extends StatelessWidget {
   }
 
   void _showStockDialog(BuildContext context, ProductProvider provider, Product product, bool isAddition) {
+    provider.initStockAdjustment(product);
     showDialog(
       context: context,
       builder: (context) => StockAdjustmentDialog(
         product: product,
-        provider: provider,
         isAddition: isAddition,
       ),
     );

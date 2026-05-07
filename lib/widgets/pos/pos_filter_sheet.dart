@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/product/product_model.dart';
 import '../../provider/category_provider.dart';
-import '../../provider/product_provider.dart';
+import '../../provider/pos_provider.dart';
 import '../../provider/brand_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_input_field.dart';
 import '../sfo_common/sfo_chip.dart';
 
-class InventoryFilterSheet extends StatelessWidget {
+class PosFilterSheet extends StatelessWidget {
   final CategoryProvider categoryProvider;
-  final ProductProvider productProvider;
+  final PosProvider posProvider;
 
-  const InventoryFilterSheet({
+  const PosFilterSheet({
     super.key,
     required this.categoryProvider,
-    required this.productProvider,
+    required this.posProvider,
   });
 
   @override
@@ -45,12 +44,12 @@ class InventoryFilterSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Filter by",
+                  "Filter Products",
                   style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                   onPressed: () {
-                    productProvider.clearFilters();
+                    posProvider.clearFilters();
                     Navigator.pop(context);
                   },
                   child: const Text("Clear All", style: TextStyle(color: AppColors.error)),
@@ -67,14 +66,14 @@ class InventoryFilterSheet extends StatelessWidget {
               children: [
                 SFOChip(
                   label: "All",
-                  isSelected: productProvider.selectedFilterCategory == null,
-                  onSelected: (val) => productProvider.setFilterCategory(null),
+                  isSelected: posProvider.selectedCategory == null,
+                  onSelected: (val) => posProvider.setCategory(null),
                 ),
                 ...categoryProvider.categories.map((c) => SFOChip(
-                      label: c.name,
-                      isSelected: productProvider.selectedFilterCategory == c.name,
-                      onSelected: (val) => productProvider.setFilterCategory(c.name),
-                    )),
+                  label: c.name,
+                  isSelected: posProvider.selectedCategory == c.name,
+                  onSelected: (val) => posProvider.setCategory(c.name),
+                )),
               ],
             ),
             const SizedBox(height: 24),
@@ -87,14 +86,14 @@ class InventoryFilterSheet extends StatelessWidget {
               children: [
                 SFOChip(
                   label: "All",
-                  isSelected: productProvider.selectedFilterBrand == null,
-                  onSelected: (val) => productProvider.setFilterBrand(null),
+                  isSelected: posProvider.selectedBrand == null,
+                  onSelected: (val) => posProvider.setBrand(null),
                 ),
                 ...brandProvider.brands.take(12).map((b) => SFOChip(
-                      label: b.name,
-                      isSelected: productProvider.selectedFilterBrand == b.name,
-                      onSelected: (val) => productProvider.setFilterBrand(b.name),
-                    )),
+                  label: b.name,
+                  isSelected: posProvider.selectedBrand == b.name,
+                  onSelected: (val) => posProvider.setBrand(b.name),
+                )),
               ],
             ),
             const SizedBox(height: 24),
@@ -104,31 +103,11 @@ class InventoryFilterSheet extends StatelessWidget {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: ["All", "In Stock", "Low Stock", "Out of Stock"].map((status) => SFOChip(
+              children: ["All", "In Stock", "Out of Stock"].map((status) => SFOChip(
                 label: status,
-                isSelected: productProvider.stockStatus == status,
-                onSelected: (val) => productProvider.setStockStatus(status),
+                isSelected: posProvider.stockStatus == status,
+                onSelected: (val) => posProvider.setStockStatus(status),
               )).toList(),
-            ),
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(theme, colorScheme, "Product Type"),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                SFOChip(
-                  label: "All",
-                  isSelected: productProvider.selectedFilterProductType == null,
-                  onSelected: (val) => productProvider.setFilterProductType(null),
-                ),
-                ...ProductType.values.map((type) => SFOChip(
-                  label: type.label,
-                  isSelected: productProvider.selectedFilterProductType == type,
-                  onSelected: (val) => productProvider.setFilterProductType(type),
-                )),
-              ],
             ),
             const SizedBox(height: 24),
 
@@ -140,7 +119,7 @@ class InventoryFilterSheet extends StatelessWidget {
                   child: SFOInputField(
                     label: "Min",
                     hint: "0",
-                    controller: productProvider.minPriceController,
+                    controller: posProvider.minPriceController,
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -149,7 +128,7 @@ class InventoryFilterSheet extends StatelessWidget {
                   child: SFOInputField(
                     label: "Max",
                     hint: "99999",
-                    controller: productProvider.maxPriceController,
+                    controller: posProvider.maxPriceController,
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -160,9 +139,9 @@ class InventoryFilterSheet extends StatelessWidget {
             SFOButton(
               text: "Apply Filter",
               onPressed: () {
-                final min = double.tryParse(productProvider.minPriceController.text);
-                final max = double.tryParse(productProvider.maxPriceController.text);
-                productProvider.setPriceRange(min, max);
+                final min = double.tryParse(posProvider.minPriceController.text);
+                final max = double.tryParse(posProvider.maxPriceController.text);
+                posProvider.setPriceRange(min, max);
                 Navigator.pop(context);
               },
             ),

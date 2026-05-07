@@ -3,6 +3,7 @@ import 'package:shelfo/screens/notification_screen.dart';
 import 'package:shelfo/screens/onboard/business_info_screen.dart';
 import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
+import 'package:shelfo/screens/pos/pos_screen.dart';
 import 'package:shelfo/screens/purchase_order_screen.dart';
 import 'package:shelfo/screens/sales_order_screen.dart';
 import 'package:shelfo/screens/settings/brands_settings_screen.dart';
@@ -55,7 +56,7 @@ class AppRoutes {
     brandsSettings: (context) => const BrandsSettingsScreen(),
     taxSettings: (context) => const TaxSettingsScreen(),
     invoiceDetails: (context) => const InvoiceSettingsDetailScreen(),
-    pos: (context) => const HomeScreen(),
+    pos: (context) => const PosScreen(),
     reports: (context) => const ReportScreen(),
     salesOrder: (context) => const SalesOrderScreen(),
     purchaseOrder: (context) => const PurchaseOrderScreen(),

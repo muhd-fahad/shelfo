@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory/inventory_screen.dart';
-import 'package:shelfo/screens/settings/settings_screen.dart';
 import '../../provider/navigation_provider.dart';
 import '../../screens/home_screen.dart';
-import '../../screens/pos_screen.dart';
+import '../../screens/pos/pos_screen.dart';
 import '../../screens/sales_order_screen.dart';
 
 class BottomNavbarWidget extends StatelessWidget {
