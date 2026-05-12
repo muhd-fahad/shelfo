@@ -6,6 +6,8 @@ import '../../screens/home_screen.dart';
 import '../../screens/pos/pos_screen.dart';
 import '../../screens/sales_order_screen.dart';
 
+import 'package:shelfo/screens/settings/settings_screen.dart';
+
 class BottomNavbarWidget extends StatelessWidget {
   const BottomNavbarWidget({super.key});
 
@@ -14,7 +16,7 @@ class BottomNavbarWidget extends StatelessWidget {
     PosScreen(),
     SalesOrderScreen(),
     InventoryScreen(),
-    // SettingsScreen()
+    SettingsScreen()
   ];
 
   @override
@@ -48,11 +50,11 @@ class BottomNavbarWidget extends StatelessWidget {
             activeIcon: Icon(Icons.inventory_2_rounded),
             label: "Stock",
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.settings_outlined),
-          //   activeIcon: Icon(Icons.settings_rounded),
-          //   label: "Settings",
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            activeIcon: Icon(Icons.settings_rounded),
+            label: "Settings",
+          ),
         ],
       ),
     );

@@ -150,6 +150,8 @@ class ProductProvider extends ChangeNotifier {
   int get lowStockCount => _products.where((p) => p.stockQuantity <= p.minStock && p.stockQuantity > 0).length;
   int get outOfStockCount => _products.where((p) => p.stockQuantity <= 0).length;
 
+  double get inventoryValue => _products.fold(0.0, (sum, p) => sum + (p.costPrice * p.stockQuantity));
+
   void initProduct(Product? product) {
     if (product != null) {
       nameController.text = product.name;
