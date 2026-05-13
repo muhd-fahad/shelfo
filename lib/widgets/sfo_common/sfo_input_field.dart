@@ -7,6 +7,7 @@ class SFOInputField extends StatelessWidget {
   final int maxLines;
   final TextInputType? keyboardType;
   final bool isRequired;
+  final String? Function(String?)? validator;
 
   const SFOInputField({
     super.key,
@@ -16,6 +17,7 @@ class SFOInputField extends StatelessWidget {
     this.maxLines = 1,
     this.keyboardType,
     this.isRequired = false,
+    this.validator,
   });
 
   @override
@@ -45,10 +47,11 @@ class SFOInputField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: controller,
           maxLines: maxLines,
           keyboardType: keyboardType,
+          validator: validator,
           decoration: InputDecoration(
             hintText: hint,
           ),

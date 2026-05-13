@@ -5,7 +5,7 @@ class CurrencyFormatter {
   static String format(double amount, Currency currency, {bool showSymbol = true}) {
     final format = NumberFormat.currency(
       symbol: showSymbol ? currency.symbol : '',
-      decimalDigits: 2,
+      decimalDigits: 0,
     );
     return format.format(amount);
   }
@@ -13,7 +13,7 @@ class CurrencyFormatter {
   static String formatCompact(double amount, Currency currency) {
     final format = NumberFormat.compactCurrency(
       symbol: currency.symbol,
-      decimalDigits: 2,
+      decimalDigits: 0,
     );
     return format.format(amount);
   }

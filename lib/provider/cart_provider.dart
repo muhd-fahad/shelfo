@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shelfo/models/sale/sale_item_model.dart';
+import 'package:shelfo/models/sale/sale_model.dart';
+import 'package:shelfo/services/hive/sale_service.dart';
+
 import '../models/product/product_model.dart';
 import '../models/tax/tax_pricing_mode.dart';
 import 'product_provider.dart';
@@ -133,7 +137,26 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> completeSale(ProductProvider productProvider) async {
+  Future<void> completeSale(ProductProvider productProvider, String invoiceId) async {
+    final sale = Sale(
+      id: invoiceId,
+      dateTime: DateTime.now(),
+      customerName: _selectedCustomer,
+      items: _items.map((item) => SaleItem(
+        productId: item.product.id,
+        productName: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price,
+        total: item.total,
+      )).toList(),
+      subtotal: subtotal,
+      taxAmount: taxAmount,
+      total: total,
+      paymentMethod: _selectedPaymentMethod,
+    );
+
+    await SaleHiveService.saveSale(sale);
+
     for (var item in _items) {
       await productProvider.adjustStock(item.product, item.quantity, isAddition: false);
     }

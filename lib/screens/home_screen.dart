@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:shelfo/provider/sale_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/widgets/home/home_summary_card.dart';
@@ -11,6 +13,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_badge.dart';
+import 'package:shelfo/screens/sales/invoice_detail_screen.dart';
+
 import '../models/product/product_model.dart';
 import '../utils/theme/theme.dart';
 
@@ -20,11 +24,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     final productProvider = context.watch<ProductProvider>();
+    final saleProvider = context.watch<SaleProvider>();
     final businessProvider = context.watch<BusinessProvider>();
     final currency = businessProvider.selectedCurrency;
+
+    // Calculate today's sales
+    final now = DateTime.now();
+    final todaySales = saleProvider.sales
+        .where(
+          (s) =>
+              s.dateTime.year == now.year &&
+              s.dateTime.month == now.month &&
+              s.dateTime.day == now.day &&
+              s.status != 'Refunded',
+        )
+        .fold(0.0, (sum, s) => sum + s.total);
+
+    // Get recent transactions
+    final recentSales = saleProvider.sales.take(3).toList();
 
     // Get low stock products
     final lowStockProducts = productProvider.products
@@ -58,10 +77,9 @@ class HomeScreen extends StatelessWidget {
           // Summary Cards Grid
           Row(
             children: [
-              const HomeSummaryCard(
+              HomeSummaryCard(
                 label: "Today's Sales",
-                value: "₹0.00",
-                // TODO: Implement Sales Provider
+                value: CurrencyFormatter.formatCompact(todaySales, currency),
                 icon: Icons.trending_up,
                 badge: "+0%",
                 badgeColor: AppColors.success,
@@ -70,12 +88,11 @@ class HomeScreen extends StatelessWidget {
               HomeSummaryCard(
                 label: "Pending Orders",
                 value: "0 Items",
-                // TODO: Implement Orders Provider
                 icon: Icons.refresh_rounded,
                 badge: "0",
                 badgeColor: Colors.orange,
                 iconColor: Colors.orange,
-                iconBgColor: Colors.orange.withOpacity(0.1),
+                iconBgColor: Colors.orange.withValues(alpha: 0.1),
               ),
             ],
           ),
@@ -89,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                 badge: productProvider.lowStockCount.toString(),
                 badgeColor: AppColors.error,
                 iconColor: AppColors.error,
-                iconBgColor: AppColors.error.withOpacity(0.1),
+                iconBgColor: AppColors.error.withValues(alpha: 0.1),
               ),
               const SizedBox(width: 12),
               HomeSummaryCard(
@@ -100,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 icon: Icons.inventory_2_outlined,
                 iconColor: Colors.blue,
-                iconBgColor: Colors.blue.withOpacity(0.1),
+                iconBgColor: Colors.blue.withValues(alpha: 0.1),
               ),
             ],
           ),
@@ -132,19 +149,17 @@ class HomeScreen extends StatelessWidget {
                   QuickActionItem(
                     label: "Stock",
                     icon: Icons.inventory_2_outlined,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.inventory),
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.inventory),
                   ),
                   QuickActionItem(
                     label: "Purchase",
                     icon: Icons.local_shipping_outlined,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.purchaseOrder),
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.purchaseOrder),
                   ),
                   QuickActionItem(
                     label: "Customers",
                     icon: Icons.people_outline_rounded,
-                    onTap: () {},
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.customers),
                   ),
                   QuickActionItem(
                     label: "Service Jobs",
@@ -154,14 +169,12 @@ class HomeScreen extends StatelessWidget {
                   QuickActionItem(
                     label: "Sales History",
                     icon: Icons.history_rounded,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.salesOrder),
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.salesHistory),
                   ),
                   QuickActionItem(
                     label: "Report",
                     icon: Icons.query_stats_rounded,
-                    onTap: () =>
-                        Navigator.pushNamed(context, AppRoutes.reports),
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.reports),
                   ),
                 ],
               ),
@@ -204,9 +217,9 @@ class HomeScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.error.withOpacity(0.05),
+              color: AppColors.error.withValues(alpha: 0.05),
               borderRadius: AppRadius.lg,
-              border: Border.all(color: AppColors.error.withOpacity(0.1)),
+              border: Border.all(color: AppColors.error.withValues(alpha: 0.1)),
             ),
             child: lowStockProducts.isEmpty
                 ? Padding(
@@ -232,7 +245,7 @@ class HomeScreen extends StatelessWidget {
               const SFOSectionHeader(title: "Recent Transactions"),
               TextButton(
                 onPressed: () =>
-                    Navigator.pushNamed(context, AppRoutes.salesOrder),
+                    Navigator.pushNamed(context, AppRoutes.salesHistory),
                 child: Row(
                   children: [
                     Text(
@@ -253,16 +266,41 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          // TODO: Replace with real data from Sales Provider once implemented
-          _buildTransactionItem(
-            context,
-            "Walk-in Customer",
-            "No transactions yet",
-            CurrencyFormatter.format(0.0, currency),
-            "None",
-            AppColors.textSecondary,
-            Icons.shopping_bag_outlined,
-          ),
+          if (recentSales.isEmpty)
+            _buildTransactionItem(
+              context,
+              "Walk-in Customer",
+              "No transactions yet",
+              CurrencyFormatter.format(0.0, currency),
+              "None",
+              AppColors.textSecondary,
+              Icons.shopping_bag_outlined,
+            )
+          else
+            ...recentSales.map(
+              (sale) => Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildTransactionItem(
+                  context,
+                  sale.customerName,
+                  "${DateFormat('MMM dd, hh:mm a').format(sale.dateTime)} • ${sale.id}",
+                  CurrencyFormatter.format(sale.total, currency),
+                  sale.status,
+                  sale.status == 'Refunded'
+                      ? AppColors.error
+                      : AppColors.success,
+                  sale.paymentMethod == 'Cash'
+                      ? Icons.payments_outlined
+                      : Icons.credit_card,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InvoiceDetailScreen(sale: sale),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           const SizedBox(height: 40),
         ],
       ),
@@ -318,73 +356,77 @@ class HomeScreen extends StatelessWidget {
     String amount,
     String status,
     Color statusColor,
-    IconData icon,
-  ) {
+    IconData icon, {
+    VoidCallback? onTap,
+  }) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: ShapeDecoration(
-        color: isDark ? AppColors.darkSurface : AppColors.white,
-        shape: RoundedSuperellipseBorder(
-          borderRadius: AppRadius.md,
-          side: BorderSide(color: theme.colorScheme.outlineVariant),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              size: 20,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: ShapeDecoration(
+          color: isDark ? AppColors.darkSurface : AppColors.white,
+          shape: RoundedSuperellipseBorder(
+            borderRadius: AppRadius.md,
+            side: BorderSide(color: theme.colorScheme.outlineVariant),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                icon,
+                size: 20,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  title,
+                  amount,
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  subtitle,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 10,
-                  ),
+                const SizedBox(height: 4),
+                SFOBadge(
+                  label: status,
+                  bgColor: statusColor.withValues(alpha: 0.1),
+                  textColor: statusColor,
                 ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                amount,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              SFOBadge(
-                label: status,
-                bgColor: statusColor.withOpacity(0.1),
-                textColor: statusColor,
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

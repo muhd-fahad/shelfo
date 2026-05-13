@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shelfo/provider/cart_provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
+import 'package:shelfo/provider/sale_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
@@ -148,6 +149,7 @@ class CompleteSaleSheet extends StatelessWidget {
 
   Future<void> _confirmPayment(BuildContext context, CartProvider cartProvider) async {
     final productProvider = context.read<ProductProvider>();
+    final saleProvider = context.read<SaleProvider>();
     final tendered = double.tryParse(cartProvider.amountTenderedController.text) ?? 0.0;
 
     if (cartProvider.selectedPaymentMethod == 'Cash' && tendered < cartProvider.total) {
@@ -155,7 +157,10 @@ class CompleteSaleSheet extends StatelessWidget {
        return;
     }
 
-    await cartProvider.completeSale(productProvider);
+    final invoiceId = await saleProvider.getNextInvoiceId();
+    await cartProvider.completeSale(productProvider, invoiceId);
+    await saleProvider.loadSales(); // Refresh sales history
+
     if (context.mounted) {
       Navigator.pop(context); // Close CompleteSaleSheet
       Navigator.pop(context); // Close CartDetailsSheet

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shelfo/screens/customer/customer_list_screen.dart';
 import 'package:shelfo/screens/notification_screen.dart';
 import 'package:shelfo/screens/onboard/business_info_screen.dart';
 import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
 import 'package:shelfo/screens/pos/pos_screen.dart';
 import 'package:shelfo/screens/purchase_order_screen.dart';
-import 'package:shelfo/screens/sales_order_screen.dart';
+import 'package:shelfo/screens/sales/sales_history_screen.dart';
 import 'package:shelfo/screens/settings/brands_settings_screen.dart';
 import 'package:shelfo/screens/settings/business_details_screen.dart';
 import 'package:shelfo/screens/settings/categories_settings_screen.dart';
@@ -38,9 +39,10 @@ class AppRoutes {
   static const String brandsSettings = '/brandsSettings';
   static const String pos = '/pos';
   static const String reports = '/reports';
-  static const String salesOrder = '/salesOrder';
+  static const String salesHistory = '/salesHistory';
   static const String purchaseOrder = '/purchaseOrder';
   static const String bottomNavbar = '/bottomNavbar';
+  static const String customers = '/customers';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     splash: (context) => const SplashScreen(),
@@ -58,8 +60,9 @@ class AppRoutes {
     invoiceDetails: (context) => const InvoiceSettingsDetailScreen(),
     pos: (context) => const PosScreen(),
     reports: (context) => const ReportScreen(),
-    salesOrder: (context) => const SalesOrderScreen(),
+    salesHistory: (context) => const SalesHistoryScreen(),
     purchaseOrder: (context) => const PurchaseOrderScreen(),
     bottomNavbar: (context) => const BottomNavbarWidget(),
+    customers: (context) => const CustomerListScreen(),
   };
 }

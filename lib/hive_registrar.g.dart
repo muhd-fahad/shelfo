@@ -7,8 +7,11 @@ import 'package:shelfo/models/brand/brand_model.dart';
 import 'package:shelfo/models/business/business_model.dart';
 import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/models/currency/currency.dart';
+import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/models/invoice/invoice_config_model.dart';
 import 'package:shelfo/models/product/product_model.dart';
+import 'package:shelfo/models/sale/sale_item_model.dart';
+import 'package:shelfo/models/sale/sale_model.dart';
 import 'package:shelfo/models/tax/tax_config_model.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 
@@ -18,9 +21,13 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(BusinessAdapter());
     registerAdapter(CategoryAdapter());
     registerAdapter(CurrencyAdapter());
+    registerAdapter(CustomerAdapter());
+    registerAdapter(CustomerTypeAdapter());
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(ProductAdapter());
     registerAdapter(ProductTypeAdapter());
+    registerAdapter(SaleAdapter());
+    registerAdapter(SaleItemAdapter());
     registerAdapter(TaxConfigAdapter());
     registerAdapter(TaxPricingModeAdapter());
   }
@@ -32,9 +39,13 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(BusinessAdapter());
     registerAdapter(CategoryAdapter());
     registerAdapter(CurrencyAdapter());
+    registerAdapter(CustomerAdapter());
+    registerAdapter(CustomerTypeAdapter());
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(ProductAdapter());
     registerAdapter(ProductTypeAdapter());
+    registerAdapter(SaleAdapter());
+    registerAdapter(SaleItemAdapter());
     registerAdapter(TaxConfigAdapter());
     registerAdapter(TaxPricingModeAdapter());
   }
