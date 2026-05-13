@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -27,11 +28,6 @@ class PdfService {
   }
 
   static Future<void> generateAndDownloadInvoice(Sale sale, Business? business, dynamic currency) async {
-    final pdf = await _generatePdf(sale, business, currency);
-    final bytes = await pdf.save();
-    
-    // For mobile, we might just share it or save to documents
-    // On web it would download. For now let's just share it as a proxy for "save"
     await generateAndShareInvoice(sale, business, currency);
   }
 
@@ -40,9 +36,19 @@ class PdfService {
     final dateFormat = DateFormat('MMM dd, yyyy');
     final timeFormat = DateFormat('hh:mm a');
 
+    // Load custom font that supports the Rupee symbol
+    final fontData = await rootBundle.load("assets/fonts/Inter_18pt-Regular.ttf");
+    final ttf = pw.Font.ttf(fontData);
+    final boldFontData = await rootBundle.load("assets/fonts/Inter_18pt-Bold.ttf");
+    final boldTtf = pw.Font.ttf(boldFontData);
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
+        theme: pw.ThemeData.withFont(
+          base: ttf,
+          bold: boldTtf,
+        ),
         build: (pw.Context context) {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
