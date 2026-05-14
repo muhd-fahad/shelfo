@@ -20,8 +20,8 @@ class QuickActionItem extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 100),
+    return SizedBox(
+      width: 72,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

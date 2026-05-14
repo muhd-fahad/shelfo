@@ -18,8 +18,8 @@ class SFOBackground extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
                 colors: [
                   theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
                   theme.colorScheme.surface,

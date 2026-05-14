@@ -11,6 +11,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
 import '../../utils/theme/app_constants/colors.dart';
 
@@ -46,10 +47,11 @@ class InventoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer2<ProductProvider, CategoryProvider>(
-        builder: (context, provider, categoryProvider, _) {
-          return Column(
-            children: [
+      body: SFOBackground(
+        child: Consumer2<ProductProvider, CategoryProvider>(
+          builder: (context, provider, categoryProvider, _) {
+            return Column(
+              children: [
               // Summary Cards
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -147,8 +149,9 @@ class InventoryScreen extends StatelessWidget {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _showFilterSheet(BuildContext context, CategoryProvider catProvider, ProductProvider prodProvider) {
     showModalBottomSheet(

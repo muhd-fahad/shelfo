@@ -10,6 +10,7 @@ import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_search_bar.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_badge.dart';
+import '../../widgets/sfo_common/sfo_background.dart';
 import 'invoice_detail_screen.dart';
 
 class SalesHistoryScreen extends StatelessWidget {
@@ -29,72 +30,76 @@ class SalesHistoryScreen extends StatelessWidget {
           subtitle: "Past transactions",
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: Row(
-              children: [
-                Expanded(
-                  child: SFOButton(
-                    text: "Date",
-                    icon: Icons.calendar_today_outlined,
-                    backgroundColor: theme.colorScheme.surface,
-                    onPressed: () {
-                      // Date filter logic
-                    },
+      body: SFOBackground(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SFOButton(
+                      text: "Date",
+                      icon: Icons.calendar_today_outlined,
+                      backgroundColor: theme.colorScheme.surface,
+                      onPressed: () {
+                        // Date filter logic
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: SFOButton(
-                    text: "Export",
-                    icon: Icons.file_download_outlined,
-                    backgroundColor: theme.colorScheme.surface,
-                    onPressed: () {
-                      // Export all sales logic
-                    },
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: SFOButton(
+                      text: "Export",
+                      icon: Icons.file_download_outlined,
+                      backgroundColor: theme.colorScheme.surface,
+                      onPressed: () {
+                        // Export all sales logic
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: SFOSearchBar(
-              hintText: "Search invoice or customer...",
-              onChanged: (val) => saleProvider.setSearchQuery(val),
+            const SizedBox(height: AppSpacing.lg),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              child: SFOSearchBar(
+                hintText: "Search invoice or customer...",
+                onChanged: (val) => saleProvider.setSearchQuery(val),
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Expanded(
-            child: saleProvider.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : saleProvider.sales.isEmpty
-                    ? const Center(child: Text("No transactions found"))
-                    : ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
-                        itemCount: saleProvider.sales.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.md),
-                        itemBuilder: (context, index) {
-                          final sale = saleProvider.sales[index];
-                          return _TransactionCard(
-                            sale: sale,
-                            currency: currency,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => InvoiceDetailScreen(sale: sale),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.lg),
+            Expanded(
+              child: saleProvider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : saleProvider.sales.isEmpty
+                  ? const Center(child: Text("No transactions found"))
+                  : ListView.separated(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                itemCount: saleProvider.sales.length,
+                separatorBuilder: (context, index) =>
+                const SizedBox(height: AppSpacing.md),
+                itemBuilder: (context, index) {
+                  final sale = saleProvider.sales[index];
+                  return _TransactionCard(
+                    sale: sale,
+                    currency: currency,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InvoiceDetailScreen(sale: sale),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

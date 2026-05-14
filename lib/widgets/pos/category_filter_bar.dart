@@ -14,7 +14,7 @@ class CategoryFilterBar extends StatelessWidget {
     final posProvider = context.watch<PosProvider>();
 
     return SizedBox(
-      height: 40,
+      height: 36,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
         scrollDirection: Axis.horizontal,

@@ -9,6 +9,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
 import '../../widgets/pos/category_filter_bar.dart';
 import '../../widgets/pos/pos_product_grid.dart';
@@ -25,7 +26,7 @@ class PosScreen extends StatelessWidget {
       appBar: AppBar(
         title: const SFOHeader(
           title: "Point of Sale",
-          subtitle: "Select products for checkout",
+          // subtitle: "Select products for checkout",
         ),
         actions: [
           if (cartProvider.items.isNotEmpty)
@@ -43,8 +44,9 @@ class PosScreen extends StatelessWidget {
             ),
         ],
       ),
-      body: Column(
-        children: [
+      body: SFOBackground(
+        child: Column(
+          children: [
           // Search and Filters
           Padding(
             padding: const EdgeInsets.fromLTRB(
@@ -84,7 +86,7 @@ class PosScreen extends StatelessWidget {
           ),
         ],
       ),
-      // bottomNavigationBar: const CartSummaryBar(),
-    );
-  }
+    ),
+  );
+}
 }
