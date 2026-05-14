@@ -158,10 +158,7 @@ class InventoryScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (context) => InventoryFilterSheet(
-        categoryProvider: catProvider,
-        productProvider: prodProvider,
-      ),
+      builder: (context) => const InventoryFilterSheet(),
     );
   }
 }

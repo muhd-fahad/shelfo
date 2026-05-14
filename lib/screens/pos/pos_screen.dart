@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/cart_provider.dart';
 import 'package:shelfo/provider/pos_provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
 import '../../widgets/pos/pos_filter_sheet.dart';
 import 'pos_ui.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
@@ -65,10 +64,7 @@ class PosScreen extends StatelessWidget {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   ),
-                  builder: (context) => PosFilterSheet(
-                    categoryProvider: context.read<CategoryProvider>(),
-                    posProvider: posProvider,
-                  ),
+                  builder: (context) => const PosFilterSheet(),
                 );
               },
             ),

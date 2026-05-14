@@ -11,6 +11,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
+import 'package:shelfo/widgets/service_job/service_job_filter_sheet.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/provider/business_provider.dart';
 
@@ -46,7 +47,14 @@ class JobTicketScreen extends StatelessWidget {
                 hintText: "Search jobs, devices, or customers...",
                 onChanged: (val) => provider.setSearchQuery(val),
                 onFilterTap: () {
-                  // Standard filter sheet could be added here
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) => const ServiceJobFilterSheet(),
+                  );
                 },
               ),
             ),
