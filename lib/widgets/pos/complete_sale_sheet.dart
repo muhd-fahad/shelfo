@@ -4,6 +4,7 @@ import 'package:shelfo/provider/cart_provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/sale_provider.dart';
+import 'package:shelfo/provider/customer_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
@@ -20,8 +21,8 @@ class CompleteSaleSheet extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    return Consumer2<CartProvider, BusinessProvider>(
-      builder: (context, cartProvider, businessProvider, child) {
+    return Consumer3<CartProvider, BusinessProvider, CustomerProvider>(
+      builder: (context, cartProvider, businessProvider, customerProvider, child) {
         final currency = businessProvider.selectedCurrency;
 
         return Container(
@@ -60,8 +61,12 @@ class CompleteSaleSheet extends StatelessWidget {
               SFODropdown<String>(
                 label: "Customer (Optional)",
                 value: cartProvider.selectedCustomer,
-                items: const [
-                  DropdownMenuItem(value: "Walk-in Customer", child: Text("Walk-in Customer")),
+                items: [
+                  const DropdownMenuItem(value: "Walk-in Customer", child: Text("Walk-in Customer")),
+                  ...customerProvider.customers.map((c) => DropdownMenuItem(
+                    value: c.name,
+                    child: Text(c.name),
+                  )),
                 ],
                 onChanged: (val) {
                   if (val != null) cartProvider.setCustomer(val);
@@ -102,6 +107,7 @@ class CompleteSaleSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.xl),
+              
               if (cartProvider.selectedPaymentMethod == 'Cash') ...[
                 SFOInputField(
                   label: "Amount Tendered",
@@ -110,16 +116,20 @@ class CompleteSaleSheet extends StatelessWidget {
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Total Due:", style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
-                    Text(
-                      CurrencyFormatter.format(cartProvider.total, currency),
-                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+              ],
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Total Due:", style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant)),
+                  Text(
+                    CurrencyFormatter.format(cartProvider.total, currency),
+                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+
+              if (cartProvider.selectedPaymentMethod == 'Cash') ...[
                 const SizedBox(height: AppSpacing.xs),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,8 +144,9 @@ class CompleteSaleSheet extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xl),
               ],
+              
+              const SizedBox(height: AppSpacing.xl),
               SFOButton(
                 text: "Confirm Payment",
                 icon: Icons.check_circle_outline,
