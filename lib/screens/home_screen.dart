@@ -165,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                     QuickActionItem(
                       label: "Service Jobs",
                       icon: Icons.handyman_outlined,
-                      onTap: () {},
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.serviceJobs),
                     ),
                     QuickActionItem(
                       label: "Sales History",

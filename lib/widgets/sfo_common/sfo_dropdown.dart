@@ -3,7 +3,8 @@ import '../../utils/theme/theme.dart';
 
 class SFODropdown<T> extends StatelessWidget {
   final String label;
-  final T value;
+  final T? value;
+  final String? hint;
   final List<DropdownMenuItem<T>> items;
   final ValueChanged<T?> onChanged;
   final bool isRequired;
@@ -11,7 +12,8 @@ class SFODropdown<T> extends StatelessWidget {
   const SFODropdown({
     super.key,
     required this.label,
-    required this.value,
+    this.value,
+    this.hint,
     required this.items,
     required this.onChanged,
     this.isRequired = false,
@@ -57,6 +59,7 @@ class SFODropdown<T> extends StatelessWidget {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<T>(
               value: value,
+              hint: hint != null ? Text(hint!, style: theme.inputDecorationTheme.hintStyle) : null,
               isExpanded: true,
               icon: Icon(
                 Icons.keyboard_arrow_down,

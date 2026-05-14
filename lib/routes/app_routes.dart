@@ -6,6 +6,8 @@ import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
 import 'package:shelfo/screens/pos/pos_screen.dart';
 import 'package:shelfo/screens/purchase_order_screen.dart';
+import 'package:shelfo/screens/service_job/service_job_details_screen.dart';
+import 'package:shelfo/screens/service_job/service_job_form_screen.dart';
 import 'package:shelfo/screens/sales/sales_history_screen.dart';
 import 'package:shelfo/screens/settings/brands_settings_screen.dart';
 import 'package:shelfo/screens/settings/business_details_screen.dart';
@@ -14,11 +16,12 @@ import 'package:shelfo/screens/settings/invoice_settings_detail_screen.dart';
 import 'package:shelfo/screens/settings/tax_settings_screen.dart';
 import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 
-import '../screens/home_screen.dart';
-import '../screens/inventory/inventory_screen.dart';
-import '../screens/report_screen.dart';
-import '../screens/settings/settings_screen.dart';
-import '../screens/splash_screen.dart';
+import 'package:shelfo/screens/home_screen.dart';
+import 'package:shelfo/screens/inventory/inventory_screen.dart';
+import 'package:shelfo/screens/job_ticket_screen.dart';
+import 'package:shelfo/screens/report_screen.dart';
+import 'package:shelfo/screens/settings/settings_screen.dart';
+import 'package:shelfo/screens/splash_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -43,6 +46,9 @@ class AppRoutes {
   static const String purchaseOrder = '/purchaseOrder';
   static const String bottomNavbar = '/bottomNavbar';
   static const String customers = '/customers';
+  static const String serviceJobs = '/serviceJobs';
+  static const String serviceJobForm = '/serviceJobForm';
+  static const String serviceJobDetails = '/serviceJobDetails';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     splash: (context) => const SplashScreen(),
@@ -64,5 +70,8 @@ class AppRoutes {
     purchaseOrder: (context) => const PurchaseOrderScreen(),
     bottomNavbar: (context) => const BottomNavbarWidget(),
     customers: (context) => const CustomerListScreen(),
+    serviceJobs: (context) => const JobTicketScreen(),
+    serviceJobForm: (context) => const ServiceJobFormScreen(),
+    serviceJobDetails: (context) => const ServiceJobDetailsScreen(),
   };
 }

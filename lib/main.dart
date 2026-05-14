@@ -14,6 +14,7 @@ import 'package:shelfo/provider/theme_provider.dart';
 import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/provider/customer_provider.dart';
 import 'package:shelfo/provider/sale_provider.dart';
+import 'package:shelfo/provider/service_job_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           update: (context, saleProvider, previous) =>
               previous!..update(saleProvider),
         ),
+        ChangeNotifierProvider(create: (_) => ServiceJobProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => PosProvider()),
       ],

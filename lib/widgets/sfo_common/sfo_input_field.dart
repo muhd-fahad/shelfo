@@ -4,6 +4,8 @@ class SFOInputField extends StatelessWidget {
   final String label;
   final String hint;
   final TextEditingController? controller;
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
   final int maxLines;
   final TextInputType? keyboardType;
   final bool isRequired;
@@ -14,6 +16,8 @@ class SFOInputField extends StatelessWidget {
     required this.label,
     required this.hint,
     this.controller,
+    this.initialValue,
+    this.onChanged,
     this.maxLines = 1,
     this.keyboardType,
     this.isRequired = false,
@@ -49,6 +53,8 @@ class SFOInputField extends StatelessWidget {
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
+          initialValue: initialValue,
+          onChanged: onChanged,
           maxLines: maxLines,
           keyboardType: keyboardType,
           validator: validator,
