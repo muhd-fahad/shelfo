@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../provider/customer_provider.dart';
+import '../../models/customer/customer_model.dart';
 import '../../provider/business_provider.dart';
+import '../../provider/customer_provider.dart';
 import '../../utils/formatters/currency_formatter.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_search_bar.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_chip.dart';
+import '../../widgets/sfo_common/sfo_background.dart';
 import 'add_edit_customer_screen.dart';
 import 'customer_details_screen.dart';
 
@@ -16,86 +18,94 @@ class CustomerListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final customerProvider = context.watch<CustomerProvider>();
-    final businessProvider = context.read<BusinessProvider>();
-    final currency = businessProvider.selectedCurrency;
+    return Consumer<CustomerProvider>(
+      builder: (context, provider, child) {
+        final businessProvider = context.read<BusinessProvider>();
+        final currency = businessProvider.selectedCurrency;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(
-          title: "Customers",
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppSpacing.xl),
-            child: SFOButton(
-              text: "Add Customer",
-              icon: Icons.add,
-              width: 140,
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddEditCustomerScreen()),
-              ),
+        return Scaffold(
+          appBar: AppBar(
+            title: const SFOHeader(
+              title: "Customers",
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: AppSpacing.md),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: SFOSearchBar(
-              hintText: "Search Customers",
-              onChanged: (val) => customerProvider.setSearchQuery(val),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: Row(
-              children: ["All", "Active", "Credit", "Overdue"].map((status) {
-                final isSelected = customerProvider.filterStatus == status;
-                return Padding(
-                  padding: const EdgeInsets.only(right: AppSpacing.sm),
-                  child: SFOChip(
-                    label: status,
-                    isSelected: isSelected,
-                    onSelected: (val) => customerProvider.setFilterStatus(status),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.xl),
+                child: SFOButton(
+                  text: "Add Customer",
+                  icon: Icons.add,
+                  width: 140,
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddEditCustomerScreen()),
                   ),
-                );
-              }).toList(),
+                ),
+              ),
+            ],
+          ),
+          body: SFOBackground(
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                const SizedBox(height: AppSpacing.md),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  child: SFOSearchBar(
+                    hintText: "Search Customers",
+                    onChanged: (val) => provider.setSearchQuery(val),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  child: Row(
+                    mainAxisAlignment: .start,
+                    children: ["All", "Active", "Credit", "Overdue"].map((status) {
+                      final isSelected = provider.filterStatus == status;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: AppSpacing.sm),
+                        child: SFOChip(
+                          label: status,
+                          isSelected: isSelected,
+                          onSelected: (val) => provider.setFilterStatus(status),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Expanded(
+                  child: provider.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : provider.customers.isEmpty
+                          ? const Center(child: Text("No customers found"))
+                          : ListView.separated(
+                              padding: const EdgeInsets.all(AppSpacing.xl),
+                              itemCount: provider.customers.length,
+                              separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.md),
+                              itemBuilder: (context, index) {
+                                final customer = provider.customers[index];
+                                return _CustomerCard(
+                                  customer: customer,
+                                  currency: currency,
+                                  outstanding: provider.getOutstanding(customer),
+                                  progress: provider.getProgress(customer),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CustomerDetailsScreen(customerId: customer.id),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
-          Expanded(
-            child: customerProvider.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : customerProvider.customers.isEmpty
-                    ? const Center(child: Text("No customers found"))
-                    : ListView.separated(
-                        padding: const EdgeInsets.all(AppSpacing.xl),
-                        itemCount: customerProvider.customers.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.md),
-                        itemBuilder: (context, index) {
-                          final customer = customerProvider.customers[index];
-                          return _CustomerCard(
-                            customer: customer,
-                            currency: currency,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CustomerDetailsScreen(customerId: customer.id),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -103,11 +113,15 @@ class CustomerListScreen extends StatelessWidget {
 class _CustomerCard extends StatelessWidget {
   final dynamic customer;
   final dynamic currency;
+  final double outstanding;
+  final double progress;
   final VoidCallback onTap;
 
   const _CustomerCard({
     required this.customer,
     required this.currency,
+    required this.outstanding,
+    required this.progress,
     required this.onTap,
   });
 
@@ -116,10 +130,6 @@ class _CustomerCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
-
-    // TODO: Link with actual outstanding data
-    final outstanding = 0.0;
-    final progress = (outstanding / customer.creditLimit).clamp(0.0, 1.0);
 
     return GestureDetector(
       onTap: onTap,
@@ -153,7 +163,7 @@ class _CustomerCard extends StatelessWidget {
                         style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "${customer.type == 1 ? 'Individual' : 'Business'}  •  Last: Oct 24, 2024",
+                        "${customer.type == CustomerType.business ? 'Business' : 'Individual'}  •  Last Sale: Oct 24, 2024",
                         style: theme.textTheme.labelSmall,
                       ),
                     ],

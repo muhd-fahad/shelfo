@@ -3,174 +3,146 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/customer/customer_model.dart';
 import '../../provider/customer_provider.dart';
+import '../../provider/customer_form_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_input_field.dart';
 import '../../widgets/sfo_common/sfo_snackbar.dart';
 
-class AddEditCustomerScreen extends StatefulWidget {
+class AddEditCustomerScreen extends StatelessWidget {
   final Customer? customer;
 
   const AddEditCustomerScreen({super.key, this.customer});
 
   @override
-  State<AddEditCustomerScreen> createState() => _AddEditCustomerScreenState();
-}
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => CustomerFormProvider(customer),
+      child: Consumer<CustomerFormProvider>(
+        builder: (context, formProvider, child) {
+          final theme = Theme.of(context);
+          final colorScheme = theme.colorScheme;
 
-class _AddEditCustomerScreenState extends State<AddEditCustomerScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _addressController;
-  late TextEditingController _creditLimitController;
-  CustomerType _selectedType = CustomerType.business;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.customer?.name);
-    _emailController = TextEditingController(text: widget.customer?.email);
-    _phoneController = TextEditingController(text: widget.customer?.phone);
-    _addressController = TextEditingController(text: widget.customer?.address);
-    _creditLimitController = TextEditingController(
-      text: widget.customer?.creditLimit.toString() ?? "10000",
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: Text(customer == null ? "Add Customer" : "Edit Customer"),
+              centerTitle: true,
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: Form(
+                key: formProvider.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SFOInputField(
+                      label: "Name",
+                      hint: "Customer name",
+                      controller: formProvider.nameController,
+                      isRequired: true,
+                      validator: (val) => val == null || val.isEmpty ? "Required" : null,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    Text("Type", style: theme.textTheme.labelLarge),
+                    const SizedBox(height: AppSpacing.sm),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _TypeButton(
+                            label: "Business",
+                            isSelected: formProvider.selectedType == CustomerType.business,
+                            onTap: () => formProvider.setType(CustomerType.business),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: _TypeButton(
+                            label: "Individual",
+                            isSelected: formProvider.selectedType == CustomerType.individual,
+                            onTap: () => formProvider.setType(CustomerType.individual),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    SFOInputField(
+                      label: "Email",
+                      hint: "email@example.com",
+                      controller: formProvider.emailController,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    SFOInputField(
+                      label: "Phone",
+                      hint: "+63 917 123 4567",
+                      controller: formProvider.phoneController,
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    SFOInputField(
+                      label: "Address",
+                      hint: "123 Main St, Manila",
+                      controller: formProvider.addressController,
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    SFOInputField(
+                      label: "Credit Limit (₹)",
+                      hint: "10000",
+                      controller: formProvider.creditLimitController,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: AppSpacing.xxl * 2),
+                  ],
+                ),
+              ),
+            ),
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              child: SFOButton(
+                text: customer == null ? "Add Customer" : "Save Changes",
+                onPressed: () => _save(context, formProvider),
+                backgroundColor: customer == null ? null : AppColors.success,
+              ),
+            ),
+          );
+        },
+      ),
     );
-    _selectedType = widget.customer?.type ?? CustomerType.business;
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _creditLimitController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) return;
+  Future<void> _save(BuildContext context, CustomerFormProvider formProvider) async {
+    if (!formProvider.formKey.currentState!.validate()) return;
 
     final provider = context.read<CustomerProvider>();
-    final customer = Customer(
-      id: widget.customer?.id ?? const Uuid().v4(),
-      name: _nameController.text.trim(),
-      type: _selectedType,
-      email: _emailController.text.trim(),
-      phone: _phoneController.text.trim(),
-      address: _addressController.text.trim(),
-      creditLimit: double.tryParse(_creditLimitController.text) ?? 0,
-      createdAt: widget.customer?.createdAt ?? DateTime.now(),
+    final newCustomer = Customer(
+      id: customer?.id ?? const Uuid().v4(),
+      name: formProvider.nameController.text.trim(),
+      type: formProvider.selectedType,
+      email: formProvider.emailController.text.trim(),
+      phone: formProvider.phoneController.text.trim(),
+      address: formProvider.addressController.text.trim(),
+      creditLimit: double.tryParse(formProvider.creditLimitController.text) ?? 0,
+      createdAt: customer?.createdAt ?? DateTime.now(),
     );
 
-    if (widget.customer == null) {
-      await provider.addCustomer(customer);
+    if (customer == null) {
+      await provider.addCustomer(newCustomer);
     } else {
-      await provider.updateCustomer(customer);
+      await provider.updateCustomer(newCustomer);
     }
 
-    if (mounted) {
+    if (context.mounted) {
       Navigator.pop(context);
       SFOSnackbar.show(
         context,
-        message: widget.customer == null ? "Customer added" : "Customer updated",
+        message: customer == null ? "Customer added" : "Customer updated",
       );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(widget.customer == null ? "Add Customer" : "Edit Customer"),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SFOInputField(
-                label: "Name",
-                hint: "Customer name",
-                controller: _nameController,
-                isRequired: true,
-                validator: (val) => val == null || val.isEmpty ? "Required" : null,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text("Type", style: theme.textTheme.labelLarge),
-              const SizedBox(height: AppSpacing.sm),
-              Row(
-                children: [
-                  Expanded(
-                    child: _TypeButton(
-                      label: "Business",
-                      isSelected: _selectedType == CustomerType.business,
-                      onTap: () => setState(() => _selectedType = CustomerType.business),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: _TypeButton(
-                      label: "Individual",
-                      isSelected: _selectedType == CustomerType.individual,
-                      onTap: () => setState(() => _selectedType = CustomerType.individual),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SFOInputField(
-                label: "Email",
-                hint: "email@example.com",
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SFOInputField(
-                label: "Phone",
-                hint: "+63 917 123 4567",
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SFOInputField(
-                label: "Address",
-                hint: "123 Main St, Manila",
-                controller: _addressController,
-                maxLines: 2,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SFOInputField(
-                label: "Credit Limit (₹)",
-                hint: "10000",
-                controller: _creditLimitController,
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: AppSpacing.xxl * 2),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: SFOButton(
-          text: widget.customer == null ? "Add Customer" : "Save Changes",
-          onPressed: _save,
-          backgroundColor: widget.customer == null ? null : AppColors.success,
-        ),
-      ),
-    );
   }
 }
 

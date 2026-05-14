@@ -41,11 +41,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BrandProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => SaleProvider()),
-        ChangeNotifierProvider(create: (_) => CustomerProvider()),
-        ChangeNotifierProxyProvider<TaxProvider, CartProvider>(
-          create: (_) => CartProvider(),
-          update: (_, taxProvider, cartProvider) => cartProvider!..updateTaxProvider(taxProvider),
+        ChangeNotifierProxyProvider<SaleProvider, CustomerProvider>(
+          create: (context) => CustomerProvider(
+            saleProvider: context.read<SaleProvider>(),
+          ),
+          update: (context, saleProvider, previous) =>
+              previous!..update(saleProvider),
         ),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => PosProvider()),
       ],
       child: Consumer<ThemeProvider>(
