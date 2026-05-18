@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
+import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_summary_card.dart';
 import 'package:shelfo/widgets/inventory/product_grid_item.dart';
@@ -30,22 +31,6 @@ class InventoryScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const SFOHeader(title: "Inventory"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: SFOButton(
-              text: "New Product",
-              icon: Icons.add,
-              width: 140,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EditProductScreen()),
-                );
-              },
-            ),
-          ),
-        ],
       ),
       body: SFOBackground(
         child: Consumer2<ProductProvider, CategoryProvider>(
@@ -150,6 +135,18 @@ class InventoryScreen extends StatelessWidget {
         },
       ),
     ),
+      // floatingActionButtonLocation: .centerFloat,
+
+      floatingActionButton: FloatingActionButton.extended(
+        isExtended: false,
+        icon:Icon(Icons.add),
+        label: Text("Add"),
+        onPressed:  ()=>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const EditProductScreen()),
+                ),
+      ),
   );
 }
 

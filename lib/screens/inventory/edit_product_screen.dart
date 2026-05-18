@@ -40,7 +40,6 @@ class EditProductScreen extends StatelessWidget {
         title: SFOHeader(
           title: product == null ? "New Product" : "Edit Product",
         ),
-        centerTitle: true,
       ),
       body: Consumer3<ProductProvider, CategoryProvider, BrandProvider>(
         builder: (context, provider, categoryProvider, brandProvider, _) => Column(
