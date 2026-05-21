@@ -29,7 +29,14 @@ class PosProductGrid extends StatelessWidget {
     final filteredProducts = posProvider.getFilteredProducts(productProvider);
 
     if (filteredProducts.isEmpty) {
-      return const Center(child: Text("No products found"));
+      return const Center(child: Column(
+        crossAxisAlignment: .center,
+        mainAxisAlignment: .center,
+        children: [
+          Image(image: AssetImage("assets/images/bibo_curious.png"),width: 150,),
+          Text("No products found"),
+        ],
+      ));
     }
 
     return GridView.builder(
