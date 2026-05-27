@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
@@ -17,16 +18,16 @@ class SettingsProfileCard extends StatelessWidget {
     return SFOCard(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.r),
           child: Row(
             children: [
               Container(
-                width: 60,
-                height: 60,
+                width: 60.r,
+                height: 60.r,
                 decoration: ShapeDecoration(
                   color: colorScheme.primary.withOpacity(0.1),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.r),
                   ),
                   image: businessProvider.logoPath != null
                       ? DecorationImage(
@@ -42,11 +43,11 @@ class SettingsProfileCard extends StatelessWidget {
                     ? Icon(
                         Icons.store_rounded,
                         color: colorScheme.primary,
-                        size: 30,
+                        size: 30.r,
                       )
                     : null,
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,10 +58,10 @@ class SettingsProfileCard extends StatelessWidget {
                           : "Business Name",
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 18.sp,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2.h),
                     Text(
                       businessProvider.phoneController.text.isNotEmpty
                           ? businessProvider.phoneController.text
@@ -77,7 +78,7 @@ class SettingsProfileCard extends StatelessWidget {
                     AppRoutes.businessDetails,
                   );
                 },
-                icon: const Icon(Icons.edit_rounded, size: 20),
+                icon: Icon(Icons.edit_rounded, size: 20.r),
               ),
             ],
           ),

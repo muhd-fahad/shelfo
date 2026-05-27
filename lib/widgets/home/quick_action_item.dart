@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class QuickActionItem extends StatelessWidget {
@@ -21,7 +22,7 @@ class QuickActionItem extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return SizedBox(
-      width: 72,
+      width: 64.w,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -29,8 +30,8 @@ class QuickActionItem extends StatelessWidget {
             onTap: onTap,
             borderRadius: AppRadius.md,
             child: Container(
-              width: 56,
-              height: 56,
+              width: 56.r,
+              height: 56.r,
               decoration: ShapeDecoration(
                 color: isPrimary
                     ? AppColors.primary
@@ -47,16 +48,16 @@ class QuickActionItem extends StatelessWidget {
                 color: isPrimary
                     ? AppColors.white
                     : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
-                size: 24,
+                size: 24.r,
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             label,
             style: theme.textTheme.labelSmall?.copyWith(
               color: theme.colorScheme.onSurface,
-              fontSize: 11,
+              fontSize: 11.sp,
             ),
             textAlign: TextAlign.center,
           ),

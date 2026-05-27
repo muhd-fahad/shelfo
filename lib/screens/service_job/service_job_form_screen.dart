@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
 import 'package:shelfo/provider/service_job_provider.dart';
@@ -63,14 +64,14 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
       ),
       body: SFOBackground(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.r),
           child: Form(
             key: _formKey,
             child: SFOCard(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20.r),
               children: [
                 const SFOSectionHeader(title: "Customer"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 SFODropdown<String>(
                   value: _customerName.isEmpty ? null : _customerName,
                   hint: "Select a customer...",
@@ -82,9 +83,9 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   onChanged: (val) => setState(() => _customerName = val ?? ""),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 const SFOSectionHeader(title: "Device Details"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 SFOInputField(
                   label: "Device Name",
                   hint: "e.g. iPhone 13 Pro",
@@ -93,7 +94,7 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   onChanged: (val) => _deviceName = val,
                   validator: (val) => val!.isEmpty ? "Required" : null,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFODropdown<String>(
                   label: "Type",
                   value: _deviceType,
@@ -106,14 +107,14 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   ],
                   onChanged: (val) => setState(() => _deviceType = val!),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFOInputField(
                   label: "Brand",
                   hint: "Apple, Samsung...",
                   initialValue: _brand,
                   onChanged: (val) => _brand = val,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFOInputField(
                   label: "Serial Number",
                   hint: "e.g. SN123456",
@@ -121,9 +122,9 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   onChanged: (val) => _serialNumber = val,
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 const SFOSectionHeader(title: "Diagnosis & Status"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 SFOInputField(
                   label: "Reported Issue",
                   hint: "Describe the problem...",
@@ -133,7 +134,7 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   onChanged: (val) => _reportedIssue = val,
                   validator: (val) => val!.isEmpty ? "Required" : null,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFODropdown<ServiceJobPriority>(
                   label: "Priority",
                   value: _priority,
@@ -144,7 +145,7 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   ],
                   onChanged: (val) => setState(() => _priority = val!),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFODropdown<ServiceJobStatus>(
                   label: "Status",
                   value: _status,
@@ -155,9 +156,9 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   onChanged: (val) => setState(() => _status = val!),
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 const SFOSectionHeader(title: "Costs"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 SFOInputField(
                   label: "Labor Cost",
                   hint: "0",
@@ -165,12 +166,12 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   initialValue: _laborCost.toString(),
                   onChanged: (val) => _laborCost = double.tryParse(val) ?? 0.0,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 ..._partsCosts.asMap().entries.map((entry) {
                   final index = entry.key;
                   final value = entry.value;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: EdgeInsets.only(bottom: 8.h),
                     child: Row(
                       children: [
                         Expanded(
@@ -184,7 +185,7 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                         ),
                         if (index > 0) IconButton(
                           onPressed: () => setState(() => _partsCosts.removeAt(index)),
-                          icon: const Icon(Icons.close, color: AppColors.error, size: 20),
+                          icon: Icon(Icons.close, color: AppColors.error, size: 20.r),
                         ),
                       ],
                     ),
@@ -192,12 +193,12 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                 }),
                 TextButton.icon(
                   onPressed: () => setState(() => _partsCosts.add(0.0)),
-                  icon: const Icon(Icons.add, size: 16),
+                  icon: Icon(Icons.add, size: 16.r),
                   label: const Text("Add Part Cost"),
                   style: TextButton.styleFrom(foregroundColor: AppColors.primary),
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 CheckboxListTile(
                   value: _isWarranty,
                   onChanged: (val) => setState(() => _isWarranty = val!),
@@ -210,7 +211,7 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
                   activeColor: AppColors.primary,
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
                 SFOButton(
                   text: widget.job == null ? "Create Job" : "Save Changes",
                   onPressed: () async {

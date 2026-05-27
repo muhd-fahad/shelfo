@@ -23,7 +23,7 @@ class CartSummaryBar extends StatelessWidget {
     if (cartProvider.items.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border(top: BorderSide(color: colorScheme.outlineVariant)),

@@ -56,7 +56,7 @@ class CompleteSaleSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               
               SFODropdown<String>(
                 label: "Customer (Optional)",
@@ -72,7 +72,7 @@ class CompleteSaleSheet extends StatelessWidget {
                   if (val != null) cartProvider.setCustomer(val);
                 },
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               Text(
                 "Payment Method",
@@ -81,7 +81,7 @@ class CompleteSaleSheet extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   _PaymentMethodCard(
@@ -90,14 +90,14 @@ class CompleteSaleSheet extends StatelessWidget {
                     isSelected: cartProvider.selectedPaymentMethod == 'Cash',
                     onTap: () => cartProvider.setPaymentMethod('Cash'),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   _PaymentMethodCard(
                     label: "Card",
                     icon: Icons.credit_card,
                     isSelected: cartProvider.selectedPaymentMethod == 'Card',
                     onTap: () => cartProvider.setPaymentMethod('Card'),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   _PaymentMethodCard(
                     label: "E-Wallet",
                     icon: Icons.smartphone,
@@ -106,7 +106,7 @@ class CompleteSaleSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               
               if (cartProvider.selectedPaymentMethod == 'Cash') ...[
                 SFOInputField(
@@ -115,7 +115,7 @@ class CompleteSaleSheet extends StatelessWidget {
                   controller: cartProvider.amountTenderedController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
               ],
 
               Row(
@@ -130,7 +130,7 @@ class CompleteSaleSheet extends StatelessWidget {
               ),
 
               if (cartProvider.selectedPaymentMethod == 'Cash') ...[
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -146,7 +146,7 @@ class CompleteSaleSheet extends StatelessWidget {
                 ),
               ],
               
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               SFOButton(
                 text: "Confirm Payment",
                 icon: Icons.check_circle_outline,
@@ -207,7 +207,7 @@ class _PaymentMethodCard extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
           decoration: ShapeDecoration(
             color: isSelected 
                 ? (isDark ? colorScheme.primary.withValues(alpha: 0.1) : AppColors.primaryLight) 
@@ -226,7 +226,7 @@ class _PaymentMethodCard extends StatelessWidget {
                 icon,
                 color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
               Text(
                 label,
                 style: theme.textTheme.labelMedium?.copyWith(

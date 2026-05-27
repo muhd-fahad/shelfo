@@ -30,7 +30,7 @@ class PosScreen extends StatelessWidget {
         actions: [
           if (cartProvider.items.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.xl),
+              padding: EdgeInsets.only(right: AppSpacing.xl),
               child: Badge.count(
                 count: cartProvider.itemCount,
                 child: SFOButton(
@@ -48,7 +48,7 @@ class PosScreen extends StatelessWidget {
           children: [
           // Search and Filters
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               AppSpacing.xl,
               AppSpacing.sm,
               AppSpacing.xl,
@@ -71,10 +71,10 @@ class PosScreen extends StatelessWidget {
           ),
 
           // Categories
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
           const CategoryFilterBar(),
 
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           // Product Grid
           const Expanded(

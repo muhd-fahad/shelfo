@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
-import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_summary_card.dart';
 import 'package:shelfo/widgets/inventory/product_grid_item.dart';
 import 'package:shelfo/widgets/inventory/inventory_filter_sheet.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
@@ -39,7 +38,7 @@ class InventoryScreen extends StatelessWidget {
               children: [
               // Summary Cards
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 child: Row(
                   children: [
                     SFOSummaryCard(
@@ -47,13 +46,13 @@ class InventoryScreen extends StatelessWidget {
                       value: provider.totalProducts.toString(),
                       type: SFOSummaryType.primary,
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     SFOSummaryCard(
                       label: "Low Stock",
                       value: provider.lowStockCount.toString(),
                       type: SFOSummaryType.warning,
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     SFOSummaryCard(
                       label: "Out of Stock",
                       value: provider.outOfStockCount.toString(),
@@ -65,7 +64,7 @@ class InventoryScreen extends StatelessWidget {
 
               // Search and Filter Bar
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 child: SFOSearchBar(
                   hintText: "Search products...",
                   onChanged: (val) => provider.setSearchQuery(val),
@@ -75,7 +74,7 @@ class InventoryScreen extends StatelessWidget {
 
               // Categories Scroll
               Container(
-                height: 48,
+                height: 48.h,
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -84,10 +83,10 @@ class InventoryScreen extends StatelessWidget {
                   ),
                 ),
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                   scrollDirection: Axis.horizontal,
                   itemCount: categoryProvider.categories.length + 1,
-                  separatorBuilder: (context, index) => const SizedBox(width: 8),
+                  separatorBuilder: (context, index) => SizedBox(width: 8.w),
                   itemBuilder: (context, index) {
                     final name = index == 0 ? "All" : categoryProvider.categories[index - 1].name;
                     final isSelected = (index == 0 && provider.selectedFilterCategory == null) || 
@@ -104,7 +103,7 @@ class InventoryScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               // Product Grid
               Expanded(
@@ -113,12 +112,12 @@ class InventoryScreen extends StatelessWidget {
                     : provider.filteredProducts.isEmpty
                         ? const Center(child: Text("No products found"))
                         : GridView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: 0.7,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16.r,
+                              mainAxisSpacing: 16.r,
                             ),
                             itemCount: provider.filteredProducts.length,
                             itemBuilder: (context, index) {
@@ -139,7 +138,7 @@ class InventoryScreen extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton.extended(
         isExtended: false,
-        icon:Icon(Icons.add),
+        icon:Icon(Icons.add, size: 24.r),
         label: Text("Add"),
         onPressed:  ()=>
                 Navigator.push(
@@ -154,7 +153,7 @@ class InventoryScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
       builder: (context) => const InventoryFilterSheet(),
     );
   }

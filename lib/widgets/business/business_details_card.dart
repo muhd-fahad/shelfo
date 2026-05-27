@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
@@ -36,14 +37,14 @@ class BusinessDetailsCard extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.r),
       decoration: ShapeDecoration(
         color: theme.cardTheme.color,
         shape: theme.cardTheme.shape!,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 20,
+        spacing: 20.h,
         children: [
           Text("Business Logo",
               style: theme.textTheme.labelLarge?.copyWith(
@@ -54,7 +55,7 @@ class BusinessDetailsCard extends StatelessWidget {
             logoPath: logoPath,
             onPick: onLogoPicked,
             onRemove: onLogoRemoved,
-            size: 96,
+            size: 96.r,
           ),
 
           SFOInputField(

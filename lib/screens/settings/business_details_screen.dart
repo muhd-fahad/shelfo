@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
@@ -15,7 +16,7 @@ class BusinessDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: const SFOHeader(
@@ -27,7 +28,7 @@ class BusinessDetailsScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.r),
         child: BusinessDetailsCard(
           nameController: businessProvider.nameController,
           phoneController: businessProvider.phoneController,

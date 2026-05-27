@@ -33,7 +33,7 @@ class AddEditCustomerScreen extends StatelessWidget {
               centerTitle: true,
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.xl),
+              padding: EdgeInsets.all(AppSpacing.xl),
               child: Form(
                 key: formProvider.formKey,
                 child: Column(
@@ -46,9 +46,9 @@ class AddEditCustomerScreen extends StatelessWidget {
                       isRequired: true,
                       validator: (val) => val == null || val.isEmpty ? "Required" : null,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     Text("Type", style: theme.textTheme.labelLarge),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     Row(
                       children: [
                         Expanded(
@@ -58,7 +58,7 @@ class AddEditCustomerScreen extends StatelessWidget {
                             onTap: () => formProvider.setType(CustomerType.business),
                           ),
                         ),
-                        const SizedBox(width: AppSpacing.md),
+                        SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: _TypeButton(
                             label: "Individual",
@@ -68,41 +68,41 @@ class AddEditCustomerScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     SFOInputField(
                       label: "Email",
                       hint: "email@example.com",
                       controller: formProvider.emailController,
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     SFOInputField(
                       label: "Phone",
                       hint: "+63 917 123 4567",
                       controller: formProvider.phoneController,
                       keyboardType: TextInputType.phone,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     SFOInputField(
                       label: "Address",
                       hint: "123 Main St, Manila",
                       controller: formProvider.addressController,
                       maxLines: 2,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     SFOInputField(
                       label: "Credit Limit (₹)",
                       hint: "10000",
                       controller: formProvider.creditLimitController,
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: AppSpacing.xxl * 2),
+                    SizedBox(height: AppSpacing.xxl * 2),
                   ],
                 ),
               ),
             ),
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
+              padding: EdgeInsets.all(AppSpacing.xl),
               child: SFOButton(
                 text: customer == null ? "Add Customer" : "Save Changes",
                 onPressed: () => _save(context, formProvider),
@@ -165,7 +165,7 @@ class _TypeButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
         decoration: ShapeDecoration(
           color: isSelected ? AppColors.success.withValues(alpha: 0.1) : colorScheme.surface,
           shape: RoundedSuperellipseBorder(

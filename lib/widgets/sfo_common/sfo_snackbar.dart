@@ -25,8 +25,8 @@ class SFOSnackbar {
             ? colorScheme.error 
             : colorScheme.primary,
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(AppSpacing.lg),
-        shape: const RoundedRectangleBorder(borderRadius: AppRadius.md),
+        margin: EdgeInsets.all(AppSpacing.lg),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.md),
         elevation: 4,
         action: action,
         duration: const Duration(seconds: 3),

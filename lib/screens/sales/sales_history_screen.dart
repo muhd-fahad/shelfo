@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
@@ -34,7 +35,7 @@ class SalesHistoryScreen extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
               child: Row(
                 children: [
                   Expanded(
@@ -47,7 +48,7 @@ class SalesHistoryScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: SFOButton(
                       text: "Export",
@@ -61,26 +62,26 @@ class SalesHistoryScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
               child: SFOSearchBar(
                 hintText: "Search invoice or customer...",
                 onChanged: (val) => saleProvider.setSearchQuery(val),
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Expanded(
               child: saleProvider.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : saleProvider.sales.isEmpty
                   ? const Center(child: Text("No transactions found"))
                   : ListView.separated(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
                 itemCount: saleProvider.sales.length,
                 separatorBuilder: (context, index) =>
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 itemBuilder: (context, index) {
                   final sale = saleProvider.sales[index];
                   return _TransactionCard(
@@ -128,7 +129,7 @@ class _TransactionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: EdgeInsets.all(AppSpacing.md),
         decoration: ShapeDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
           shape: RoundedSuperellipseBorder(
@@ -139,8 +140,8 @@ class _TransactionCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 48.r,
+              height: 48.r,
               decoration: BoxDecoration(
                 color: colorScheme.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
@@ -150,13 +151,13 @@ class _TransactionCard extends StatelessWidget {
                   sale.paymentMethod,
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.primary,
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +168,7 @@ class _TransactionCard extends StatelessWidget {
                         sale.id,
                         style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
+                      SizedBox(width: AppSpacing.sm),
                       SFOBadge(
                         label: sale.status,
                         bgColor: isRefunded ? AppColors.error.withValues(alpha: 0.1) : AppColors.success.withValues(alpha: 0.1),
@@ -175,7 +176,7 @@ class _TransactionCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     "${dateFormat.format(sale.dateTime)}  •  ${sale.customerName}",
                     style: theme.textTheme.bodySmall,
@@ -190,7 +191,7 @@ class _TransactionCard extends StatelessWidget {
                   CurrencyFormatter.format(sale.total, currency),
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
+                Icon(Icons.chevron_right, size: 20.r, color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
               ],
             ),
           ],

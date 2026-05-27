@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
@@ -32,17 +33,17 @@ class BusinessInfoScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: Column(
-          spacing: 24,
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .center,
+          spacing: 24.h,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SFOLogoPicker(
               logoPath: businessProvider.logoPath,
               onPick: (source) => businessProvider.pickLogo(source),
               onRemove: () => businessProvider.removeLogo(),
-              size: 96,
+              size: 96.r,
             ),
     
             SFOInputField(

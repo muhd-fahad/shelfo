@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 enum SFOSummaryType { primary, warning, error }
@@ -45,7 +46,7 @@ class SFOSummaryCard extends StatelessWidget {
 
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.r),
         decoration: ShapeDecoration(
           color: bgColor,
           shape: RoundedSuperellipseBorder(
@@ -63,22 +64,23 @@ class SFOSummaryCard extends StatelessWidget {
               label,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: textColor.withOpacity(0.7),
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Row(
               spacing: AppSpacing.xs,
               children: [
                 Icon(
                   iconData,
                   color: textColor,
+                  size: 24.r,
                 ),
                 Text(
                   value,
                   style: theme.textTheme.titleLarge?.copyWith(
                     color: textColor,
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

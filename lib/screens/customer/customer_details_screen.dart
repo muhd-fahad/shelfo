@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/customer/customer_model.dart';
@@ -53,7 +54,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                 icon: const Icon(Icons.delete_outline, color: AppColors.error),
                 onPressed: () => _showDeleteDialog(context, provider),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              SizedBox(width: AppSpacing.sm),
             ],
           ),
           body: SingleChildScrollView(
@@ -61,11 +62,11 @@ class CustomerDetailsScreen extends StatelessWidget {
               children: [
                 // Profile Header
                 Padding(
-                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  padding: EdgeInsets.all(AppSpacing.xl),
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 40,
+                        radius: 40.r,
                         backgroundColor: colorScheme.primary.withValues(alpha: 0.1),
                         child: Text(
                           customer.name.substring(0, 2).toUpperCase(),
@@ -75,7 +76,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.xl),
+                      SizedBox(width: AppSpacing.xl),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,8 +98,8 @@ class CustomerDetailsScreen extends StatelessWidget {
 
                 // Contact Info Card
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  margin: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.all(AppSpacing.xl),
                   decoration: ShapeDecoration(
                     color: theme.cardTheme.color,
                     shape: RoundedSuperellipseBorder(
@@ -109,19 +110,19 @@ class CustomerDetailsScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       _ContactRow(icon: Icons.email_outlined, text: customer.email ?? "No email"),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       _ContactRow(icon: Icons.phone_outlined, text: customer.phone ?? "No phone"),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       _ContactRow(icon: Icons.location_on_outlined, text: customer.address ?? "No address"),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Metrics
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   child: Row(
                     children: [
                       Expanded(
@@ -131,7 +132,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                           color: AppColors.success,
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                      SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: SFOMetricCard(
                           label: "Outstanding",
@@ -139,7 +140,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                           color: Colors.orange,
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.md),
+                      SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: SFOMetricCard(
                           label: "Credit Limit",
@@ -151,11 +152,11 @@ class CustomerDetailsScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
                 // Order History
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   child: Row(
                     children: [
                       Text(
@@ -173,18 +174,18 @@ class CustomerDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
 
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   itemCount: customerSales.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.md),
+                  separatorBuilder: (context, index) => SizedBox(height: AppSpacing.md),
                   itemBuilder: (context, index) {
                     final sale = customerSales[index];
                     return Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
+                      padding: EdgeInsets.all(AppSpacing.md),
                       decoration: ShapeDecoration(
                         color: theme.cardTheme.color,
                         shape: RoundedSuperellipseBorder(
@@ -195,14 +196,14 @@ class CustomerDetailsScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(AppSpacing.sm),
+                            padding: EdgeInsets.all(AppSpacing.sm),
                             decoration: BoxDecoration(
                               color: colorScheme.surfaceContainer,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(8.r),
                             ),
-                            child: Icon(Icons.shopping_cart_outlined, size: 20, color: colorScheme.onSurfaceVariant),
+                            child: Icon(Icons.shopping_cart_outlined, size: 20.r, color: colorScheme.onSurfaceVariant),
                           ),
-                          const SizedBox(width: AppSpacing.md),
+                          SizedBox(width: AppSpacing.md),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,7 +217,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                             CurrencyFormatter.format(sale.total, currency),
                             style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(width: AppSpacing.md),
+                          SizedBox(width: AppSpacing.md),
                           SFOBadge(
                             label: sale.status,
                             bgColor: sale.status == 'Refunded'
@@ -229,7 +230,7 @@ class CustomerDetailsScreen extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: AppSpacing.xxl),
+                SizedBox(height: AppSpacing.xxl),
               ],
             ),
           ),
@@ -270,8 +271,8 @@ class _ContactRow extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        Icon(icon, size: 20, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
-        const SizedBox(width: AppSpacing.md),
+        Icon(icon, size: 20.r, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
+        SizedBox(width: AppSpacing.md),
         Expanded(
           child: Text(
             text,

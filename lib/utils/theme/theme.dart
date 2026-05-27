@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_constants/colors.dart';
 import 'app_constants/radius.dart';
 import 'app_constants/spacing.dart';
@@ -18,8 +19,8 @@ class SFOAppTheme {
 
   static const String _fontFamily = 'Inter';
 
-  static ThemeData light = _createTheme(Brightness.light);
-  static ThemeData dark = _createTheme(Brightness.dark);
+  static ThemeData get light => _createTheme(Brightness.light);
+  static ThemeData get dark => _createTheme(Brightness.dark);
 
 
   static ThemeData _createTheme(Brightness brightness) {
@@ -65,7 +66,7 @@ class SFOAppTheme {
         iconTheme: IconThemeData(color: onSurface),
         titleTextStyle: TextStyle(
           fontFamily: _fontFamily,
-          fontSize: 18,
+          fontSize: 18.sp,
           fontWeight: FontWeight.w600,
           color: onSurface,
         ),
@@ -84,7 +85,7 @@ class SFOAppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: isDark ? AppColors.darkSurface : AppColors.white,
-        contentPadding: const EdgeInsets.all(AppSpacing.md),
+        contentPadding: EdgeInsets.all(AppSpacing.md),
         border: OutlineInputBorder(
           borderRadius: AppRadius.md,
           borderSide: BorderSide(color: outline),
@@ -107,7 +108,7 @@ class SFOAppTheme {
         ),
         hintStyle: TextStyle(
           color: onSurfaceVariant,
-          fontSize: 14,
+          fontSize: 14.sp,
           fontFamily: _fontFamily,
           fontWeight: FontWeight.w400,
         ),
@@ -118,9 +119,9 @@ class SFOAppTheme {
           backgroundColor: primary,
           foregroundColor: AppColors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
           shape: RoundedSuperellipseBorder(borderRadius: AppRadius.md),
-          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
+          textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
         ),
       ),
 
@@ -129,9 +130,9 @@ class SFOAppTheme {
           backgroundColor: primary,
           foregroundColor: AppColors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
           shape: RoundedSuperellipseBorder(borderRadius: AppRadius.md),
-          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
+          textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
         ),
       ),
 
@@ -139,9 +140,9 @@ class SFOAppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: onSurface,
           side: BorderSide(color: outline),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
           shape: RoundedSuperellipseBorder(borderRadius: AppRadius.md),
-          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
+          textStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
         ),
       ),
 
@@ -150,8 +151,8 @@ class SFOAppTheme {
         unselectedLabelColor: onSurfaceVariant,
         indicatorColor: primary,
         indicatorSize: TabBarIndicatorSize.label,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, fontFamily: _fontFamily),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, fontFamily: _fontFamily),
+        labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp, fontFamily: _fontFamily),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, fontFamily: _fontFamily),
       ),
 
       chipTheme: ChipThemeData(
@@ -159,9 +160,9 @@ class SFOAppTheme {
         disabledColor: outlineVariant,
         selectedColor: primary.withOpacity(0.1),
         secondarySelectedColor: primary,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        labelStyle: TextStyle(color: onSurface, fontSize: 12),
-        secondaryLabelStyle: TextStyle(color: primary, fontSize: 12),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        labelStyle: TextStyle(color: onSurface, fontSize: 12.sp),
+        secondaryLabelStyle: TextStyle(color: primary, fontSize: 12.sp),
         shape: RoundedSuperellipseBorder(borderRadius: AppRadius.sm),
         side: BorderSide(color: outlineVariant),
       ),
@@ -178,28 +179,28 @@ class SFOAppTheme {
       ),
 
       textTheme: TextTheme(
-        displayLarge: TextStyle(fontSize: 57, fontWeight: FontWeight.bold, color: onSurface, letterSpacing: -0.25, fontFamily: _fontFamily),
-        displayMedium: TextStyle(fontSize: 45, fontWeight: FontWeight.w400, color: onSurface, fontFamily: _fontFamily),
-        displaySmall: TextStyle(fontSize: 36, fontWeight: FontWeight.w400, color: onSurface, fontFamily: _fontFamily),
-        headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
-        headlineMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
-        headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
-        titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
-        titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
-        titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
-        bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
-        bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: onSurfaceVariant, fontFamily: _fontFamily),
-        bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: onSurfaceVariant, fontFamily: _fontFamily),
-        labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
-        labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: onSurfaceVariant, fontFamily: _fontFamily),
-        labelSmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: onSurfaceVariant, fontFamily: _fontFamily),
+        displayLarge: TextStyle(fontSize: 57.sp, fontWeight: FontWeight.bold, color: onSurface, letterSpacing: -0.25, fontFamily: _fontFamily),
+        displayMedium: TextStyle(fontSize: 45.sp, fontWeight: FontWeight.w400, color: onSurface, fontFamily: _fontFamily),
+        displaySmall: TextStyle(fontSize: 36.sp, fontWeight: FontWeight.w400, color: onSurface, fontFamily: _fontFamily),
+        headlineLarge: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
+        headlineMedium: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
+        headlineSmall: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
+        titleLarge: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
+        titleMedium: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
+        titleSmall: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: onSurface, fontFamily: _fontFamily),
+        bodyLarge: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
+        bodyMedium: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: onSurfaceVariant, fontFamily: _fontFamily),
+        bodySmall: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: onSurfaceVariant, fontFamily: _fontFamily),
+        labelLarge: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: onSurface, fontFamily: _fontFamily),
+        labelMedium: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: onSurfaceVariant, fontFamily: _fontFamily),
+        labelSmall: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500, color: onSurfaceVariant, fontFamily: _fontFamily),
       ),
 
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
         surfaceTintColor: AppColors.transparent,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
         ),
       ),
 
@@ -209,8 +210,8 @@ class SFOAppTheme {
         unselectedItemColor: onSurfaceVariant,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
-        unselectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, fontFamily: _fontFamily),
+        selectedLabelStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
+        unselectedLabelStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, fontFamily: _fontFamily),
       ),
     );
   }

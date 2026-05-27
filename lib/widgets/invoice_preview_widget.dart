@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 
 class InvoicePreviewWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class InvoicePreviewWidget extends StatelessWidget {
         side: BorderSide(color: AppColors.border),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             Row(
@@ -22,19 +23,19 @@ class InvoicePreviewWidget extends StatelessWidget {
                 Icon(
                   Icons.description_outlined,
                   color: AppColors.textSecondary,
-                  size: 16,
+                  size: 16.r,
                 ),
                 Text("Preview", style: SFOAppTheme.light.textTheme.labelMedium),
               ],
             ),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   spacing: AppSpacing.sm,
                   children: [
                     Row(
-                      mainAxisAlignment: .spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Techno Mobiles",
@@ -48,8 +49,8 @@ class InvoicePreviewWidget extends StatelessWidget {
                     ),
                     Divider(color: AppColors.border),
                     Container(
-                      height: 12,
-                      margin: EdgeInsets.only(right: 80),
+                      height: 12.h,
+                      margin: EdgeInsets.only(right: 80.w),
                       decoration: ShapeDecoration(
                         color: AppColors.borderLight,
                         shape: RoundedSuperellipseBorder(
@@ -58,8 +59,8 @@ class InvoicePreviewWidget extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: 12,
-                      margin: EdgeInsets.only(right: 120),
+                      height: 12.h,
+                      margin: EdgeInsets.only(right: 120.w),
                       decoration: ShapeDecoration(
                         color: AppColors.borderLight,
                         shape: RoundedSuperellipseBorder(
@@ -73,7 +74,7 @@ class InvoicePreviewWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         // color: const Color(0xFF9CA3AF),
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w400,
                       ),

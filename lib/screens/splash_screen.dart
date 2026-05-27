@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 
@@ -20,25 +21,25 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _splash(context);
 
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           children: [
             Expanded(
               child: Row(
-                spacing: 8,
+                spacing: 8.w,
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SFOLogo(
-                    height: 48,
+                    height: 48.h,
                     fit: BoxFit.fitWidth,
                   )
                 ],
               ),
             ),
-            CardStacksSplash(),
+            const CardStacksSplash(),
           ],
         ),
       ),

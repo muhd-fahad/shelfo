@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/provider/category_provider.dart';
@@ -26,7 +27,7 @@ class EditCategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: SFOHeader(
@@ -37,25 +38,25 @@ class EditCategoryScreen extends StatelessWidget {
       ),
       body: Consumer<CategoryProvider>(
         builder: (context, provider, _) => SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20.r),
           child: Column(
             children: [
               SFOCard(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.r),
                 children: [
                   SFOInputField(
                     label: "Category Name",
                     hint: "e.g. Smartphones",
                     controller: provider.nameController,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   SFOInputField(
                     label: "Description",
                     hint: "e.g. Mobile devices and phones",
                     controller: provider.descController,
                     maxLines: 3,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -66,14 +67,14 @@ class EditCategoryScreen extends StatelessWidget {
                           color: colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12.h),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 5,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12.h,
+                          crossAxisSpacing: 12.w,
                         ),
                         itemCount: Category.availableIcons.length,
                         itemBuilder: (context, index) {
@@ -81,7 +82,7 @@ class EditCategoryScreen extends StatelessWidget {
                           final isSelected = provider.selectedIconCode == icon.codePoint;
                           return InkWell(
                             onTap: () => provider.setIconCode(icon.codePoint),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
                             child: Container(
                               decoration: ShapeDecoration(
                                 color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
@@ -95,6 +96,7 @@ class EditCategoryScreen extends StatelessWidget {
                               ),
                               child: Icon(
                                 icon,
+                                size: 24.r,
                                 color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
                               ),
                             ),
@@ -105,7 +107,7 @@ class EditCategoryScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               SFOButton(
                 text: category == null ? "Create Category" : "Save Changes",
                 onPressed: () => _save(context, provider),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/hive_registrar.g.dart';
@@ -55,14 +56,21 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Shelfo inventory',
-            theme: SFOAppTheme.light,
-            darkTheme: SFOAppTheme.dark,
-            themeMode: themeProvider.themeMode,
-            initialRoute: AppRoutes.splash,
-            routes: AppRoutes.routes,
+          return ScreenUtilInit(
+            designSize: const Size(375, 812),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (context, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Shelfo inventory',
+                theme: SFOAppTheme.light,
+                darkTheme: SFOAppTheme.dark,
+                themeMode: themeProvider.themeMode,
+                initialRoute: AppRoutes.splash,
+                routes: AppRoutes.routes,
+              );
+            },
           );
         },
       ),

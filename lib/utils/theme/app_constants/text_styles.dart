@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'colors.dart';
 
 class AppTextStyles {
@@ -20,8 +21,8 @@ class AppTextStyles {
     color: AppColors.textMuted,
   );
 
-  static const TextStyle price = TextStyle(
-    fontSize: 14,
+  static TextStyle price = TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.w700,
     color: AppColors.primary,
   );

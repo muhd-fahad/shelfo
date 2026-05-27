@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SFOBadge extends StatelessWidget {
@@ -19,7 +20,7 @@ class SFOBadge extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: ShapeDecoration(
         color: bgColor ?? colorScheme.surfaceContainer,
         shape: const RoundedSuperellipseBorder(
@@ -30,7 +31,7 @@ class SFOBadge extends StatelessWidget {
         label,
         style: theme.textTheme.labelMedium?.copyWith(
           color: textColor ?? colorScheme.onSurfaceVariant,
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w500,
         ),
       ),

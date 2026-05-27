@@ -67,7 +67,7 @@ class SFOProductCard extends StatelessWidget {
                 clipBehavior: Clip.antiAlias,
                 decoration: ShapeDecoration(
                   color: isDark ? colorScheme.surface : colorScheme.surfaceContainerHighest,
-                  shape: const RoundedSuperellipseBorder(
+                  shape: RoundedSuperellipseBorder(
                     borderRadius: AppRadius.md,
                   ),
                 ),
@@ -80,7 +80,7 @@ class SFOProductCard extends StatelessWidget {
                     : Icon(Icons.inventory_2_outlined,
                         size: 32, color: colorScheme.primary.withOpacity(0.2)),
               ),
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
 
               // SKU and Status Dot
               Row(

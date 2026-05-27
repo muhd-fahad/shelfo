@@ -40,10 +40,10 @@ class PosProductGrid extends StatelessWidget {
     }
 
     return GridView.builder(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.xl),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      padding: EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.xl),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 174.5 / 254.5,
+        childAspectRatio: 3 / 4,
         crossAxisSpacing: AppSpacing.lg,
         mainAxisSpacing: AppSpacing.lg,
       ),

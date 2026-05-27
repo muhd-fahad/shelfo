@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
@@ -25,7 +26,7 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: const SFOHeader(
@@ -35,13 +36,13 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.r),
         child: Column(
           children: [
             const InvoicePreviewWidget(),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             SFOCard(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.r),
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -53,7 +54,7 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
                         controller: invoiceProvider.prefixController,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16.w),
                     Expanded(
                       child: SFOInputField(
                         label: "Starting Number",
@@ -64,7 +65,7 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 SFOInputField(
                   label: "Footer Text",
                   hint: "Thank you for your business!",
@@ -72,7 +73,7 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             SFOCard(
               children: [
                 SFOSwitchTile(
@@ -85,7 +86,7 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             SFOButton(
               text: "Save Changes",
               onPressed: () async {

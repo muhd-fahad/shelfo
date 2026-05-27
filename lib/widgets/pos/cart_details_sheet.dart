@@ -26,7 +26,7 @@ class CartDetailsSheet extends StatelessWidget {
         final currency = businessProvider.selectedCurrency;
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class CartDetailsSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Flexible(
                 child: ListView.separated(
                   shrinkWrap: true,
@@ -50,7 +50,7 @@ class CartDetailsSheet extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final item = cartProvider.items[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
                       child: Row(
                         children: [
                           Container(
@@ -67,7 +67,7 @@ class CartDetailsSheet extends StatelessWidget {
                                   )
                                 : Icon(Icons.inventory_2_outlined, size: 20, color: colorScheme.onSurfaceVariant),
                           ),
-                          const SizedBox(width: AppSpacing.md),
+                          SizedBox(width: AppSpacing.md),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +96,7 @@ class CartDetailsSheet extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               Column(
                 children: [
                   Row(
@@ -107,7 +107,7 @@ class CartDetailsSheet extends StatelessWidget {
                     ],
                   ),
                   if (cartProvider.taxAmount > 0) ...[
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -116,9 +116,9 @@ class CartDetailsSheet extends StatelessWidget {
                       ],
                     ),
                   ],
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   const SFODivider(),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -134,7 +134,7 @@ class CartDetailsSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               SFOButton(
                 text: "Complete Sale",
                 onPressed: () => PosUI.completeSale(context),

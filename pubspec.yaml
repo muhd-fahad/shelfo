@@ -38,6 +38,9 @@ dependencies:
   printing: ^5.14.3
   share_plus: ^13.1.0
 
+  # responsive
+  flutter_screenutil: ^5.9.3
+
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SalesChart extends StatelessWidget {
@@ -10,7 +11,7 @@ class SalesChart extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: ShapeDecoration(
         color: isDark ? AppColors.darkSurface : AppColors.white,
         shape: RoundedSuperellipseBorder(
@@ -38,9 +39,9 @@ class SalesChart extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           SizedBox(
-            height: 120,
+            height: 120.h,
             width: double.infinity,
             child:Placeholder(),
 
@@ -51,7 +52,7 @@ class SalesChart extends StatelessWidget {
             //   ),
             // ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -59,7 +60,7 @@ class SalesChart extends StatelessWidget {
                       day,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
-                        fontSize: 10,
+                        fontSize: 10.sp,
                       ),
                     ))
                 .toList(),

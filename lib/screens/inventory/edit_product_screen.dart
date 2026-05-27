@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/provider/product_provider.dart';
@@ -34,7 +35,7 @@ class EditProductScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: colorScheme.onSurface),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         title: SFOHeader(
@@ -46,14 +47,14 @@ class EditProductScreen extends StatelessWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.r),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SFOSectionHeader(title: "Basic Info"),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     SFOCard(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16.r),
                       children: [
                         SFOInputField(
                           label: "Product Name",
@@ -61,14 +62,14 @@ class EditProductScreen extends StatelessWidget {
                           controller: provider.nameController,
                           isRequired: true,
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         SFOInputField(
                           label: "Description",
                           hint: "Add product description...",
                           controller: provider.descriptionController,
                           maxLines: 3,
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -82,7 +83,7 @@ class EditProductScreen extends StatelessWidget {
                                 onChanged: (val) => provider.setCategory(val),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w),
                             Expanded(
                               child: SFODropdown<String?>(
                                 label: "Brand",
@@ -95,24 +96,24 @@ class EditProductScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         Text("Product Type",
                             style: theme.textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.w500,
                               color: colorScheme.onSurfaceVariant,
                             )),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         ProductTypeSelector(
                           selectedType: provider.selectedType,
                           onTypeSelected: (type) => provider.setProductType(type),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         Text("Product Image",
                             style: theme.textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.w500,
                               color: colorScheme.onSurfaceVariant,
                             )),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         SFOImagePicker(
                           imagePaths: provider.imagePaths,
                           onAddImage: (source) => provider.pickAndAddImage(source),
@@ -120,11 +121,11 @@ class EditProductScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     const SFOSectionHeader(title: "Stock & Pricing"),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     SFOCard(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16.r),
                       children: [
                         if (product == null)
                           Row(
@@ -137,7 +138,7 @@ class EditProductScreen extends StatelessWidget {
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               Expanded(
                                 child: SFOInputField(
                                   label: "Min Stock",
@@ -146,7 +147,7 @@ class EditProductScreen extends StatelessWidget {
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               Expanded(
                                 child: SFOInputField(
                                   label: "Reorder Point",
@@ -168,7 +169,7 @@ class EditProductScreen extends StatelessWidget {
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12.w),
                               Expanded(
                                 child: SFOInputField(
                                   label: "Reorder Point",
@@ -179,14 +180,14 @@ class EditProductScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         SFOInputField(
                           label: "SKU",
                           hint: "LOG-G304",
                           controller: provider.skuController,
                           isRequired: true,
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         Row(
                           children: [
                             Expanded(
@@ -197,7 +198,7 @@ class EditProductScreen extends StatelessWidget {
                                 keyboardType: TextInputType.number,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w),
                             Expanded(
                               child: SFOInputField(
                                 label: "Selling Price ($currencySymbol)",
@@ -215,7 +216,7 @@ class EditProductScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20.r),
               child: SFOButton(
                 text: product == null ? "Create Product" : "Save Changes",
                 onPressed: () => _save(context, provider),

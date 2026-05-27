@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class HomeSummaryCard extends StatelessWidget {
@@ -28,7 +29,7 @@ class HomeSummaryCard extends StatelessWidget {
 
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.r),
         decoration: ShapeDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
           shape: RoundedSuperellipseBorder(
@@ -49,43 +50,43 @@ class HomeSummaryCard extends StatelessWidget {
                   label,
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 12,
+                    fontSize: 12.sp,
                   ),
                 ),
 
                 if (badge != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: (badgeColor ?? AppColors.primary).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(4.r),
                     ),
                     child: Text(
                       badge!,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: badgeColor ?? AppColors.primary,
-                        fontSize: 10,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
 
 
             Row(
-              spacing: 4,
+              spacing: 4.w,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: EdgeInsets.all(6.r),
                   decoration: BoxDecoration(
                     color: iconBgColor ?? AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
                     icon,
-                    size: 16,
+                    size: 16.r,
                     color: iconColor ?? AppColors.primary,
                   ),
                 ),
@@ -93,7 +94,7 @@ class HomeSummaryCard extends StatelessWidget {
                   value,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
               ],

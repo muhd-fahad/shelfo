@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SFOSearchBar extends StatelessWidget {
@@ -24,7 +25,7 @@ class SFOSearchBar extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            height: 48,
+            height: 48.h,
             decoration: ShapeDecoration(
               color: theme.inputDecorationTheme.fillColor,
               shape: RoundedSuperellipseBorder(
@@ -38,21 +39,21 @@ class SFOSearchBar extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: theme.inputDecorationTheme.hintStyle,
-                prefixIcon: Icon(Icons.search, size: 20, color: colorScheme.onSurfaceVariant),
+                prefixIcon: Icon(Icons.search, size: 20.r, color: colorScheme.onSurfaceVariant),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
                 fillColor: Colors.transparent,
               ),
             ),
           ),
         ),
         if (onFilterTap != null) ...[
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Container(
-            height: 48,
-            width: 48,
+            height: 48.r,
+            width: 48.r,
             decoration: ShapeDecoration(
               color: theme.inputDecorationTheme.fillColor,
               shape: RoundedSuperellipseBorder(
@@ -61,7 +62,7 @@ class SFOSearchBar extends StatelessWidget {
               ),
             ),
             child: IconButton(
-              icon: Icon(Icons.tune_rounded, size: 20, color: colorScheme.onSurface),
+              icon: Icon(Icons.tune_rounded, size: 20.r, color: colorScheme.onSurface),
               onPressed: onFilterTap,
             ),
           ),

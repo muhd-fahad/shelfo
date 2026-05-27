@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
@@ -54,19 +55,19 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const SFOLogo(height: 24, fit: BoxFit.fitWidth),
+        title: SFOLogo(height: 24.h, fit: BoxFit.fitWidth),
         actions: [
           Row(
             children: [
               IconButton(
                 onPressed: () =>
                     Navigator.pushNamed(context, AppRoutes.notification),
-                icon: const Icon(Icons.notifications_none_rounded, size: 24),
+                icon: Icon(Icons.notifications_none_rounded, size: 24.r),
               ),
               IconButton(
                 onPressed: () =>
                     Navigator.pushNamed(context, AppRoutes.settings),
-                icon: const Icon(Icons.account_circle_outlined, size: 24),
+                icon: Icon(Icons.account_circle_outlined, size: 24.r),
               ),
             ],
           ),
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: SFOBackground(
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           children: [
             // Summary Cards Grid
             Row(
@@ -86,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                   badge: "+0%",
                   badgeColor: AppColors.success,
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 HomeSummaryCard(
                   label: "Pending Orders",
                   value: "0 Items",
@@ -98,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             Row(
               children: [
                 HomeSummaryCard(
@@ -110,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                   iconColor: AppColors.error,
                   iconBgColor: AppColors.error.withValues(alpha: 0.1),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 HomeSummaryCard(
                   label: "Inventory Value",
                   value: CurrencyFormatter.formatCompact(
@@ -124,17 +125,17 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
             const SFOSectionHeader(title: "Quick Actions"),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
 
             // Quick Actions Grid
             SFOCard(
               padding: EdgeInsets.all(AppSpacing.md),
               children: [
                 Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
+                  spacing: 16.w,
+                  runSpacing: 16.h,
                   children: [
                     QuickActionItem(
                       label: "New Sale",
@@ -182,12 +183,12 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             const SFOSectionHeader(title: "Sales Analytics"),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             const SalesChart(),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -204,9 +205,9 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.chevron_right,
-                        size: 16,
+                        size: 16.r,
                         color: AppColors.error,
                       ),
                     ],
@@ -214,9 +215,9 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.r),
               decoration: BoxDecoration(
                 color: AppColors.error.withValues(alpha: 0.05),
                 borderRadius: AppRadius.lg,
@@ -226,7 +227,7 @@ class HomeScreen extends StatelessWidget {
               ),
               child: lowStockProducts.isEmpty
                   ? Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.r),
                       child: Center(
                         child: Text(
                           "No low stock items",
@@ -240,7 +241,7 @@ class HomeScreen extends StatelessWidget {
                     ),
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -257,9 +258,9 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.chevron_right,
-                        size: 16,
+                        size: 16.r,
                         color: AppColors.primary,
                       ),
                     ],
@@ -267,7 +268,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             if (recentSales.isEmpty)
               _buildTransactionItem(
                 context,
@@ -281,7 +282,7 @@ class HomeScreen extends StatelessWidget {
             else
               ...recentSales.map(
                 (sale) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: EdgeInsets.only(bottom: 8.h),
                   child: _buildTransactionItem(
                     context,
                     sale.customerName,
@@ -303,7 +304,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
           ],
         ),
       ),
@@ -313,15 +314,15 @@ class HomeScreen extends StatelessWidget {
   Widget _buildLowStockItem(BuildContext context, Product product) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
       child: Row(
         children: [
           Icon(
             Icons.inventory_2_outlined,
-            size: 18,
+            size: 18.r,
             color: theme.colorScheme.onSurfaceVariant,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               product.name,
@@ -340,7 +341,7 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Text(
             "Min: ${product.minStock}",
             style: theme.textTheme.labelSmall?.copyWith(
@@ -368,7 +369,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12.r),
         decoration: ShapeDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
           shape: RoundedSuperellipseBorder(
@@ -379,18 +380,18 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.r),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
                 icon,
-                size: 20,
+                size: 20.r,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -405,7 +406,7 @@ class HomeScreen extends StatelessWidget {
                     subtitle,
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
-                      fontSize: 10,
+                      fontSize: 10.sp,
                     ),
                   ),
                 ],
@@ -420,7 +421,7 @@ class HomeScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 SFOBadge(
                   label: status,
                   bgColor: statusColor.withValues(alpha: 0.1),

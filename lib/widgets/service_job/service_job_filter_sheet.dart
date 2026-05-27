@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../models/service_job/service_job_model.dart';
 import '../../provider/service_job_provider.dart';
@@ -18,14 +19,14 @@ class ServiceJobFilterSheet extends StatelessWidget {
       builder: (context, provider, child) {
         return Container(
           padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: 24,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            left: 24.w,
+            right: 24.w,
+            top: 24.h,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
           ),
           decoration: BoxDecoration(
             color: theme.cardTheme.color,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -48,7 +49,7 @@ class ServiceJobFilterSheet extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 
                 Text("Status", 
                   style: theme.textTheme.labelLarge?.copyWith(
@@ -56,10 +57,10 @@ class ServiceJobFilterSheet extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant
                   )
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: 8.w,
+                  runSpacing: 8.h,
                   children: [
                     SFOChip(
                       label: "All",
@@ -74,12 +75,12 @@ class ServiceJobFilterSheet extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 SFOButton(
                   text: "Apply Filter",
                   onPressed: () => Navigator.pop(context),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/provider/business_provider.dart';
@@ -30,7 +31,7 @@ class ProductDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: colorScheme.onSurface),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -49,7 +50,7 @@ class ProductDetailsScreen extends StatelessWidget {
             icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
             onPressed: () => _confirmDelete(context),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
         ],
       ),
       body: Consumer<ProductProvider>(
@@ -57,7 +58,7 @@ class ProductDetailsScreen extends StatelessWidget {
           final currentProduct = provider.products.firstWhere((p) => p.id == product.id, orElse: () => product);
           
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20.r),
             child: Column(
               crossAxisAlignment: .start,
               children: [
@@ -65,25 +66,25 @@ class ProductDetailsScreen extends StatelessWidget {
                 ProductImageCarousel(
                   imagePaths: currentProduct.imagePaths ?? [],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 Text(
                   currentProduct.name,
                   style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   currentProduct.sku ?? "",
                   style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SFOBadge(
                       label: currentProduct.categoryName ?? "Uncategorized",
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     SFOBadge(
                       label: currentProduct.productType.label,
                       bgColor: colorScheme.primary.withOpacity(0.1),
@@ -92,7 +93,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 if (currentProduct.description != null && currentProduct.description!.isNotEmpty) ...[
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Text(
                     currentProduct.description!,
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -103,36 +104,36 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                 ],
 
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
 
                 // Stock Info Row
                 Row(
                   children: [
                     SFOMetricCard(label: "Current", value: currentProduct.stockQuantity.toString()),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     SFOMetricCard(label: "Min Level", value: currentProduct.minStock.toString()),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     SFOMetricCard(label: "Reorder At", value: currentProduct.reorderPoint.toString()),
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 // Pricing Card
                 SFOCard(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.r),
                   children: [
                     Text("Pricing", style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     SFOPriceRow(label: "Cost Price", value: CurrencyFormatter.format(currentProduct.costPrice, currency)),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     SFOPriceRow(label: "Selling Price", value: CurrencyFormatter.format(currentProduct.price, currency), isPrimary: true),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     SFOPriceRow(label: "Margin", value: "${_calculateMargin(currentProduct)}%"),
                   ],
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
 
                 // Action Buttons
                 Row(
@@ -144,7 +145,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         onPressed: () => _showStockDialog(context, provider, currentProduct, true),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16.w),
                     Expanded(
                       child: SFOButton(
                         text: "Remove",

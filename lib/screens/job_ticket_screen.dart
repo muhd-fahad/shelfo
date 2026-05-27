@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
 import 'package:shelfo/provider/service_job_provider.dart';
@@ -28,11 +29,11 @@ class JobTicketScreen extends StatelessWidget {
         title: const SFOHeader(title: "Service Jobs"),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(right: 16.w),
             child: SFOButton(
               text: "New Job",
               icon: Icons.add,
-              width: 120,
+              width: 120.w,
               onPressed: () => Navigator.pushNamed(context, AppRoutes.serviceJobForm),
             ),
           ),
@@ -42,7 +43,7 @@ class JobTicketScreen extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.r),
               child: SFOSearchBar(
                 hintText: "Search jobs, devices, or customers...",
                 onChanged: (val) => provider.setSearchQuery(val),
@@ -50,8 +51,8 @@ class JobTicketScreen extends StatelessWidget {
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
                     ),
                     builder: (context) => const ServiceJobFilterSheet(),
                   );
@@ -59,7 +60,7 @@ class JobTicketScreen extends StatelessWidget {
               ),
             ),
             Container(
-              height: 48,
+              height: 48.h,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -70,10 +71,10 @@ class JobTicketScreen extends StatelessWidget {
                 ),
               ),
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                 scrollDirection: Axis.horizontal,
                 itemCount: ServiceJobStatus.values.length + 1,
-                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                separatorBuilder: (context, index) => SizedBox(width: 8.w),
                 itemBuilder: (context, index) {
                   final isAll = index == 0;
                   final status = isAll ? null : ServiceJobStatus.values[index - 1];
@@ -90,7 +91,7 @@ class JobTicketScreen extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Expanded(
               child: provider.jobs.isEmpty
                   ? Center(
@@ -100,7 +101,7 @@ class JobTicketScreen extends StatelessWidget {
                       ),
                     )
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       itemCount: provider.jobs.length,
                       itemBuilder: (context, index) {
                         final job = provider.jobs[index];
@@ -143,25 +144,25 @@ class _JobCard extends StatelessWidget {
         arguments: job,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
+        padding: EdgeInsets.only(bottom: 16.h),
         child: SFOCard(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.r),
           children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 48.r,
+                height: 48.r,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.surfaceContainer,
                   borderRadius: AppRadius.md,
                 ),
                 child: Center(
-                  child: Icon(_getDeviceIcon(job.deviceType), size: 24, color: theme.colorScheme.onSurfaceVariant),
+                  child: Icon(_getDeviceIcon(job.deviceType), size: 24.r, color: theme.colorScheme.onSurfaceVariant),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,13 +185,13 @@ class _JobCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _InfoRow(icon: Icons.person_outline, text: job.customerName),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           _InfoRow(icon: Icons.error_outline, text: job.reportedIssue),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           _InfoRow(icon: Icons.calendar_today_outlined, text: "Due: ${_formatDate(job.dueDate)}"),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -276,8 +277,8 @@ class _InfoRow extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
-        const SizedBox(width: 8),
+        Icon(icon, size: 18.r, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
+        SizedBox(width: 8.w),
         Expanded(
           child: Text(
             text,

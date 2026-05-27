@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/brand_provider.dart';
 import 'package:shelfo/screens/settings/edit_brand_screen.dart';
@@ -19,7 +20,7 @@ class BrandsSettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: const SFOHeader(
@@ -29,7 +30,7 @@ class BrandsSettingsScreen extends StatelessWidget {
         centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded),
+            icon: Icon(Icons.add_rounded, size: 24.r),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -37,15 +38,15 @@ class BrandsSettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
         ],
       ),
       body: brandProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.separated(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20.r),
               itemCount: brandProvider.brands.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
                 final brand = brandProvider.brands[index];
                 return Container(
@@ -54,7 +55,7 @@ class BrandsSettingsScreen extends StatelessWidget {
                     shape: theme.cardTheme.shape!,
                   ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                     title: Text(
                       brand.name,
                       style: theme.textTheme.titleMedium?.copyWith(
@@ -67,7 +68,7 @@ class BrandsSettingsScreen extends StatelessWidget {
                         IconButton(
                           icon: Icon(
                             Icons.edit_outlined,
-                            size: 20,
+                            size: 20.r,
                             color: colorScheme.onSurfaceVariant,
                           ),
                           onPressed: () => Navigator.push(
@@ -78,7 +79,7 @@ class BrandsSettingsScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline_rounded, size: 20, color: AppColors.error),
+                          icon: Icon(Icons.delete_outline_rounded, size: 20.r, color: AppColors.error),
                           onPressed: () => _showDeleteConfirmation(context, brand),
                         ),
                       ],

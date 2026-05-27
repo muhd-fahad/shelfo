@@ -22,7 +22,7 @@ class StockAdjustmentDialog extends StatelessWidget {
     final provider = context.watch<ProductProvider>();
 
     return Dialog(
-      shape: const RoundedSuperellipseBorder(borderRadius: AppRadius.xl),
+      shape: RoundedSuperellipseBorder(borderRadius: AppRadius.xl),
       backgroundColor: theme.colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(24),

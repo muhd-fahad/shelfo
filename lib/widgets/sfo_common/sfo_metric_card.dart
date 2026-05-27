@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SFOMetricCard extends StatelessWidget {
   final String label;
@@ -19,7 +20,7 @@ class SFOMetricCard extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: ShapeDecoration(
         color: cardTheme.color,
         shape: cardTheme.shape!,
@@ -30,15 +31,15 @@ class SFOMetricCard extends StatelessWidget {
             label,
             style: theme.textTheme.labelSmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
-              fontSize: 10,
+              fontSize: 10.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             value,
             style: theme.textTheme.headlineSmall?.copyWith(
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: color ?? colorScheme.onSurface,
             ),

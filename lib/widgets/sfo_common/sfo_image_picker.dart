@@ -77,7 +77,7 @@ class SFOImagePicker extends StatelessWidget {
                     height: 100,
                     margin: const EdgeInsets.only(right: 12, top: 8),
                     decoration: ShapeDecoration(
-                      shape: const RoundedSuperellipseBorder(
+                      shape: RoundedSuperellipseBorder(
                         borderRadius: AppRadius.md,
                       ),
                       image: DecorationImage(

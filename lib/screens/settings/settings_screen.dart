@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/provider/theme_provider.dart';
@@ -24,13 +25,13 @@ class SettingsScreen extends StatelessWidget {
       body: SFOBackground(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.r),
             child: Column(
               spacing: AppSpacing.md,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SettingsProfileCard(),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 const SFOSectionHeader(title: "General"),
                 SFOCard(
                   children: [
@@ -86,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 const SFOSectionHeader(title: "Module Configuration"),
                 SFOCard(
                   children: [
@@ -127,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 const SFOSectionHeader(title: "System"),
                 SFOCard(
                   children: [
@@ -153,7 +154,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
               ],
             ),
           ),

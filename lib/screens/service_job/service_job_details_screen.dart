@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
 import 'package:shelfo/provider/service_job_provider.dart';
@@ -37,49 +38,49 @@ class ServiceJobDetailsScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ServiceJobFormScreen(job: currentJob)),
             ),
             icon: Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.r),
               decoration: BoxDecoration(
                 border: Border.all(color: theme.colorScheme.outlineVariant),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
-              child: const Icon(Icons.edit_outlined, size: 20),
+              child: Icon(Icons.edit_outlined, size: 20.r),
             ),
           ),
           IconButton(
             onPressed: () => _showDeleteDialog(context, provider, currentJob),
             icon: Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.r),
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.errorLight),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
-              child: const Icon(Icons.delete_outline, size: 20, color: AppColors.error),
+              child: Icon(Icons.delete_outline, size: 20.r, color: AppColors.error),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
         ],
       ),
       body: SFOBackground(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.r),
           child: Column(
             children: [
               // Header Card
               SFOCard(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 children: [
                   Row(
                     children: [
                       Container(
-                        width: 56,
-                        height: 56,
+                        width: 56.r,
+                        height: 56.r,
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surfaceContainer,
                           borderRadius: AppRadius.md,
                         ),
-                        child: Icon(_getDeviceIcon(currentJob.deviceType), size: 28, color: theme.colorScheme.onSurfaceVariant),
+                        child: Icon(_getDeviceIcon(currentJob.deviceType), size: 28.r, color: theme.colorScheme.onSurfaceVariant),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,9 +97,9 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   _StatusStepper(status: currentJob.status),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   if (currentJob.status != ServiceJobStatus.completed && currentJob.status != ServiceJobStatus.cancelled)
                     SFOButton(
                       text: "Advance Status",
@@ -108,7 +109,7 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               // Customer Details
               _DetailSection(
@@ -116,11 +117,11 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                 icon: Icons.person_outline,
                 children: [
                   _InfoLabel(label: "Name", value: currentJob.customerName),
-                  _InfoLabel(label: "Phone", value: customer?.phone ?? "N/A"),
+                  _InfoLabel(label: "Phone", value: customer.phone ?? "N/A"),
                   _InfoLabel(label: "Received Date", value: _formatDate(currentJob.createdAt)),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               // Job Info
               _DetailSection(
@@ -132,7 +133,7 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                   _InfoLabel(label: "Assigned To", value: currentJob.assignedTo ?? "Unassigned"),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               // Costs & Billing
               _DetailSection(
@@ -142,9 +143,9 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(child: _CostCard(label: "Labor", value: CurrencyFormatter.format(currentJob.laborCost, currency))),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Expanded(child: _CostCard(label: "Parts", value: CurrencyFormatter.format(currentJob.totalPartsCost, currency))),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: _CostCard(
                           label: "Total", 
@@ -155,10 +156,10 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   if (currentJob.isWarranty)
                     Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         color: AppColors.success.withValues(alpha: 0.05),
                         borderRadius: AppRadius.md,
@@ -166,8 +167,8 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.check_circle_outline, color: AppColors.success, size: 20),
-                          const SizedBox(width: 12),
+                          Icon(Icons.check_circle_outline, color: AppColors.success, size: 20.r),
+                          SizedBox(width: 12.w),
                           Expanded(
                             child: Text(
                               "Warranty Applied - Customer will not be charged",
@@ -179,7 +180,7 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40.h),
             ],
           ),
         ),
@@ -273,12 +274,12 @@ class _StatusStepper extends StatelessWidget {
           bool isCurrent = stepIndex == currentIndex;
 
           return Container(
-            width: 12,
-            height: 12,
+            width: 12.r,
+            height: 12.r,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isCompleted || isCurrent ? AppColors.success : Colors.grey.withValues(alpha: 0.3),
-              border: isCurrent ? Border.all(color: AppColors.success.withValues(alpha: 0.3), width: 4) : null,
+              border: isCurrent ? Border.all(color: AppColors.success.withValues(alpha: 0.3), width: 4.r) : null,
             ),
           );
         } else {
@@ -287,7 +288,7 @@ class _StatusStepper extends StatelessWidget {
 
           return Expanded(
             child: Container(
-              height: 2,
+              height: 2.h,
               color: isCompleted ? AppColors.success : Colors.grey.withValues(alpha: 0.3),
             ),
           );
@@ -307,14 +308,14 @@ class _DetailSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SFOCard(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       children: [
         Row(
           children: [
             SFOSectionHeader(title: title),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         ...children,
       ],
     );
@@ -331,12 +332,12 @@ class _InfoLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6))),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(value, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface, fontWeight: FontWeight.w500)),
         ],
       ),
@@ -356,7 +357,7 @@ class _CostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: bgColor ?? theme.colorScheme.surface,
         borderRadius: AppRadius.md,
@@ -366,7 +367,7 @@ class _CostCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: theme.textTheme.labelSmall),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(
             value, 
             style: theme.textTheme.titleSmall?.copyWith(

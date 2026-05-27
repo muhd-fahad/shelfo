@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 enum SFOButtonType { filled, outlined, text }
@@ -35,8 +36,8 @@ class SFOButton extends StatelessWidget {
     Widget child;
     if (isLoading) {
       child = SizedBox(
-        height: 20,
-        width: 20,
+        height: 20.r,
+        width: 20.r,
         child: CircularProgressIndicator(
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onPrimary),
@@ -45,13 +46,13 @@ class SFOButton extends StatelessWidget {
     } else {
       final List<Widget> children = [
         if (icon != null && !iconTrailing) ...[
-          Icon(icon, size: 20),
-          const SizedBox(width: AppSpacing.sm),
+          Icon(icon, size: 20.r),
+          SizedBox(width: AppSpacing.sm),
         ],
         Text(text),
         if (icon != null && iconTrailing) ...[
-          const SizedBox(width: AppSpacing.sm),
-          Icon(icon, size: 20),
+          SizedBox(width: AppSpacing.sm),
+          Icon(icon, size: 20.r),
         ],
       ];
       child = Row(
@@ -69,7 +70,7 @@ class SFOButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: backgroundColor ?? (isSecondary ? colorScheme.secondary : colorScheme.primary),
-            minimumSize: Size(buttonWidth, 52),
+            minimumSize: Size(buttonWidth, 52.h),
           ),
           child: child,
         );
@@ -77,7 +78,7 @@ class SFOButton extends StatelessWidget {
         return OutlinedButton(
           onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
-            minimumSize: Size(buttonWidth, 52),
+            minimumSize: Size(buttonWidth, 52.h),
           ),
           child: child,
         );
@@ -85,7 +86,7 @@ class SFOButton extends StatelessWidget {
         return TextButton(
           onPressed: isLoading ? null : onPressed,
           style: TextButton.styleFrom(
-            minimumSize: width != null ? Size(width!, 40) : null,
+            minimumSize: width != null ? Size(width!, 40.h) : null,
           ),
           child: child,
         );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
@@ -30,11 +31,11 @@ class InvoiceSettingsScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: Column(
-          spacing: 24,
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .center,
+          spacing: 24.h,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const InvoicePreviewWidget(),
             Row(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
@@ -46,11 +47,11 @@ class InvoiceDetailScreen extends StatelessWidget {
             ),
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl),
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  padding: EdgeInsets.all(AppSpacing.xl),
                   decoration: ShapeDecoration(
                     color: isDark ? AppColors.darkSurface : AppColors.white,
                     shape: RoundedSuperellipseBorder(
@@ -73,7 +74,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                                   business?.name ?? "Business Name",
                                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4.h),
                                 Text(
                                   business?.address ?? "Address not set",
                                   style: theme.textTheme.bodySmall,
@@ -92,7 +93,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                                 sale.customerName,
                                 style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8.h),
                               SFOBadge(
                                 label: sale.status,
                                 bgColor: isRefunded ? AppColors.error.withValues(alpha: 0.1) : AppColors.success.withValues(alpha: 0.1),
@@ -102,42 +103,42 @@ class InvoiceDetailScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.xl),
+                      SizedBox(height: AppSpacing.xl),
                       const SFODivider(),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       Row(
                         children: [
                           Expanded(child: Text("Item", style: theme.textTheme.labelMedium)),
                           Text("Qty", style: theme.textTheme.labelMedium),
-                          const SizedBox(width: AppSpacing.lg),
+                          SizedBox(width: AppSpacing.lg),
                           Text("Price", style: theme.textTheme.labelMedium),
-                          const SizedBox(width: AppSpacing.lg),
+                          SizedBox(width: AppSpacing.lg),
                           Text("Total", style: theme.textTheme.labelMedium),
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm),
                       ...sale.items.map((item) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
                             child: Row(
                               children: [
                                 Expanded(child: Text(item.productName, style: theme.textTheme.bodyMedium)),
                                 Text("${item.quantity}", style: theme.textTheme.bodyMedium),
-                                const SizedBox(width: AppSpacing.lg),
+                                SizedBox(width: AppSpacing.lg),
                                 Text(CurrencyFormatter.format(item.price, currency), style: theme.textTheme.bodyMedium),
-                                const SizedBox(width: AppSpacing.lg),
+                                SizedBox(width: AppSpacing.lg),
                                 Text(CurrencyFormatter.format(item.total, currency), style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
                               ],
                             ),
                           )),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       const SFODivider(),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       SFOPriceRow(label: "Subtotal", value: CurrencyFormatter.format(sale.subtotal, currency)),
-                      const SizedBox(height: AppSpacing.xs),
+                      SizedBox(height: AppSpacing.xs),
                       SFOPriceRow(label: "Tax", value: CurrencyFormatter.format(sale.taxAmount, currency)),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       const SFODivider(),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -148,7 +149,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       Text(
                         "Paid via ${sale.paymentMethod}",
                         style: theme.textTheme.bodySmall,
@@ -156,7 +157,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -164,19 +165,19 @@ class InvoiceDetailScreen extends StatelessWidget {
                       icon: Icons.print_outlined,
                       onTap: () => PdfService.generateAndPrintInvoice(sale, business, currency),
                     ),
-                    const SizedBox(width: AppSpacing.lg),
+                    SizedBox(width: AppSpacing.lg),
                     _IconButton(
                       icon: Icons.share_outlined,
                       onTap: () => PdfService.generateAndShareInvoice(sale, business, currency),
                     ),
-                    const SizedBox(width: AppSpacing.lg),
+                    SizedBox(width: AppSpacing.lg),
                     _IconButton(
                       icon: Icons.download_outlined,
                       onTap: () => PdfService.generateAndDownloadInvoice(sale, business, currency),
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
                 if (!isRefunded)
                   TextButton(
                     onPressed: () {
@@ -235,8 +236,8 @@ class _IconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 56,
-        height: 56,
+        width: 56.r,
+        height: 56.r,
         decoration: ShapeDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
           shape: RoundedSuperellipseBorder(
@@ -244,7 +245,7 @@ class _IconButton extends StatelessWidget {
             side: BorderSide(color: theme.colorScheme.outlineVariant),
           ),
         ),
-        child: Icon(icon, color: theme.colorScheme.onSurface),
+        child: Icon(icon, size: 24.r, color: theme.colorScheme.onSurface),
       ),
     );
   }

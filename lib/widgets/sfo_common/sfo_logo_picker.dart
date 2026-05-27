@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_viewer.dart';
 import '../../utils/theme/theme.dart';
@@ -28,8 +29,8 @@ class SFOLogoPicker extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: theme.cardTheme.color,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (BuildContext bc) {
         return SafeArea(
@@ -95,12 +96,12 @@ class SFOLogoPicker extends StatelessWidget {
             color: colorScheme.onSurfaceVariant,
             size: size * 0.3,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(
             label,
             style: theme.textTheme.labelSmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
-              fontSize: 10,
+              fontSize: 10.sp,
             ),
           ),
         ],
@@ -126,7 +127,7 @@ class SFOLogoPicker extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: logoPath != null ? EdgeInsets.zero : const EdgeInsets.all(12.0),
+              padding: logoPath != null ? EdgeInsets.zero : EdgeInsets.all(12.r),
               child: child,
             ),
           ),
@@ -137,12 +138,12 @@ class SFOLogoPicker extends StatelessWidget {
               child: GestureDetector(
                 onTap: onRemove,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(4.r),
                   decoration: BoxDecoration(
                     color: colorScheme.error,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.close, size: 12, color: Colors.white),
+                  child: Icon(Icons.close, size: 12.r, color: Colors.white),
                 ),
               ),
             ),

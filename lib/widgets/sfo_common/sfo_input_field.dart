@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SFOInputField extends StatelessWidget {
   final String label;
@@ -50,7 +51,7 @@ class SFOInputField extends StatelessWidget {
                 : [],
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextFormField(
           controller: controller,
           initialValue: initialValue,

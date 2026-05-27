@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SFODropdown<T> extends StatelessWidget {
@@ -44,9 +45,9 @@ class SFODropdown<T> extends StatelessWidget {
                 : [],
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: ShapeDecoration(
             color: theme.inputDecorationTheme.fillColor,
             shape: RoundedSuperellipseBorder(
@@ -64,11 +65,12 @@ class SFODropdown<T> extends StatelessWidget {
               icon: Icon(
                 Icons.keyboard_arrow_down,
                 color: colorScheme.onSurfaceVariant,
+                size: 24.r,
               ),
               onChanged: onChanged,
               items: items,
               dropdownColor: theme.inputDecorationTheme.fillColor,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ),

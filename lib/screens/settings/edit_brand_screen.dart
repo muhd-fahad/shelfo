@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/brand/brand_model.dart';
 import 'package:shelfo/provider/brand_provider.dart';
@@ -23,7 +24,7 @@ class EditBrandScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: SFOHeader(
@@ -34,11 +35,11 @@ class EditBrandScreen extends StatelessWidget {
       ),
       body: Consumer<BrandProvider>(
         builder: (context, provider, _) => SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20.r),
           child: Column(
             children: [
               SFOCard(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.r),
                 children: [
                   SFOInputField(
                     label: "Brand Name",
@@ -47,7 +48,7 @@ class EditBrandScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               SFOButton(
                 text: brand == null ? "Create Brand" : "Save Changes",
                 onPressed: () => _save(context, provider),

@@ -30,7 +30,7 @@ class CustomerListScreen extends StatelessWidget {
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: AppSpacing.xl),
+                padding: EdgeInsets.only(right: AppSpacing.xl),
                 child: SFOButton(
                   text: "Add Customer",
                   icon: Icons.add,
@@ -47,24 +47,24 @@ class CustomerListScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: .start,
               children: [
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   child: SFOSearchBar(
                     hintText: "Search Customers",
                     onChanged: (val) => provider.setSearchQuery(val),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                   child: Row(
                     mainAxisAlignment: .start,
                     children: ["All", "Active", "Credit", "Overdue"].map((status) {
                       final isSelected = provider.filterStatus == status;
                       return Padding(
-                        padding: const EdgeInsets.only(right: AppSpacing.sm),
+                        padding: EdgeInsets.only(right: AppSpacing.sm),
                         child: SFOChip(
                           label: status,
                           isSelected: isSelected,
@@ -74,16 +74,16 @@ class CustomerListScreen extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
                 Expanded(
                   child: provider.isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : provider.customers.isEmpty
                           ? const Center(child: Text("No customers found"))
                           : ListView.separated(
-                              padding: const EdgeInsets.all(AppSpacing.xl),
+                              padding: EdgeInsets.all(AppSpacing.xl),
                               itemCount: provider.customers.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.md),
+                              separatorBuilder: (context, index) => SizedBox(height: AppSpacing.md),
                               itemBuilder: (context, index) {
                                 final customer = provider.customers[index];
                                 return _CustomerCard(
@@ -134,7 +134,7 @@ class _CustomerCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: EdgeInsets.all(AppSpacing.xl),
         decoration: ShapeDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
           shape: RoundedSuperellipseBorder(
@@ -153,7 +153,7 @@ class _CustomerCard extends StatelessWidget {
                     style: theme.textTheme.labelLarge?.copyWith(color: colorScheme.primary),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.md),
+                SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +182,7 @@ class _CustomerCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -208,7 +208,7 @@ class _CustomerCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             LinearProgressIndicator(
               value: progress,
               backgroundColor: colorScheme.surfaceContainer,

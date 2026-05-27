@@ -33,7 +33,7 @@ class SFOTile extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: ShapeDecoration(
                 color: colorScheme.primary.withOpacity(0.1),
-                shape: const RoundedSuperellipseBorder(
+                shape: RoundedSuperellipseBorder(
                   borderRadius: AppRadius.sm,
                 ),
               ),

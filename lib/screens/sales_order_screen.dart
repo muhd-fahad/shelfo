@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/sfo_common/sfo_header.dart';
+import '../widgets/sfo_common/sfo_background.dart';
 
 class SalesOrderScreen extends StatelessWidget {
   const SalesOrderScreen({super.key});
@@ -10,8 +11,10 @@ class SalesOrderScreen extends StatelessWidget {
       appBar: AppBar(
         title: const SFOHeader(title: "Sales Order"),
       ),
-      body: const Center(
-        child: Text("Sales order screen"),
+      body: const SFOBackground(
+        child: Center(
+          child: Text("Sales order screen"),
+        ),
       ),
     );
   }

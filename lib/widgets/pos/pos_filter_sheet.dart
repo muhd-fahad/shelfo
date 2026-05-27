@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../provider/category_provider.dart';
 import '../../provider/pos_provider.dart';
@@ -20,14 +21,14 @@ class PosFilterSheet extends StatelessWidget {
       builder: (context, posProvider, categoryProvider, brandProvider, child) {
         return Container(
           padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: 24,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            left: 24.w,
+            right: 24.w,
+            top: 24.h,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
           ),
           decoration: BoxDecoration(
             color: theme.cardTheme.color,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -50,13 +51,13 @@ class PosFilterSheet extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 
                 _buildSectionTitle(theme, colorScheme, "Category"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: 8.w,
+                  runSpacing: 8.h,
                   children: [
                     SFOChip(
                       label: "All",
@@ -70,13 +71,13 @@ class PosFilterSheet extends StatelessWidget {
                     )),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 _buildSectionTitle(theme, colorScheme, "Brand"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: 8.w,
+                  runSpacing: 8.h,
                   children: [
                     SFOChip(
                       label: "All",
@@ -90,23 +91,23 @@ class PosFilterSheet extends StatelessWidget {
                     )),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 _buildSectionTitle(theme, colorScheme, "Stock Status"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: 8.w,
+                  runSpacing: 8.h,
                   children: ["All", "In Stock", "Out of Stock"].map((status) => SFOChip(
                     label: status,
                     isSelected: posProvider.stockStatus == status,
                     onSelected: (val) => posProvider.setStockStatus(status),
                   )).toList(),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
 
                 _buildSectionTitle(theme, colorScheme, "Price Range"),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Expanded(
@@ -117,7 +118,7 @@ class PosFilterSheet extends StatelessWidget {
                         keyboardType: TextInputType.number,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16.w),
                     Expanded(
                       child: SFOInputField(
                         label: "Max",
@@ -129,7 +130,7 @@ class PosFilterSheet extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 SFOButton(
                   text: "Apply Filter",
                   onPressed: () {
@@ -139,7 +140,7 @@ class PosFilterSheet extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
               ],
             ),
           ),

@@ -52,11 +52,11 @@ class SFODialog extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return AlertDialog(
-      shape: const RoundedRectangleBorder(borderRadius: AppRadius.lg),
+      shape: RoundedRectangleBorder(borderRadius: AppRadius.lg),
       backgroundColor: colorScheme.surface,
       title: Text(title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
       content: Text(message, style: theme.textTheme.bodyMedium),
-      actionsPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      actionsPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       actions: [
         if (secondaryActionText != null)
           SFOButton(

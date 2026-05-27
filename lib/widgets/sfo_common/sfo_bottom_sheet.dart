@@ -36,7 +36,7 @@ class SFOBottomSheet {
             ),
             if (title != null) ...[
               Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Text(
                   title, 
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -48,7 +48,7 @@ class SFOBottomSheet {
               Divider(height: 1, color: colorScheme.outline),
             ],
             Flexible(child: child),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
           ],
         ),
       ),

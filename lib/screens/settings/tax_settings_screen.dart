@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 import 'package:shelfo/provider/tax_provider.dart';
@@ -28,7 +29,7 @@ class TaxSettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
           onPressed: () => Navigator.pop(context),
         ),
         title: const SFOHeader(
@@ -38,7 +39,7 @@ class TaxSettingsScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.r),
         child: Column(
           children: [
             SFOCard(
@@ -54,9 +55,9 @@ class TaxSettingsScreen extends StatelessWidget {
               ],
             ),
             if (taxProvider.isTaxEnabled) ...[
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               SFOCard(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -69,7 +70,7 @@ class TaxSettingsScreen extends StatelessWidget {
                           keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Expanded(
                         child: SFOInputField(
                           label: "Tax Label",
@@ -79,7 +80,7 @@ class TaxSettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                   Text(
                     "Tax Pricing Mode",
                     style: theme.textTheme.labelLarge?.copyWith(
@@ -87,7 +88,7 @@ class TaxSettingsScreen extends StatelessWidget {
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -98,7 +99,7 @@ class TaxSettingsScreen extends StatelessWidget {
                           onTap: () => taxProvider.setPricingMode(TaxPricingMode.exclusive),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.w),
                       Expanded(
                         child: _PricingModeCard(
                           title: "Tax Inclusive",
@@ -108,15 +109,15 @@ class TaxSettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   Row(
                     children: [
                       Icon(
                         Icons.info_outline_rounded,
-                        size: 16,
+                        size: 16.r,
                         color: colorScheme.onSurfaceVariant.withOpacity(0.6),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
                         "How do you enter product prices?",
                         style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withOpacity(0.6)),
@@ -126,7 +127,7 @@ class TaxSettingsScreen extends StatelessWidget {
                 ],
               ),
             ],
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             SFOButton(
               text: "Save Changes",
               onPressed: () async {
@@ -163,7 +164,7 @@ class _PricingModeCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: ShapeDecoration(
           color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
           shape: RoundedSuperellipseBorder(

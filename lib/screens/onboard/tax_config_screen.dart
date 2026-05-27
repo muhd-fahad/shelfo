@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 import 'package:shelfo/provider/tax_provider.dart';
@@ -30,11 +31,11 @@ class TaxConfigScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: Column(
-          spacing: 24,
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .center,
+          spacing: 24.h,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SFOSwitchTile(
               title: "Enable Tax Calculation",
@@ -77,7 +78,7 @@ class TaxConfigScreen extends StatelessWidget {
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Row(
                     mainAxisSize: .max,
                     spacing: AppSpacing.lg,
@@ -101,7 +102,7 @@ class TaxConfigScreen extends StatelessWidget {
                   Row(
                     spacing: AppSpacing.xs,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline_rounded,
                         size: AppSpacing.md,
                         color: AppColors.textMuted,
@@ -148,7 +149,7 @@ class _PricingModeCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: ShapeDecoration(
           color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.transparent,
           shape: RoundedSuperellipseBorder(
