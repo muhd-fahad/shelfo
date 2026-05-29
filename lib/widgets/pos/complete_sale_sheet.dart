@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/provider/cart_provider.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
@@ -9,8 +11,9 @@ import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
+import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
 
 class CompleteSaleSheet extends StatelessWidget {
   const CompleteSaleSheet({super.key});
@@ -58,20 +61,69 @@ class CompleteSaleSheet extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.xl),
               
-              SFODropdown<String>(
-                label: "Customer (Optional)",
-                value: cartProvider.selectedCustomer,
-                items: [
-                  const DropdownMenuItem(value: "Walk-in Customer", child: Text("Walk-in Customer")),
-                  ...customerProvider.customers.map((c) => DropdownMenuItem(
-                    value: c.name,
-                    child: Text(c.name),
-                  )),
-                ],
-                onChanged: (val) {
-                  if (val != null) cartProvider.setCustomer(val);
-                },
+              // Customer Selection (Matches Sales Order style)
+              Text(
+                "Customer",
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
+              SizedBox(height: 8.0.h),
+              GestureDetector(
+                onTap: () async {
+                  context.read<CustomerProvider>().setSearchQuery(""); // Clear search
+                  final customer = await SFOBottomSheet.show<Customer>(
+                    context,
+                    title: "Select Customer",
+                    child: const CustomerSelectionSheet(),
+                  );
+                  if (customer != null) {
+                    cartProvider.setCustomer(customer);
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(12.r),
+                  decoration: BoxDecoration(
+                    color: theme.inputDecorationTheme.fillColor,
+                    borderRadius: AppRadius.md,
+                    border: Border.all(color: colorScheme.outline),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.person_outline, color: colorScheme.primary),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              cartProvider.selectedCustomer?.name ?? "Walk-in Customer",
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: cartProvider.selectedCustomer != null 
+                                  ? colorScheme.onSurface 
+                                  : colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                            if (cartProvider.selectedCustomer != null) ...[
+                              SizedBox(height: 4.h),
+                              Text(
+                                "${cartProvider.selectedCustomer?.phone ?? 'No Phone'} • ${cartProvider.selectedCustomer?.address ?? 'No Address'}",
+                                style: theme.textTheme.bodySmall,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.keyboard_arrow_right, color: colorScheme.onSurfaceVariant),
+                    ],
+                  ),
+                ),
+              ),
+
               SizedBox(height: AppSpacing.xl),
 
               Text(

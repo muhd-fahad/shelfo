@@ -5,7 +5,7 @@ import 'package:shelfo/screens/inventory/inventory_screen.dart';
 import '../../provider/navigation_provider.dart';
 import '../../screens/home_screen.dart';
 import '../../screens/pos/pos_screen.dart';
-import '../../screens/sales_order_screen.dart';
+import '../../screens/sales/sales_order_screen.dart';
 import 'package:shelfo/screens/settings/settings_screen.dart';
 
 class BottomNavbarWidget extends StatelessWidget {

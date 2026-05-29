@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SFOChip extends StatelessWidget {
@@ -23,13 +24,13 @@ class SFOChip extends StatelessWidget {
       onTap: () => onSelected(!isSelected),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: ShapeDecoration(
           color: isSelected
               ? (isDark ? colorScheme.primary : AppColors.textPrimary)
               : (isDark ? AppColors.darkSurface : AppColors.borderLight),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+          shape: RoundedSuperellipseBorder(
+            borderRadius: AppRadius.md,
             side: BorderSide(
               color: isSelected
                   ? Colors.transparent

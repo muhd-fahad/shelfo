@@ -61,13 +61,13 @@ class PosFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: posProvider.selectedCategory == null,
-                      onSelected: (val) => posProvider.setCategory(null),
+                      isSelected: posProvider.selectedCategories.isEmpty,
+                      onSelected: (val) => posProvider.toggleCategory(null),
                     ),
                     ...categoryProvider.categories.map((c) => SFOChip(
                       label: c.name,
-                      isSelected: posProvider.selectedCategory == c.name,
-                      onSelected: (val) => posProvider.setCategory(c.name),
+                      isSelected: posProvider.selectedCategories.contains(c.name),
+                      onSelected: (val) => posProvider.toggleCategory(c.name),
                     )),
                   ],
                 ),
@@ -81,13 +81,13 @@ class PosFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: posProvider.selectedBrand == null,
-                      onSelected: (val) => posProvider.setBrand(null),
+                      isSelected: posProvider.selectedBrands.isEmpty,
+                      onSelected: (val) => posProvider.toggleBrand(null),
                     ),
                     ...brandProvider.brands.take(12).map((b) => SFOChip(
                       label: b.name,
-                      isSelected: posProvider.selectedBrand == b.name,
-                      onSelected: (val) => posProvider.setBrand(b.name),
+                      isSelected: posProvider.selectedBrands.contains(b.name),
+                      onSelected: (val) => posProvider.toggleBrand(b.name),
                     )),
                   ],
                 ),
@@ -100,8 +100,10 @@ class PosFilterSheet extends StatelessWidget {
                   runSpacing: 8.h,
                   children: ["All", "In Stock", "Out of Stock"].map((status) => SFOChip(
                     label: status,
-                    isSelected: posProvider.stockStatus == status,
-                    onSelected: (val) => posProvider.setStockStatus(status),
+                    isSelected: status == "All" 
+                        ? posProvider.stockStatuses.isEmpty 
+                        : posProvider.stockStatuses.contains(status),
+                    onSelected: (val) => posProvider.toggleStockStatus(status),
                   )).toList(),
                 ),
                 SizedBox(height: 24.h),

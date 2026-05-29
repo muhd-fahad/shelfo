@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
+import '../../provider/customer_provider.dart';
 import '../../provider/sale_provider.dart';
 import '../../provider/business_provider.dart';
 import '../../utils/formatters/currency_formatter.dart';
@@ -13,6 +14,7 @@ import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_badge.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import 'invoice_detail_screen.dart';
+import 'invoice_form_screen.dart';
 
 class SalesHistoryScreen extends StatelessWidget {
   const SalesHistoryScreen({super.key});
@@ -30,6 +32,22 @@ class SalesHistoryScreen extends StatelessWidget {
           title: "Sales History",
           subtitle: "Past transactions",
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.w),
+            child: SFOButton(
+              text: "New Invoice",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const InvoiceFormScreen()),
+                );
+              },
+              icon: Icons.add,
+              width: 130.w,
+            ),
+          ),
+        ],
       ),
       body: SFOBackground(
         child: Column(
@@ -122,6 +140,9 @@ class _TransactionCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
+    
+    final customerProvider = context.watch<CustomerProvider>();
+    final customer = customerProvider.customers.where((c) => c.name == sale.customerName).firstOrNull;
 
     final dateFormat = DateFormat('MMM dd, yyyy');
     final isRefunded = sale.status == 'Refunded';
@@ -179,8 +200,13 @@ class _TransactionCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Text(
                     "${dateFormat.format(sale.dateTime)}  •  ${sale.customerName}",
-                    style: theme.textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
                   ),
+                  if (customer?.phone != null)
+                    Text(
+                      customer!.phone!,
+                      style: theme.textTheme.labelSmall?.copyWith(fontSize: 10.sp),
+                    ),
                 ],
               ),
             ),

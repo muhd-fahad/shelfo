@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
 import '../../provider/business_provider.dart';
+import '../../provider/customer_provider.dart';
 import '../../provider/sale_provider.dart';
 import '../../services/hive/business_service.dart';
 import '../../utils/formatters/currency_formatter.dart';
@@ -13,6 +14,7 @@ import '../../widgets/sfo_common/sfo_badge.dart';
 import '../../widgets/sfo_common/sfo_divider.dart';
 import '../../widgets/sfo_common/sfo_price_row.dart';
 import '../../services/pdf/pdf_service.dart';
+import 'invoice_form_screen.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
   final Sale sale;
@@ -45,6 +47,48 @@ class InvoiceDetailScreen extends StatelessWidget {
               title: "Invoice ${sale.id}",
               subtitle: "${dateFormat.format(sale.dateTime)} at ${timeFormat.format(sale.dateTime)}",
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InvoiceFormScreen(invoice: sale),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: AppColors.error),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Delete Invoice"),
+                      content: const Text("Are you sure you want to delete this invoice? This action cannot be undone."),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await context.read<SaleProvider>().deleteSale(sale);
+                            if (context.mounted) {
+                              Navigator.pop(context); // close dialog
+                              Navigator.pop(context); // go back to list
+                            }
+                          },
+                          child: const Text("Delete", style: TextStyle(color: AppColors.error)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              SizedBox(width: 8.w),
+            ],
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.all(AppSpacing.xl),
@@ -92,6 +136,28 @@ class InvoiceDetailScreen extends StatelessWidget {
                               Text(
                                 sale.customerName,
                                 style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              // Show customer details if available
+                              Builder(
+                                builder: (context) {
+                                  final customer = context.watch<CustomerProvider>().customers
+                                      .where((c) => c.name == sale.customerName).firstOrNull;
+                                  if (customer == null) return const SizedBox.shrink();
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      if (customer.phone != null)
+                                        Text(customer.phone!, style: theme.textTheme.bodySmall),
+                                      if (customer.address != null)
+                                        Text(customer.address!, 
+                                          style: theme.textTheme.bodySmall, 
+                                          textAlign: TextAlign.right,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                    ],
+                                  );
+                                },
                               ),
                               SizedBox(height: 8.h),
                               SFOBadge(

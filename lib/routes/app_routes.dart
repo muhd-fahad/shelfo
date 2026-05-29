@@ -5,7 +5,8 @@ import 'package:shelfo/screens/onboard/business_info_screen.dart';
 import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
 import 'package:shelfo/screens/pos/pos_screen.dart';
-import 'package:shelfo/screens/purchase_order_screen.dart';
+import 'package:shelfo/screens/purchase/purchasing_screen.dart';
+import 'package:shelfo/screens/sales/sales_order_screen.dart';
 import 'package:shelfo/screens/service_job/service_job_details_screen.dart';
 import 'package:shelfo/screens/service_job/service_job_form_screen.dart';
 import 'package:shelfo/screens/sales/sales_history_screen.dart';
@@ -43,6 +44,7 @@ class AppRoutes {
   static const String pos = '/pos';
   static const String reports = '/reports';
   static const String salesHistory = '/salesHistory';
+  static const String salesOrder = '/salesOrder';
   static const String purchaseOrder = '/purchaseOrder';
   static const String bottomNavbar = '/bottomNavbar';
   static const String customers = '/customers';
@@ -67,7 +69,8 @@ class AppRoutes {
     pos: (context) => const PosScreen(),
     reports: (context) => const ReportScreen(),
     salesHistory: (context) => const SalesHistoryScreen(),
-    purchaseOrder: (context) => const PurchaseOrderScreen(),
+    salesOrder: (context) => const SalesOrderScreen(),
+    purchaseOrder: (context) => const PurchasingScreen(),
     bottomNavbar: (context) => const BottomNavbarWidget(),
     customers: (context) => const CustomerListScreen(),
     serviceJobs: (context) => const JobTicketScreen(),

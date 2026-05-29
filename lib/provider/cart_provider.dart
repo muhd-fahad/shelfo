@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shelfo/models/sale/sale_item_model.dart';
 import 'package:shelfo/models/sale/sale_model.dart';
+import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/services/hive/sale_service.dart';
 
 import '../models/product/product_model.dart';
@@ -25,7 +26,7 @@ class CartProvider extends ChangeNotifier {
   String _selectedPaymentMethod = 'Cash';
   final TextEditingController amountTenderedController = TextEditingController();
   double _change = 0.0;
-  String _selectedCustomer = 'Walk-in Customer';
+  Customer? _selectedCustomer = null;
 
   List<CartItem> get items => _items;
 
@@ -41,14 +42,14 @@ class CartProvider extends ChangeNotifier {
 
   String get selectedPaymentMethod => _selectedPaymentMethod;
   double get change => _change;
-  String get selectedCustomer => _selectedCustomer;
+  Customer? get selectedCustomer => _selectedCustomer;
 
   void setPaymentMethod(String method) {
     _selectedPaymentMethod = method;
     notifyListeners();
   }
 
-  void setCustomer(String customer) {
+  void setCustomer(Customer? customer) {
     _selectedCustomer = customer;
     notifyListeners();
   }
@@ -57,7 +58,7 @@ class CartProvider extends ChangeNotifier {
     _selectedPaymentMethod = 'Cash';
     amountTenderedController.clear();
     _change = 0.0;
-    _selectedCustomer = 'Walk-in Customer';
+    _selectedCustomer = null;
     notifyListeners();
   }
 
@@ -141,7 +142,7 @@ class CartProvider extends ChangeNotifier {
     final sale = Sale(
       id: invoiceId,
       dateTime: DateTime.now(),
-      customerName: _selectedCustomer,
+      customerName: _selectedCustomer?.name ?? 'Walk-in Customer',
       items: _items.map((item) => SaleItem(
         productId: item.product.id,
         productName: item.product.name,

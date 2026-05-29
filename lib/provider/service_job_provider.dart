@@ -7,11 +7,11 @@ class ServiceJobProvider extends ChangeNotifier {
   List<ServiceJob> _filteredJobs = [];
   bool _isLoading = false;
   String _searchQuery = '';
-  ServiceJobStatus? _filterStatus;
+  final List<ServiceJobStatus> _filterStatuses = [];
 
   List<ServiceJob> get jobs => _filteredJobs;
   bool get isLoading => _isLoading;
-  ServiceJobStatus? get filterStatus => _filterStatus;
+  List<ServiceJobStatus> get filterStatuses => _filterStatuses;
 
   ServiceJobProvider() {
     loadJobs();
@@ -34,8 +34,16 @@ class ServiceJobProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFilterStatus(ServiceJobStatus? status) {
-    _filterStatus = status;
+  void toggleFilterStatus(ServiceJobStatus? status) {
+    if (status == null) {
+      _filterStatuses.clear();
+    } else {
+      if (_filterStatuses.contains(status)) {
+        _filterStatuses.remove(status);
+      } else {
+        _filterStatuses.add(status);
+      }
+    }
     _applyFilter();
     notifyListeners();
   }
@@ -51,8 +59,8 @@ class ServiceJobProvider extends ChangeNotifier {
           job.deviceName.toLowerCase().contains(query)).toList();
     }
 
-    if (_filterStatus != null) {
-      results = results.where((job) => job.status == _filterStatus).toList();
+    if (_filterStatuses.isNotEmpty) {
+      results = results.where((job) => _filterStatuses.contains(job.status)).toList();
     }
 
     _filteredJobs = results;

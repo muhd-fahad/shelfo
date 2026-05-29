@@ -89,14 +89,14 @@ class InventoryScreen extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(width: 8.w),
                   itemBuilder: (context, index) {
                     final name = index == 0 ? "All" : categoryProvider.categories[index - 1].name;
-                    final isSelected = (index == 0 && provider.selectedFilterCategory == null) || 
-                                     (index != 0 && provider.selectedFilterCategory == name);
+                    final isSelected = (index == 0 && provider.selectedFilterCategories.isEmpty) || 
+                                     (index != 0 && provider.selectedFilterCategories.contains(name));
                     
                     return Center(
                       child: SFOChip(
                         label: name,
                         isSelected: isSelected,
-                        onSelected: (val) => provider.setFilterCategory(name == "All" ? null : name),
+                        onSelected: (val) => provider.toggleFilterCategory(name == "All" ? null : name),
                       ),
                     );
                   },

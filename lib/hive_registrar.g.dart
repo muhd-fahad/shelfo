@@ -10,11 +10,14 @@ import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/models/invoice/invoice_config_model.dart';
 import 'package:shelfo/models/product/product_model.dart';
+import 'package:shelfo/models/purchase/purchase_item_model.dart';
+import 'package:shelfo/models/purchase/purchase_order_model.dart';
 import 'package:shelfo/models/sale/sale_item_model.dart';
 import 'package:shelfo/models/sale/sale_model.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
 import 'package:shelfo/models/tax/tax_config_model.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
+import 'package:shelfo/models/vendor/vendor_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
@@ -27,6 +30,9 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(ProductAdapter());
     registerAdapter(ProductTypeAdapter());
+    registerAdapter(PurchaseItemAdapter());
+    registerAdapter(PurchaseOrderAdapter());
+    registerAdapter(PurchaseOrderStatusAdapter());
     registerAdapter(SaleAdapter());
     registerAdapter(SaleItemAdapter());
     registerAdapter(ServiceJobAdapter());
@@ -34,6 +40,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(ServiceJobStatusAdapter());
     registerAdapter(TaxConfigAdapter());
     registerAdapter(TaxPricingModeAdapter());
+    registerAdapter(VendorAdapter());
   }
 }
 
@@ -48,6 +55,9 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(InvoiceConfigAdapter());
     registerAdapter(ProductAdapter());
     registerAdapter(ProductTypeAdapter());
+    registerAdapter(PurchaseItemAdapter());
+    registerAdapter(PurchaseOrderAdapter());
+    registerAdapter(PurchaseOrderStatusAdapter());
     registerAdapter(SaleAdapter());
     registerAdapter(SaleItemAdapter());
     registerAdapter(ServiceJobAdapter());
@@ -55,5 +65,6 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(ServiceJobStatusAdapter());
     registerAdapter(TaxConfigAdapter());
     registerAdapter(TaxPricingModeAdapter());
+    registerAdapter(VendorAdapter());
   }
 }

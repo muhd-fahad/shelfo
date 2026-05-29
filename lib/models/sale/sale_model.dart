@@ -32,6 +32,9 @@ class Sale extends HiveObject {
   @HiveField(8)
   String status; // 'Paid', 'Refunded'
 
+  @HiveField(9)
+  final String? notes;
+
   Sale({
     required this.id,
     required this.dateTime,
@@ -42,5 +45,6 @@ class Sale extends HiveObject {
     required this.total,
     required this.paymentMethod,
     this.status = 'Paid',
+    this.notes,
   });
 }

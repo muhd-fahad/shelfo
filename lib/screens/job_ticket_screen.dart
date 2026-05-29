@@ -79,13 +79,15 @@ class JobTicketScreen extends StatelessWidget {
                   final isAll = index == 0;
                   final status = isAll ? null : ServiceJobStatus.values[index - 1];
                   final label = isAll ? "All" : _getStatusLabel(status!);
-                  final isSelected = provider.filterStatus == status;
+                  final isSelected = isAll 
+                      ? provider.filterStatuses.isEmpty 
+                      : provider.filterStatuses.contains(status);
 
                   return Center(
                     child: SFOChip(
                       label: label,
                       isSelected: isSelected,
-                      onSelected: (val) => provider.setFilterStatus(status),
+                      onSelected: (val) => provider.toggleFilterStatus(status),
                     ),
                   );
                 },

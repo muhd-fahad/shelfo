@@ -42,7 +42,7 @@ class ServiceJobFilterSheet extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        provider.setFilterStatus(null);
+                        provider.toggleFilterStatus(null);
                         Navigator.pop(context);
                       },
                       child: const Text("Clear All", style: TextStyle(color: AppColors.error)),
@@ -64,13 +64,13 @@ class ServiceJobFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: provider.filterStatus == null,
-                      onSelected: (val) => provider.setFilterStatus(null),
+                      isSelected: provider.filterStatuses.isEmpty,
+                      onSelected: (val) => provider.toggleFilterStatus(null),
                     ),
                     ...ServiceJobStatus.values.map((status) => SFOChip(
                       label: _getStatusLabel(status),
-                      isSelected: provider.filterStatus == status,
-                      onSelected: (val) => provider.setFilterStatus(status),
+                      isSelected: provider.filterStatuses.contains(status),
+                      onSelected: (val) => provider.toggleFilterStatus(status),
                     )),
                   ],
                 ),

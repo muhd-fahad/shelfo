@@ -21,7 +21,6 @@ class AddEditCustomerScreen extends StatelessWidget {
       child: Consumer<CustomerFormProvider>(
         builder: (context, formProvider, child) {
           final theme = Theme.of(context);
-          final colorScheme = theme.colorScheme;
 
           return Scaffold(
             appBar: AppBar(
@@ -137,7 +136,7 @@ class AddEditCustomerScreen extends StatelessWidget {
     }
 
     if (context.mounted) {
-      Navigator.pop(context);
+      Navigator.pop(context, newCustomer);
       SFOSnackbar.show(
         context,
         message: customer == null ? "Customer added" : "Customer updated",

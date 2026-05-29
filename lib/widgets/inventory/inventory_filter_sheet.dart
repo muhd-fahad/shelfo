@@ -62,13 +62,13 @@ class InventoryFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: productProvider.selectedFilterCategory == null,
-                      onSelected: (val) => productProvider.setFilterCategory(null),
+                      isSelected: productProvider.selectedFilterCategories.isEmpty,
+                      onSelected: (val) => productProvider.toggleFilterCategory(null),
                     ),
                     ...categoryProvider.categories.map((c) => SFOChip(
                           label: c.name,
-                          isSelected: productProvider.selectedFilterCategory == c.name,
-                          onSelected: (val) => productProvider.setFilterCategory(c.name),
+                          isSelected: productProvider.selectedFilterCategories.contains(c.name),
+                          onSelected: (val) => productProvider.toggleFilterCategory(c.name),
                         )),
                   ],
                 ),
@@ -82,13 +82,13 @@ class InventoryFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: productProvider.selectedFilterBrand == null,
-                      onSelected: (val) => productProvider.setFilterBrand(null),
+                      isSelected: productProvider.selectedFilterBrands.isEmpty,
+                      onSelected: (val) => productProvider.toggleFilterBrand(null),
                     ),
                     ...brandProvider.brands.take(12).map((b) => SFOChip(
                           label: b.name,
-                          isSelected: productProvider.selectedFilterBrand == b.name,
-                          onSelected: (val) => productProvider.setFilterBrand(b.name),
+                          isSelected: productProvider.selectedFilterBrands.contains(b.name),
+                          onSelected: (val) => productProvider.toggleFilterBrand(b.name),
                         )),
                   ],
                 ),
@@ -101,8 +101,10 @@ class InventoryFilterSheet extends StatelessWidget {
                   runSpacing: 8.h,
                   children: ["All", "In Stock", "Low Stock", "Out of Stock"].map((status) => SFOChip(
                     label: status,
-                    isSelected: productProvider.stockStatus == status,
-                    onSelected: (val) => productProvider.setStockStatus(status),
+                    isSelected: status == "All" 
+                        ? productProvider.stockStatuses.isEmpty 
+                        : productProvider.stockStatuses.contains(status),
+                    onSelected: (val) => productProvider.toggleStockStatus(status),
                   )).toList(),
                 ),
                 SizedBox(height: 24.h),
@@ -115,13 +117,13 @@ class InventoryFilterSheet extends StatelessWidget {
                   children: [
                     SFOChip(
                       label: "All",
-                      isSelected: productProvider.selectedFilterProductType == null,
-                      onSelected: (val) => productProvider.setFilterProductType(null),
+                      isSelected: productProvider.selectedFilterProductTypes.isEmpty,
+                      onSelected: (val) => productProvider.toggleFilterProductType(null),
                     ),
                     ...ProductType.values.map((type) => SFOChip(
                       label: type.label,
-                      isSelected: productProvider.selectedFilterProductType == type,
-                      onSelected: (val) => productProvider.setFilterProductType(type),
+                      isSelected: productProvider.selectedFilterProductTypes.contains(type),
+                      onSelected: (val) => productProvider.toggleFilterProductType(type),
                     )),
                   ],
                 ),

@@ -96,6 +96,7 @@ class HomeScreen extends StatelessWidget {
                   badgeColor: Colors.orange,
                   iconColor: Colors.orange,
                   iconBgColor: Colors.orange.withValues(alpha: 0.1),
+                  onTap: () => Navigator.pushNamed(context, AppRoutes.salesOrder),
                 ),
               ],
             ),
@@ -167,6 +168,11 @@ class HomeScreen extends StatelessWidget {
                       label: "Service Jobs",
                       icon: Icons.handyman_outlined,
                       onTap: () => Navigator.pushNamed(context, AppRoutes.serviceJobs),
+                    ),
+                    QuickActionItem(
+                      label: "Sales Orders",
+                      icon: Icons.assignment_outlined,
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.salesOrder),
                     ),
                     QuickActionItem(
                       label: "Sales History",

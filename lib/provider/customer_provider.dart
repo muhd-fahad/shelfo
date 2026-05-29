@@ -10,12 +10,12 @@ class CustomerProvider extends ChangeNotifier {
   List<Customer> _filteredCustomers = [];
   bool _isLoading = false;
   String _searchQuery = '';
-  String _filterStatus = 'All'; // All, Active, Credit, Overdue
+  final List<String> _filterStatuses = []; // Active, Credit, Overdue
   String? _selectedCustomerId;
 
   List<Customer> get customers => _filteredCustomers;
   bool get isLoading => _isLoading;
-  String get filterStatus => _filterStatus;
+  List<String> get filterStatuses => _filterStatuses;
   String? get selectedCustomerId => _selectedCustomerId;
 
   CustomerProvider({SaleProvider? saleProvider}) : _saleProvider = saleProvider {
@@ -45,8 +45,16 @@ class CustomerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFilterStatus(String status) {
-    _filterStatus = status;
+  void toggleFilterStatus(String status) {
+    if (status == 'All') {
+      _filterStatuses.clear();
+    } else {
+      if (_filterStatuses.contains(status)) {
+        _filterStatuses.remove(status);
+      } else {
+        _filterStatuses.add(status);
+      }
+    }
     _applyFilter();
     notifyListeners();
   }
@@ -82,22 +90,17 @@ class CustomerProvider extends ChangeNotifier {
     }
 
     // Status filter
-    if (_filterStatus != 'All') {
+    if (_filterStatuses.isNotEmpty) {
       results = results.where((customer) {
         final hasSales = _saleProvider?.sales.any((s) => s.customerName == customer.name) ?? false;
         final outstanding = getOutstanding(customer);
 
-        switch (_filterStatus) {
-          case 'Active':
-            return hasSales;
-          case 'Credit':
-            return outstanding > 0;
-          case 'Overdue':
-            // For now, same as credit since we don't have due dates
-            return outstanding > 0;
-          default:
-            return true;
-        }
+        bool matches = false;
+        if (_filterStatuses.contains('Active') && hasSales) matches = true;
+        if (_filterStatuses.contains('Credit') && outstanding > 0) matches = true;
+        if (_filterStatuses.contains('Overdue') && outstanding > 0) matches = true;
+        
+        return matches;
       }).toList();
     }
 

@@ -26,13 +26,14 @@ class SaleAdapter extends TypeAdapter<Sale> {
       total: (fields[6] as num).toDouble(),
       paymentMethod: fields[7] as String,
       status: fields[8] == null ? 'Paid' : fields[8] as String,
+      notes: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Sale obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class SaleAdapter extends TypeAdapter<Sale> {
       ..writeByte(7)
       ..write(obj.paymentMethod)
       ..writeByte(8)
-      ..write(obj.status);
+      ..write(obj.status)
+      ..writeByte(9)
+      ..write(obj.notes);
   }
 
   @override

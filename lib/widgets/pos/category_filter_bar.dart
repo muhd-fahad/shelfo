@@ -23,13 +23,14 @@ class CategoryFilterBar extends StatelessWidget {
         itemBuilder: (context, index) {
           final isAll = index == 0;
           final categoryName = isAll ? "All" : categoryProvider.categories[index - 1].name;
-          final isSelected = posProvider.selectedCategory == categoryName || 
-                            (isAll && posProvider.selectedCategory == null);
+          final isSelected = isAll 
+              ? posProvider.selectedCategories.isEmpty 
+              : posProvider.selectedCategories.contains(categoryName);
 
           return SFOChip(
             label: categoryName,
             isSelected: isSelected,
-            onSelected: (_) => posProvider.setCategory(isAll ? null : categoryName),
+            onSelected: (_) => posProvider.toggleCategory(isAll ? null : categoryName),
           );
         },
       ),

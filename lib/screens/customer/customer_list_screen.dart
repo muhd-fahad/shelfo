@@ -62,13 +62,15 @@ class CustomerListScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: .start,
                     children: ["All", "Active", "Credit", "Overdue"].map((status) {
-                      final isSelected = provider.filterStatus == status;
+                      final isSelected = status == "All" 
+                          ? provider.filterStatuses.isEmpty 
+                          : provider.filterStatuses.contains(status);
                       return Padding(
                         padding: EdgeInsets.only(right: AppSpacing.sm),
                         child: SFOChip(
                           label: status,
                           isSelected: isSelected,
-                          onSelected: (val) => provider.setFilterStatus(status),
+                          onSelected: (val) => provider.toggleFilterStatus(status),
                         ),
                       );
                     }).toList(),

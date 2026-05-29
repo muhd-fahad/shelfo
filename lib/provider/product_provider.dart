@@ -39,12 +39,12 @@ class ProductProvider extends ChangeNotifier {
   final TextEditingController adjustmentNotesController = TextEditingController();
   
   String _searchQuery = '';
-  String? _filterCategory;
-  String? _filterBrand;
-  ProductType? _filterProductType;
+  final List<String> _filterCategories = [];
+  final List<String> _filterBrands = [];
+  final List<ProductType> _filterProductTypes = [];
   double? _minPrice;
   double? _maxPrice;
-  String _stockStatus = 'All'; // All, In Stock, Low Stock, Out of Stock
+  final List<String> _stockStatuses = []; // All, In Stock, Low Stock, Out of Stock
 
   ProductProvider() {
     _loadProducts();
@@ -67,52 +67,81 @@ class ProductProvider extends ChangeNotifier {
       final matchesSearch = p.name.toLowerCase().contains(_searchQuery.toLowerCase()) || 
                           (p.sku?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false);
       
-      final matchesCategory = _filterCategory == null || _filterCategory == 'All' || p.categoryName == _filterCategory;
+      final matchesCategory = _filterCategories.isEmpty || _filterCategories.contains(p.categoryName);
       
-      final matchesBrand = _filterBrand == null || _filterBrand == 'All' || p.brandName == _filterBrand;
+      final matchesBrand = _filterBrands.isEmpty || _filterBrands.contains(p.brandName);
       
-      final matchesProductType = _filterProductType == null || p.productType == _filterProductType;
+      final matchesProductType = _filterProductTypes.isEmpty || _filterProductTypes.contains(p.productType);
       
       final matchesPrice = (_minPrice == null || p.price >= _minPrice!) && 
                           (_maxPrice == null || p.price <= _maxPrice!);
 
-      bool matchesStock = true;
-      if (_stockStatus == 'In Stock') {
-        matchesStock = p.stockQuantity > 0;
-      } else if (_stockStatus == 'Low Stock') {
-        matchesStock = p.stockQuantity <= p.minStock && p.stockQuantity > 0;
-      } else if (_stockStatus == 'Out of Stock') {
-        matchesStock = p.stockQuantity <= 0;
+      bool matchesStock = _stockStatuses.isEmpty || _stockStatuses.contains('All');
+      if (!matchesStock) {
+        matchesStock = false;
+        if (_stockStatuses.contains('In Stock') && p.stockQuantity > 0) {
+          matchesStock = true;
+        }
+        if (_stockStatuses.contains('Low Stock') && p.stockQuantity <= p.minStock && p.stockQuantity > 0) {
+          matchesStock = true;
+        }
+        if (_stockStatuses.contains('Out of Stock') && p.stockQuantity <= 0) {
+          matchesStock = true;
+        }
       }
 
       return matchesSearch && matchesCategory && matchesBrand && matchesProductType && matchesPrice && matchesStock;
     }).toList();
   }
 
-  String? get selectedFilterCategory => _filterCategory;
-  String? get selectedFilterBrand => _filterBrand;
-  ProductType? get selectedFilterProductType => _filterProductType;
+  List<String> get selectedFilterCategories => _filterCategories;
+  List<String> get selectedFilterBrands => _filterBrands;
+  List<ProductType> get selectedFilterProductTypes => _filterProductTypes;
   double? get minPrice => _minPrice;
   double? get maxPrice => _maxPrice;
-  String get stockStatus => _stockStatus;
+  List<String> get stockStatuses => _stockStatuses;
 
   void setSearchQuery(String query) {
     _searchQuery = query;
     notifyListeners();
   }
 
-  void setFilterCategory(String? category) {
-    _filterCategory = category;
+  void toggleFilterCategory(String? category) {
+    if (category == null) {
+      _filterCategories.clear();
+    } else {
+      if (_filterCategories.contains(category)) {
+        _filterCategories.remove(category);
+      } else {
+        _filterCategories.add(category);
+      }
+    }
     notifyListeners();
   }
 
-  void setFilterBrand(String? brand) {
-    _filterBrand = brand;
+  void toggleFilterBrand(String? brand) {
+    if (brand == null) {
+      _filterBrands.clear();
+    } else {
+      if (_filterBrands.contains(brand)) {
+        _filterBrands.remove(brand);
+      } else {
+        _filterBrands.add(brand);
+      }
+    }
     notifyListeners();
   }
 
-  void setFilterProductType(ProductType? type) {
-    _filterProductType = type;
+  void toggleFilterProductType(ProductType? type) {
+    if (type == null) {
+      _filterProductTypes.clear();
+    } else {
+      if (_filterProductTypes.contains(type)) {
+        _filterProductTypes.remove(type);
+      } else {
+        _filterProductTypes.add(type);
+      }
+    }
     notifyListeners();
   }
 
@@ -122,18 +151,26 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setStockStatus(String status) {
-    _stockStatus = status;
+  void toggleStockStatus(String status) {
+    if (status == 'All') {
+      _stockStatuses.clear();
+    } else {
+      if (_stockStatuses.contains(status)) {
+        _stockStatuses.remove(status);
+      } else {
+        _stockStatuses.add(status);
+      }
+    }
     notifyListeners();
   }
 
   void clearFilters() {
-    _filterCategory = null;
-    _filterBrand = null;
-    _filterProductType = null;
+    _filterCategories.clear();
+    _filterBrands.clear();
+    _filterProductTypes.clear();
     _minPrice = null;
     _maxPrice = null;
-    _stockStatus = 'All';
+    _stockStatuses.clear();
     minPriceController.clear();
     maxPriceController.clear();
     notifyListeners();

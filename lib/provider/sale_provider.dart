@@ -62,6 +62,16 @@ class SaleProvider extends ChangeNotifier {
     await loadSales();
   }
 
+  Future<void> updateSale(Sale sale) async {
+    await SaleHiveService.updateSale(sale);
+    await loadSales();
+  }
+
+  Future<void> deleteSale(Sale sale) async {
+    await SaleHiveService.deleteSale(sale);
+    await loadSales();
+  }
+
   Future<void> refundSale(Sale sale) async {
     await updateSaleStatus(sale, 'Refunded');
   }
