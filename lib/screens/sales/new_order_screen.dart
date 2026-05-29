@@ -244,7 +244,7 @@ class _NewOrderContent extends StatelessWidget {
                 onPressed: (formProvider.selectedCustomer == null || formProvider.items.isEmpty) ? null : () {
                   final originalOrder = formProvider.originalOrder;
                   final orderToSave = SalesOrder(
-                    id: originalOrder?.id ?? "SO-2024-${(orderProvider.orders.length + 1).toString().padLeft(3, '0')}",
+                    id: originalOrder?.id ?? "SO-${DateTime.now().year}-${(orderProvider.orders.length + 1).toString().padLeft(3, '0')}",
                     date: originalOrder?.date ?? DateTime.now(),
                     customerName: formProvider.selectedCustomer!.name,
                     items: formProvider.items, 
