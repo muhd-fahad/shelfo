@@ -41,6 +41,9 @@ dependencies:
   # responsive
   flutter_screenutil: ^5.9.3
 
+  # charts
+  fl_chart: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:

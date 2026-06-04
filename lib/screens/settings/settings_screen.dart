@@ -83,7 +83,9 @@ class SettingsScreen extends StatelessWidget {
                     SFOTile(
                       icon: Icons.bar_chart_outlined,
                       title: "Reports & Analysis",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.reports);
+                      },
                     ),
                   ],
                 ),

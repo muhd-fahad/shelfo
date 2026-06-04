@@ -1,5 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:shelfo/provider/report_provider.dart';
 import '../../utils/theme/theme.dart';
 
 class SalesChart extends StatelessWidget {
@@ -9,6 +12,8 @@ class SalesChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final reportProvider = context.watch<ReportProvider>();
+    final spots = reportProvider.getWeeklySalesSpots();
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -43,19 +48,48 @@ class SalesChart extends StatelessWidget {
           SizedBox(
             height: 120.h,
             width: double.infinity,
-            child:Placeholder(),
-
-            // CustomPaint(
-            //   painter: ChartPainter(
-            //     color: AppColors.primary,
-            //     isDark: isDark,
-            //   ),
-            // ),
+            child: LineChart(
+              LineChartData(
+                gridData: const FlGridData(show: false),
+                titlesData: const FlTitlesData(show: false),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots.isEmpty ? [const FlSpot(0, 0)] : spots,
+                    isCurved: true,
+                    color: AppColors.primary,
+                    barWidth: 3,
+                    isStrokeCapRound: true,
+                    dotData: const FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: AppColors.primary.withValues(alpha: 0.1),
+                    ),
+                  ),
+                ],
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipColor: (touchedSpot) => theme.colorScheme.surface,
+                    getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+                      return touchedBarSpots.map((barSpot) {
+                        return LineTooltipItem(
+                          '₹${barSpot.y.toInt()}',
+                          theme.textTheme.labelSmall!.copyWith(
+                            color: theme.colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
           SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+            children: _getDays()
                 .map((day) => Text(
                       day,
                       style: theme.textTheme.labelSmall?.copyWith(
@@ -69,55 +103,21 @@ class SalesChart extends StatelessWidget {
       ),
     );
   }
-}
 
-class ChartPainter extends CustomPainter {
-  final Color color;
-  final bool isDark;
-
-  ChartPainter({required this.color, required this.isDark});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    final path = Path();
-    path.moveTo(0, size.height * 0.7);
-    path.quadraticBezierTo(
-        size.width * 0.2, size.height * 0.5, size.width * 0.4, size.height * 0.8);
-    path.quadraticBezierTo(
-        size.width * 0.6, size.height * 1.0, size.width * 0.8, size.height * 0.4);
-    path.quadraticBezierTo(
-        size.width * 0.9, size.height * 0.2, size.width, size.height * 0.5);
-
-    canvas.drawPath(path, paint);
-
-    // Fill area under the curve
-    final fillPath = Path.from(path);
-    fillPath.lineTo(size.width, size.height);
-    fillPath.lineTo(0, size.height);
-    fillPath.close();
-
-    final gradient = LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        color.withOpacity(0.2),
-        color.withOpacity(0.0),
-      ],
-    ).createShader(Rect.fromLTRB(0, 0, size.width, size.height));
-
-    canvas.drawPath(fillPath, Paint()..shader = gradient);
-    
-    // Draw data point
-    final pointPaint = Paint()..color = color;
-    canvas.drawCircle(Offset(size.width * 0.4, size.height * 0.8), 4, pointPaint);
-    canvas.drawCircle(Offset(size.width * 0.4, size.height * 0.8), 2, Paint()..color = Colors.white);
+  List<String> _getDays() {
+    final now = DateTime.now();
+    return List.generate(7, (i) {
+      final date = now.subtract(Duration(days: 6 - i));
+      switch (date.weekday) {
+        case 1: return "Mon";
+        case 2: return "Tue";
+        case 3: return "Wed";
+        case 4: return "Thu";
+        case 5: return "Fri";
+        case 6: return "Sat";
+        case 7: return "Sun";
+        default: return "";
+      }
+    });
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
