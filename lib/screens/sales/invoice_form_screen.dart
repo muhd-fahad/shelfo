@@ -135,7 +135,7 @@ class _InvoiceFormContent extends StatelessWidget {
                   SFODropdown<String>(
                     label: "Payment Method",
                     value: formProvider.paymentMethod,
-                    items: ["Cash", "Card", "Bank Transfer"].map((m) => DropdownMenuItem(
+                    items: ["Cash", "Card", "Bank Transfer", "E-Wallet"].map((m) => DropdownMenuItem(
                       value: m,
                       child: Text(m),
                     )).toList(),

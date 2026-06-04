@@ -81,6 +81,13 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     const SFODivider(),
                     SFOTile(
+                      icon: Icons.policy_outlined,
+                      title: "Policies & Warranties",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.policies);
+                      },
+                    ),
+                    SFOTile(
                       icon: Icons.bar_chart_outlined,
                       title: "Reports & Analysis",
                       onTap: () {

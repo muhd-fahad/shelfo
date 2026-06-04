@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/hive_registrar.g.dart';
+import 'package:shelfo/models/policy/policy_model.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/navigation_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';
@@ -16,6 +17,8 @@ import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/provider/customer_provider.dart';
 import 'package:shelfo/provider/sale_provider.dart';
 import 'package:shelfo/provider/sales_order_provider.dart';
+import 'package:shelfo/provider/policy_provider.dart';
+import 'package:shelfo/provider/policy_form_provider.dart';
 import 'package:shelfo/provider/report_provider.dart';
 import 'package:shelfo/provider/service_job_provider.dart';
 import 'package:shelfo/provider/vendor_provider.dart';
@@ -58,6 +61,8 @@ class MyApp extends StatelessWidget {
               previous!..update(saleProvider),
         ),
         ChangeNotifierProvider(create: (_) => ServiceJobProvider()),
+        ChangeNotifierProvider(create: (_) => PolicyProvider()),
+        ChangeNotifierProvider(create: (_) => PolicyFormProvider()),
         ChangeNotifierProxyProvider3<SaleProvider, ProductProvider, CategoryProvider, ReportProvider>(
           create: (context) => ReportProvider(
             saleProvider: context.read<SaleProvider>(),
