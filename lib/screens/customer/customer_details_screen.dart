@@ -8,6 +8,7 @@ import '../../provider/customer_provider.dart';
 import '../../utils/formatters/currency_formatter.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_badge.dart';
+import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_metric_card.dart';
 import '../../widgets/sfo_common/sfo_dialog.dart';
 import 'add_edit_customer_screen.dart';
@@ -35,11 +36,8 @@ class CustomerDetailsScreen extends StatelessWidget {
         final customerSales = provider.customerSales;
 
         return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
+          appBar: SFOHeader(
+            title: customer.name,
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit_outlined),

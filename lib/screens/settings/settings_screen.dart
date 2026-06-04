@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const SFOHeader(title: "Settings")),
+      appBar: const SFOHeader(title: "Settings"),
       body: SFOBackground(
         child: SafeArea(
           child: SingleChildScrollView(

@@ -33,8 +33,8 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "PO Details"),
+      appBar: SFOHeader(
+        title: "PO Details",
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),
@@ -42,7 +42,9 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewPurchaseOrderScreen(),
+                  builder: (context) => NewPurchaseOrderScreen(
+                    order: currentOrder,
+                  ),
                 ),
               );
             },

@@ -17,6 +17,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 
 import '../../provider/customer_provider.dart';
+import '../../widgets/sfo_common/sfo_header.dart';
 import 'new_order_screen.dart';
 
 class SalesOrderDetailScreen extends StatelessWidget {
@@ -38,11 +39,8 @@ class SalesOrderDetailScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: SFOHeader(
+        title: "Order ${order.id}",
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),

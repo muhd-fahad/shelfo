@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/vendor/vendor_model.dart';
 import '../services/hive/hive_service.dart';
-import 'package:hive_ce/hive.dart';
 
 class VendorProvider extends ChangeNotifier {
   List<Vendor> _vendors = [];

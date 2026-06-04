@@ -6,11 +6,9 @@ class CustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Customers"),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: SFOHeader(title: "Customers"),
+      body: Center(
         child: Text("Customer screen"),
       ),
     );

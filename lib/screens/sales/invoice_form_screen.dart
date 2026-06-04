@@ -22,6 +22,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
 import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
 
+import '../../widgets/sfo_common/sfo_header.dart';
+
 class InvoiceFormScreen extends StatelessWidget {
   final Sale? invoice;
   const InvoiceFormScreen({super.key, this.invoice});
@@ -59,12 +61,8 @@ class _InvoiceFormContent extends StatelessWidget {
     final isEditing = formProvider.isEditing;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? "Edit Invoice" : "New Invoice"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: SFOHeader(
+        title: isEditing ? "Edit Invoice" : "New Invoice",
       ),
       body: SFOBackground(
         child: SingleChildScrollView(

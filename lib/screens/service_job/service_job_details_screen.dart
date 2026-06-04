@@ -14,6 +14,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/screens/service_job/service_job_form_screen.dart';
 
+import '../../widgets/sfo_common/sfo_header.dart';
+
 class ServiceJobDetailsScreen extends StatelessWidget {
   const ServiceJobDetailsScreen({super.key});
 
@@ -30,7 +32,8 @@ class ServiceJobDetailsScreen extends StatelessWidget {
     final customer = customerProvider.customers.firstWhere((c) => c.name == currentJob.customerName);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: SFOHeader(
+        title: "Job Details",
         actions: [
           IconButton(
             onPressed: () => Navigator.push(

@@ -26,11 +26,9 @@ class BusinessInfoScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(
-          title: "Business Details",
-          subtitle: "Tell us about your store",
-        ),
+      appBar: const SFOHeader(
+        title: "Business Details",
+        subtitle: "Tell us about your store",
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),

@@ -24,10 +24,8 @@ class CustomerListScreen extends StatelessWidget {
         final currency = businessProvider.selectedCurrency;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const SFOHeader(
-              title: "Customers",
-            ),
+          appBar: SFOHeader(
+            title: "Customers",
             actions: [
               Padding(
                 padding: EdgeInsets.only(right: AppSpacing.xl),

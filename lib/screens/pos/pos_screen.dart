@@ -22,11 +22,9 @@ class PosScreen extends StatelessWidget {
     final posProvider = context.read<PosProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(
-          title: "Point of Sale",
-          // subtitle: "Select products for checkout",
-        ),
+      appBar: SFOHeader(
+        title: "Point of Sale",
+        // subtitle: "Select products for checkout",
         actions: [
           if (cartProvider.items.isNotEmpty)
             Padding(

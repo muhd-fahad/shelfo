@@ -12,6 +12,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 
+import '../../widgets/sfo_common/sfo_header.dart';
+
 class ServiceJobFormScreen extends StatefulWidget {
   final ServiceJob? job;
   const ServiceJobFormScreen({super.key, this.job});
@@ -59,8 +61,8 @@ class _ServiceJobFormScreenState extends State<ServiceJobFormScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.job == null ? "New Service Job" : "Edit Job"),
+      appBar: SFOHeader(
+        title: widget.job == null ? "New Service Job" : "Edit Job",
       ),
       body: SFOBackground(
         child: SingleChildScrollView(

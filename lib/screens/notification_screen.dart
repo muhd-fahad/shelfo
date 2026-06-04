@@ -6,11 +6,9 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Notifications"),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: SFOHeader(title: "Notifications"),
+      body: Center(
         child: Text("Notification screen"),
       ),
     );

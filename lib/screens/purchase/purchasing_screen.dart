@@ -40,8 +40,8 @@ class _PurchasingContent extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: const SFOHeader(title: "Purchasing"),
+        appBar: SFOHeader(
+          title: "Purchasing",
           actions: [
             Padding(
               padding: EdgeInsets.only(right: 16.w),

@@ -25,16 +25,9 @@ class EditCategoryScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: SFOHeader(
-          title: category == null ? "Add Category" : "Edit Category",
-          subtitle: category == null ? "Create a new product category" : "Update category details",
-        ),
-        centerTitle: false,
+      appBar: SFOHeader(
+        title: category == null ? "Add Category" : "Edit Category",
+        subtitle: category == null ? "Create a new product category" : "Update category details",
       ),
       body: Consumer<CategoryProvider>(
         builder: (context, provider, _) => SingleChildScrollView(

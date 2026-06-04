@@ -18,16 +18,9 @@ class CategoriesSettingsScreen extends StatelessWidget {
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const SFOHeader(
-          title: "Product Categories",
-          subtitle: "Organize your products",
-        ),
-        centerTitle: false,
+      appBar: SFOHeader(
+        title: "Product Categories",
+        subtitle: "Organize your products",
         actions: [
           IconButton(
             icon: Icon(Icons.add_rounded, size: 24.r),

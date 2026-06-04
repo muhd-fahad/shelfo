@@ -25,8 +25,8 @@ class JobTicketScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Service Jobs"),
+      appBar: SFOHeader(
+        title: "Service Jobs",
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.w),

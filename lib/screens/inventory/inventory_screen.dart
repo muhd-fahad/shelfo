@@ -26,11 +26,7 @@ class InventoryScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const SFOHeader(title: "Inventory"),
-      ),
+      appBar: const SFOHeader(title: "Inventory"),
       body: SFOBackground(
         child: Consumer2<ProductProvider, CategoryProvider>(
           builder: (context, provider, categoryProvider, _) {

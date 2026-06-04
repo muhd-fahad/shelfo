@@ -31,16 +31,8 @@ class EditProductScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colorScheme.onSurface),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: SFOHeader(
-          title: product == null ? "New Product" : "Edit Product",
-        ),
+      appBar: SFOHeader(
+        title: product == null ? "New Product" : "Edit Product",
       ),
       body: Consumer3<ProductProvider, CategoryProvider, BrandProvider>(
         builder: (context, provider, categoryProvider, brandProvider, _) => Column(

@@ -22,6 +22,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
 import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
 
+import '../../widgets/sfo_common/sfo_header.dart';
+
 class NewOrderScreen extends StatelessWidget {
   final SalesOrder? order;
   const NewOrderScreen({super.key, this.order});
@@ -59,12 +61,8 @@ class _NewOrderContent extends StatelessWidget {
     final isEditing = formProvider.isEditing;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? "Edit Order" : "New Order"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: SFOHeader(
+        title: isEditing ? "Edit Order" : "New Order",
       ),
       body: SFOBackground(
         child: SingleChildScrollView(

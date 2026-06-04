@@ -31,8 +31,8 @@ class SalesOrderScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader( title: "Sales Orders"),
+      appBar: SFOHeader(
+        title: "Sales Orders",
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.w),

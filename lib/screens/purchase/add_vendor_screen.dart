@@ -66,9 +66,7 @@ class _AddVendorContent extends StatelessWidget {
     final formProvider = context.watch<VendorFormProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: SFOHeader(title: formProvider.isEditing ? "Edit Vendor" : "Add Vendor"),
-      ),
+      appBar: SFOHeader(title: formProvider.isEditing ? "Edit Vendor" : "Add Vendor"),
       body: SFOBackground(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.r),

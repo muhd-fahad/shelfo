@@ -27,11 +27,9 @@ class SalesHistoryScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(
-          title: "Sales History",
-          subtitle: "Past transactions",
-        ),
+      appBar: SFOHeader(
+        title: "Sales History",
+        subtitle: "Past transactions",
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 16.w),

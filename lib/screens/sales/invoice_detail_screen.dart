@@ -38,15 +38,9 @@ class InvoiceDetailScreen extends StatelessWidget {
         final isRefunded = sale.status == 'Refunded';
 
         return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: SFOHeader(
-              title: "Invoice ${sale.id}",
-              subtitle: "${dateFormat.format(sale.dateTime)} at ${timeFormat.format(sale.dateTime)}",
-            ),
+          appBar: SFOHeader(
+            title: "Invoice ${sale.id}",
+            subtitle: "${dateFormat.format(sale.dateTime)} at ${timeFormat.format(sale.dateTime)}",
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit_outlined),

@@ -27,16 +27,9 @@ class TaxSettingsScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const SFOHeader(
-          title: "Tax Configuration",
-          subtitle: "Manage tax rates and calculation",
-        ),
-        centerTitle: false,
+      appBar: const SFOHeader(
+        title: "Tax Configuration",
+        subtitle: "Manage tax rates and calculation",
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.r),

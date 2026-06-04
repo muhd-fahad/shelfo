@@ -24,11 +24,9 @@ class TaxConfigScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(
-          title: "Tax Configuration",
-          subtitle: "Set up how taxes are calculated",
-        ),
+      appBar: const SFOHeader(
+        title: "Tax Configuration",
+        subtitle: "Set up how taxes are calculated",
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),

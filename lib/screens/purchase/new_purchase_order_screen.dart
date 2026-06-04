@@ -42,9 +42,7 @@ class _NewPurchaseOrderContent extends StatelessWidget {
     final productProvider = context.watch<ProductProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: SFOHeader(title: formProvider.isEditing ? "Edit Purchase Order" : "New Purchase Order"),
-      ),
+      appBar: SFOHeader(title: formProvider.isEditing ? "Edit Purchase Order" : "New Purchase Order"),
       body: SFOBackground(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.r),

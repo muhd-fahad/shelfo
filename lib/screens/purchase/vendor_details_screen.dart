@@ -11,7 +11,6 @@ import '../../../widgets/sfo_common/sfo_background.dart';
 import '../../../widgets/sfo_common/sfo_header.dart';
 import '../../../widgets/sfo_common/sfo_badge.dart';
 import '../../../widgets/sfo_common/sfo_card.dart';
-import '../../../utils/theme/theme.dart';
 import 'add_vendor_screen.dart';
 import 'purchase_order_details_screen.dart';
 
@@ -28,8 +27,8 @@ class VendorDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Vendor Details"),
+      appBar: SFOHeader(
+        title: "Vendor Details",
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),

@@ -14,18 +14,9 @@ class BusinessDetailsScreen extends StatelessWidget {
     final businessProvider = Provider.of<BusinessProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const SFOHeader(
-          title: "Business Information",
-          subtitle: "Manage your store details",
-        ),
-        centerTitle: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      appBar: const SFOHeader(
+        title: "Business Information",
+        subtitle: "Manage your store details",
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.r),

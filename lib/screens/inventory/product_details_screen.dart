@@ -16,6 +16,8 @@ import 'package:shelfo/widgets/inventory/stock_adjustment_dialog.dart';
 import 'package:shelfo/widgets/inventory/product_image_carousel.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 
+import '../../widgets/sfo_common/sfo_header.dart';
+
 class ProductDetailsScreen extends StatelessWidget {
   final Product product;
   const ProductDetailsScreen({super.key, required this.product});
@@ -27,13 +29,8 @@ class ProductDetailsScreen extends StatelessWidget {
     final currency = Provider.of<BusinessProvider>(context).selectedCurrency;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp, color: colorScheme.onSurface),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: SFOHeader(
+        title: product.name,
         actions: [
           IconButton(
             icon: Icon(Icons.edit_outlined, color: colorScheme.onSurface),

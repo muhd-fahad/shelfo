@@ -24,16 +24,9 @@ class InvoiceSettingsDetailScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.r),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const SFOHeader(
-          title: "Invoice Settings",
-          subtitle: "Customize your receipts and invoices",
-        ),
-        centerTitle: false,
+      appBar: const SFOHeader(
+        title: "Invoice Settings",
+        subtitle: "Customize your receipts and invoices",
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.r),

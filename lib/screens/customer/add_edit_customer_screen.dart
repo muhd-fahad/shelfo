@@ -6,6 +6,7 @@ import '../../provider/customer_provider.dart';
 import '../../provider/customer_form_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
+import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_input_field.dart';
 import '../../widgets/sfo_common/sfo_snackbar.dart';
 
@@ -23,12 +24,8 @@ class AddEditCustomerScreen extends StatelessWidget {
           final theme = Theme.of(context);
 
           return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pop(context),
-              ),
-              title: Text(customer == null ? "Add Customer" : "Edit Customer"),
+            appBar: SFOHeader(
+              title: customer == null ? "Add Customer" : "Edit Customer",
               centerTitle: true,
             ),
             body: SingleChildScrollView(

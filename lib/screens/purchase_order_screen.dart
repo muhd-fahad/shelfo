@@ -7,11 +7,9 @@ class PurchaseOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Purchase Orders"),
-      ),
-      body: const SFOBackground(
+    return const Scaffold(
+      appBar: SFOHeader(title: "Purchase Orders"),
+      body: SFOBackground(
         child: Center(
           child: Text("Purchase order screen"),
         ),

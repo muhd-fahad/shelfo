@@ -6,11 +6,9 @@ class PolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const SFOHeader(title: "Policies & Warranties"),
-      ),
-      body: const Center(
+    return const Scaffold(
+      appBar: SFOHeader(title: "Policies & Warranties"),
+      body: Center(
         child: Text("policy screen"),
       ),
     );
