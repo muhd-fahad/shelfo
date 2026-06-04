@@ -11,7 +11,6 @@ import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/service_job/service_job_filter_sheet.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/provider/business_provider.dart';
@@ -25,19 +24,13 @@ class JobTicketScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Service Jobs",
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: SFOButton(
-              text: "New Job",
-              icon: Icons.add,
-              width: 120.w,
-              onPressed: () => Navigator.pushNamed(context, AppRoutes.serviceJobForm),
-            ),
-          ),
-        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.serviceJobForm),
+        label: const Text("New Job"),
+        icon: const Icon(Icons.add),
       ),
       body: SFOBackground(
         child: Column(

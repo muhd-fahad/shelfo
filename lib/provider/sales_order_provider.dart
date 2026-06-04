@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/sale/sales_order_model.dart';
+import '../services/hive/hive_service.dart';
+import 'product_provider.dart';
 
 class SalesOrderProvider extends ChangeNotifier {
-  final List<SalesOrder> _orders = [];
+  List<SalesOrder> _orders = [];
   List<SalesOrder> _filteredOrders = [];
-  final bool _isLoading = false;
+  bool _isLoading = false;
   String _searchQuery = '';
   SalesOrderStatus _statusFilter = SalesOrderStatus.all;
   
@@ -22,7 +24,19 @@ class SalesOrderProvider extends ChangeNotifier {
   DateTime? get endDate => _endDate;
 
   SalesOrderProvider() {
+    _loadOrders();
+  }
+
+  Future<void> _loadOrders() async {
+    _isLoading = true;
+    notifyListeners();
+
+    final box = await HiveService.getBox<SalesOrder>(HiveService.salesOrdersBox);
+    _orders = box.values.toList()..sort((a, b) => b.date.compareTo(a.date));
     _applyFilters();
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   void setSearchQuery(String query) {
@@ -86,29 +100,94 @@ class SalesOrderProvider extends ChangeNotifier {
     }).toList();
   }
 
-  void addOrder(SalesOrder order) {
+  Future<void> addOrder(SalesOrder order, {ProductProvider? productProvider}) async {
+    final box = await HiveService.getBox<SalesOrder>(HiveService.salesOrdersBox);
+    await box.add(order);
     _orders.insert(0, order);
+
+    // Reflect stock if order is fulfilled or just created (per user request)
+    if (productProvider != null && order.status != SalesOrderStatus.cancelled && order.status != SalesOrderStatus.draft) {
+      for (var item in order.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: false);
+        } catch (e) {
+          debugPrint("Product not found for stock update: ${item.productId}");
+        }
+      }
+    }
+
     _applyFilters();
     notifyListeners();
   }
 
-  void updateOrder(SalesOrder oldOrder, SalesOrder newOrder) {
-    final index = _orders.indexOf(oldOrder);
+  Future<void> updateOrder(SalesOrder oldOrder, SalesOrder newOrder) async {
+    final index = _orders.indexWhere((o) => o.id == oldOrder.id);
     if (index != -1) {
+      await oldOrder.delete(); // Remove old from hive
+      final box = await HiveService.getBox<SalesOrder>(HiveService.salesOrdersBox);
+      await box.add(newOrder);
+      
       _orders[index] = newOrder;
       _applyFilters();
       notifyListeners();
     }
   }
 
-  void updateOrderStatus(SalesOrder order, SalesOrderStatus status) {
+  Future<void> updateOrderStatus(SalesOrder order, SalesOrderStatus status, {ProductProvider? productProvider}) async {
+    final oldStatus = order.status;
     order.status = status;
+    await order.save();
+
+    if (productProvider != null) {
+      // If order moves to a state that requires stock reduction (Pending/Fulfilled) 
+      // from a state that doesn't (Draft/Cancelled)
+      bool oldRequiresReduction = oldStatus != SalesOrderStatus.draft && oldStatus != SalesOrderStatus.cancelled;
+      bool newRequiresReduction = status != SalesOrderStatus.draft && status != SalesOrderStatus.cancelled;
+
+      if (!oldRequiresReduction && newRequiresReduction) {
+        // Reduce stock
+        for (var item in order.items) {
+          try {
+            final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+            await productProvider.adjustStock(product, item.quantity, isAddition: false);
+          } catch (e) {
+            debugPrint("Product not found for stock update: ${item.productId}");
+          }
+        }
+      } 
+      // If order moves from a reduced state to a non-reduced state (e.g. Cancelled)
+      else if (oldRequiresReduction && !newRequiresReduction) {
+        // Return stock
+        for (var item in order.items) {
+          try {
+            final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+            await productProvider.adjustStock(product, item.quantity, isAddition: true);
+          } catch (e) {
+            debugPrint("Product not found for stock update: ${item.productId}");
+          }
+        }
+      }
+    }
+
     _applyFilters();
     notifyListeners();
   }
 
-  void deleteOrder(SalesOrder order) {
-    _orders.remove(order);
+  Future<void> deleteOrder(SalesOrder order, {ProductProvider? productProvider}) async {
+    if (productProvider != null && order.status != SalesOrderStatus.cancelled && order.status != SalesOrderStatus.draft) {
+      // Return stock if it was already reduced
+      for (var item in order.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: true);
+        } catch (e) {
+          debugPrint("Product not found for stock return: ${item.productId}");
+        }
+      }
+    }
+    await order.delete();
+    _orders.removeWhere((o) => o.id == order.id);
     _applyFilters();
     notifyListeners();
   }

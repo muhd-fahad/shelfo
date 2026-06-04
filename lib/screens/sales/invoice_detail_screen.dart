@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
 import '../../provider/business_provider.dart';
 import '../../provider/customer_provider.dart';
+import '../../provider/product_provider.dart';
 import '../../provider/sale_provider.dart';
 import '../../services/hive/business_service.dart';
 import '../../utils/formatters/currency_formatter.dart';
@@ -68,7 +69,10 @@ class InvoiceDetailScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () async {
-                            await context.read<SaleProvider>().deleteSale(sale);
+                            await context.read<SaleProvider>().deleteSale(
+                              sale,
+                              productProvider: context.read<ProductProvider>(),
+                            );
                             if (context.mounted) {
                               Navigator.pop(context); // close dialog
                               Navigator.pop(context); // go back to list

@@ -18,21 +18,18 @@ class BrandsSettingsScreen extends StatelessWidget {
     final brandProvider = Provider.of<BrandProvider>(context);
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Product Brands",
         subtitle: "Manage your product brands",
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add_rounded, size: 24.r),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const EditBrandScreen(),
-              ),
-            ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EditBrandScreen(),
           ),
-          SizedBox(width: 8.w),
-        ],
+        ),
+        child: const Icon(Icons.add),
       ),
       body: brandProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -42,11 +39,10 @@ class BrandsSettingsScreen extends StatelessWidget {
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
                 final brand = brandProvider.brands[index];
-                return Container(
-                  decoration: ShapeDecoration(
-                    color: theme.cardTheme.color,
-                    shape: theme.cardTheme.shape!,
-                  ),
+                return Material(
+                  color: theme.cardTheme.color,
+                  shape: theme.cardTheme.shape!,
+                  clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                     title: Text(

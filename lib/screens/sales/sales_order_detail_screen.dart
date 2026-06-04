@@ -17,6 +17,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 
 import '../../provider/customer_provider.dart';
+import '../../provider/product_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import 'new_order_screen.dart';
 
@@ -56,7 +57,10 @@ class SalesOrderDetailScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.delete_outline, color: AppColors.error),
             onPressed: () {
-              orderProvider.deleteOrder(currentOrder);
+              orderProvider.deleteOrder(
+                currentOrder,
+                productProvider: context.read<ProductProvider>(),
+              );
               Navigator.pop(context);
             },
           ),
@@ -80,6 +84,7 @@ class SalesOrderDetailScreen extends StatelessWidget {
                   icon: Icons.check_circle_outline,
                   onPressed: () async {
                     final saleProvider = context.read<SaleProvider>();
+                    final productProvider = context.read<ProductProvider>();
                     final invoiceId = await saleProvider.getNextInvoiceId();
                     
                     // Create Invoice from Sales Order
@@ -96,8 +101,13 @@ class SalesOrderDetailScreen extends StatelessWidget {
                       notes: "Created from Sales Order ${currentOrder.id}",
                     );
                     
-                    await saleProvider.addSale(newSale);
-                    orderProvider.updateOrderStatus(currentOrder, SalesOrderStatus.fulfilled);
+                    // Since stock was likely reduced when the Sales Order was created (if it was Pending),
+                    // we don't pass productProvider here to avoid double-reducing.
+                    // HOWEVER, if the Sales Order was 'Draft', it didn't reduce stock yet.
+                    bool alreadyReduced = currentOrder.status != SalesOrderStatus.draft;
+                    
+                    await saleProvider.addSale(newSale, productProvider: alreadyReduced ? null : productProvider);
+                    await orderProvider.updateOrderStatus(currentOrder, SalesOrderStatus.fulfilled, productProvider: productProvider);
                     
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -113,7 +123,11 @@ class SalesOrderDetailScreen extends StatelessWidget {
                   icon: Icons.cancel_outlined,
                   type: SFOButtonType.outlined,
                   onPressed: () {
-                    orderProvider.updateOrderStatus(currentOrder, SalesOrderStatus.cancelled);
+                    orderProvider.updateOrderStatus(
+                      currentOrder, 
+                      SalesOrderStatus.cancelled,
+                      productProvider: context.read<ProductProvider>(),
+                    );
                   },
                 ),
               ],
@@ -159,7 +173,7 @@ class SalesOrderDetailScreen extends StatelessWidget {
               const Icon(Icons.calendar_today_outlined, size: 16, color: Colors.white70),
               SizedBox(width: 8.w),
               Text(
-                DateFormat('MMM dd, yyyy').format(order.date),
+                DateFormat('MMM z, yyyy').format(order.date),
                 style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
               ),
               SizedBox(width: 24.w),

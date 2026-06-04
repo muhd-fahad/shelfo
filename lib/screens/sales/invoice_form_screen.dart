@@ -261,7 +261,7 @@ class _InvoiceFormContent extends StatelessWidget {
                   if (isEditing) {
                     await saleProvider.updateSale(saleToSave);
                   } else {
-                    await saleProvider.addSale(saleToSave);
+                    await saleProvider.addSale(saleToSave, productProvider: productProvider);
                   }
                   Navigator.pop(context);
                 },

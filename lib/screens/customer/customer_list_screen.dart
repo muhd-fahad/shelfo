@@ -24,22 +24,17 @@ class CustomerListScreen extends StatelessWidget {
         final currency = businessProvider.selectedCurrency;
 
         return Scaffold(
-          appBar: SFOHeader(
+          appBar: const SFOHeader(
             title: "Customers",
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(right: AppSpacing.xl),
-                child: SFOButton(
-                  text: "Add Customer",
-                  icon: Icons.add,
-                  width: 140,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AddEditCustomerScreen()),
-                  ),
-                ),
-              ),
-            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddEditCustomerScreen()),
+            ),
+            label: const Text("Add Customer"),
+            icon: const Icon(Icons.add),
           ),
           body: SFOBackground(
             child: Column(

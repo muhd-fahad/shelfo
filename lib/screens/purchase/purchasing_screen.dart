@@ -40,31 +40,25 @@ class _PurchasingContent extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: SFOHeader(
+        appBar: const SFOHeader(
           title: "Purchasing",
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 16.w),
-              child: SFOButton(
-                text: tabProvider.index == 0 ? "Add Vendor" : "New PO",
-                onPressed: () {
-                  if (tabProvider.index == 0) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AddVendorScreen()),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const NewPurchaseOrderScreen()),
-                    );
-                  }
-                },
-                icon: Icons.add,
-                width: 130.w,
-              ),
-            ),
-          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            if (tabProvider.index == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddVendorScreen()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewPurchaseOrderScreen()),
+              );
+            }
+          },
+          label: Text(tabProvider.index == 0 ? "Add Vendor" : "New PO"),
+          icon: const Icon(Icons.add),
         ),
         body: SFOBackground(
           child: Column(
@@ -73,7 +67,7 @@ class _PurchasingContent extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 padding: EdgeInsets.all(4.r),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: TabBar(

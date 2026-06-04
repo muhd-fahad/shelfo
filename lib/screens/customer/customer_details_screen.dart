@@ -35,6 +35,13 @@ class CustomerDetailsScreen extends StatelessWidget {
         final customer = provider.selectedCustomer;
         final customerSales = provider.customerSales;
 
+        if (customer == null) {
+          return const Scaffold(
+            appBar: SFOHeader(title: "Customer Details"),
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
         return Scaffold(
           appBar: SFOHeader(
             title: customer.name,
@@ -242,7 +249,7 @@ class CustomerDetailsScreen extends StatelessWidget {
       context: context,
       builder: (context) => SFODialog(
         title: "Delete Customer",
-        message: "Are you sure you want to delete ${provider.selectedCustomer.name}? This action cannot be undone.",
+        message: "Are you sure you want to delete ${provider.selectedCustomer?.name}? This action cannot be undone.",
         primaryActionText: "Delete",
         onPrimaryAction: () async {
           await provider.deleteCustomer(customerId);

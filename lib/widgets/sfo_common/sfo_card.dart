@@ -15,15 +15,16 @@ class SFOCard extends StatelessWidget {
     final theme = Theme.of(context);
     final cardTheme = theme.cardTheme;
 
-    return Container(
-      padding: padding,
-      decoration: ShapeDecoration(
-        color: cardTheme.color,
-        shape: cardTheme.shape!,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
+    return Material(
+      color: cardTheme.color,
+      shape: cardTheme.shape!,
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
+        ),
       ),
     );
   }

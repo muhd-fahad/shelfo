@@ -133,6 +133,7 @@ class InventoryScreen extends StatelessWidget {
       // floatingActionButtonLocation: .centerFloat,
 
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null,
         isExtended: false,
         icon:Icon(Icons.add, size: 24.r),
         label: Text("Add"),

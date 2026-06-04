@@ -51,7 +51,7 @@ class PurchaseOrderProvider extends ChangeNotifier {
     return "PO-$year-${count.toString().padLeft(3, '0')}";
   }
 
-  Future<void> addOrderFromForm(PurchaseOrderFormProvider form) async {
+  Future<void> addOrderFromForm(PurchaseOrderFormProvider form, {ProductProvider? productProvider}) async {
     if (form.selectedVendor == null || form.items.isEmpty) return;
 
     final newOrder = PurchaseOrder(
@@ -70,6 +70,23 @@ class PurchaseOrderProvider extends ChangeNotifier {
 
     final box = await HiveService.getBox<PurchaseOrder>(HiveService.purchaseOrdersBox);
     await box.add(newOrder);
+
+    // Reflect stock if it's considered "happened" (per user request)
+    // Most users might expect stock to increase when PO is created if they want "immediate reflection"
+    // However, if we want to be more accurate, we should probably only do this if status is 'received'
+    // But since the user asked for it to happen when order "happened", I'll add logic here or in status update.
+    // Given the phrasing, I'll add it to status update primarily, but also check if status is already 'received'
+    if (newOrder.status == PurchaseOrderStatus.received && productProvider != null) {
+      for (var item in newOrder.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: true);
+        } catch (e) {
+          debugPrint("Product not found for stock update: ${item.productId}");
+        }
+      }
+    }
+
     _orders.insert(0, newOrder);
     _applyFilters();
     notifyListeners();
@@ -117,7 +134,18 @@ class PurchaseOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteOrder(PurchaseOrder order) async {
+  Future<void> deleteOrder(PurchaseOrder order, {ProductProvider? productProvider}) async {
+    if (productProvider != null && order.status == PurchaseOrderStatus.received) {
+      // Reduce stock if it was already increased
+      for (var item in order.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: false);
+        } catch (e) {
+          debugPrint("Product not found for stock correction: ${item.productId}");
+        }
+      }
+    }
     await order.delete();
     _orders.removeWhere((o) => o.id == order.id);
     _applyFilters();

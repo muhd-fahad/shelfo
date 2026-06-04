@@ -27,25 +27,19 @@ class SalesHistoryScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Sales History",
         subtitle: "Past transactions",
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: SFOButton(
-              text: "New Invoice",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InvoiceFormScreen()),
-                );
-              },
-              icon: Icons.add,
-              width: 130.w,
-            ),
-          ),
-        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const InvoiceFormScreen()),
+          );
+        },
+        label: const Text("New Invoice"),
+        icon: const Icon(Icons.add),
       ),
       body: SFOBackground(
         child: Column(

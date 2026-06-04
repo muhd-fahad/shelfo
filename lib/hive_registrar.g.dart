@@ -14,6 +14,7 @@ import 'package:shelfo/models/purchase/purchase_item_model.dart';
 import 'package:shelfo/models/purchase/purchase_order_model.dart';
 import 'package:shelfo/models/sale/sale_item_model.dart';
 import 'package:shelfo/models/sale/sale_model.dart';
+import 'package:shelfo/models/sale/sales_order_model.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
 import 'package:shelfo/models/tax/tax_config_model.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
@@ -35,6 +36,8 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(PurchaseOrderStatusAdapter());
     registerAdapter(SaleAdapter());
     registerAdapter(SaleItemAdapter());
+    registerAdapter(SalesOrderAdapter());
+    registerAdapter(SalesOrderStatusAdapter());
     registerAdapter(ServiceJobAdapter());
     registerAdapter(ServiceJobPriorityAdapter());
     registerAdapter(ServiceJobStatusAdapter());
@@ -60,6 +63,8 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(PurchaseOrderStatusAdapter());
     registerAdapter(SaleAdapter());
     registerAdapter(SaleItemAdapter());
+    registerAdapter(SalesOrderAdapter());
+    registerAdapter(SalesOrderStatusAdapter());
     registerAdapter(ServiceJobAdapter());
     registerAdapter(ServiceJobPriorityAdapter());
     registerAdapter(ServiceJobStatusAdapter());

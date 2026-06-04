@@ -52,7 +52,10 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.delete_outline, color: Colors.red),
             onPressed: () {
-              orderProvider.deleteOrder(currentOrder);
+              orderProvider.deleteOrder(
+                currentOrder,
+                productProvider: context.read<ProductProvider>(),
+              );
               Navigator.pop(context);
             },
           ),

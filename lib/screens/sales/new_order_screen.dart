@@ -257,7 +257,7 @@ class _NewOrderContent extends StatelessWidget {
                   if (isEditing) {
                     orderProvider.updateOrder(originalOrder!, orderToSave);
                   } else {
-                    orderProvider.addOrder(orderToSave);
+                    orderProvider.addOrder(orderToSave, productProvider: productProvider);
                   }
                   Navigator.pop(context);
                 },

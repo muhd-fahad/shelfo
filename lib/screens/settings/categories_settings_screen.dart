@@ -18,21 +18,18 @@ class CategoriesSettingsScreen extends StatelessWidget {
     final categoryProvider = Provider.of<CategoryProvider>(context);
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Product Categories",
         subtitle: "Organize your products",
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add_rounded, size: 24.r),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const EditCategoryScreen(),
-              ),
-            ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EditCategoryScreen(),
           ),
-          SizedBox(width: 8.w),
-        ],
+        ),
+        child: const Icon(Icons.add),
       ),
       body: categoryProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -42,11 +39,10 @@ class CategoriesSettingsScreen extends StatelessWidget {
               separatorBuilder: (context, index) => SizedBox(height: 12.h),
               itemBuilder: (context, index) {
                 final category = categoryProvider.categories[index];
-                return Container(
-                  decoration: ShapeDecoration(
-                    color: theme.cardTheme.color,
-                    shape: theme.cardTheme.shape!,
-                  ),
+                return Material(
+                  color: theme.cardTheme.color,
+                  shape: theme.cardTheme.shape!,
+                  clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                     leading: Container(

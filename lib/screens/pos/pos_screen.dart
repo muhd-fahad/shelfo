@@ -6,7 +6,6 @@ import '../../widgets/pos/pos_filter_sheet.dart';
 import 'pos_ui.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
@@ -22,25 +21,18 @@ class PosScreen extends StatelessWidget {
     final posProvider = context.read<PosProvider>();
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Point of Sale",
         // subtitle: "Select products for checkout",
-        actions: [
-          if (cartProvider.items.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.only(right: AppSpacing.xl),
-              child: Badge.count(
-                count: cartProvider.itemCount,
-                child: SFOButton(
-                  text: "Cart",
-                  icon: Icons.shopping_basket_outlined,
-                  width: 120,
-                  onPressed: () => PosUI.showCartDetails(context),
-                ),
-              ),
-            ),
-        ],
       ),
+      floatingActionButton: cartProvider.items.isNotEmpty
+          ? FloatingActionButton.extended(
+        heroTag: null,
+              onPressed: () => PosUI.showCartDetails(context),
+              label: Text("Cart (${cartProvider.itemCount})"),
+              icon: const Icon(Icons.shopping_basket_outlined),
+            )
+          : null,
       body: SFOBackground(
         child: Column(
           children: [

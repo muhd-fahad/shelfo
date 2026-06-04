@@ -28,49 +28,65 @@ class SFOLogoPicker extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: theme.cardTheme.color,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (BuildContext bc) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
-                title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onPick(ImageSource.gallery);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
-                title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onPick(ImageSource.camera);
-                },
-              ),
-              if (logoPath != null) ...[
-                ListTile(
-                  leading: Icon(Icons.visibility_outlined, color: colorScheme.onSurface),
-                  title: Text('View Image', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    SFOImageViewer.show(context, logoPath!);
-                  },
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.cardTheme.color,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
+                    title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onPick(ImageSource.gallery);
+                    },
+                  ),
                 ),
-                ListTile(
-                  leading: Icon(Icons.delete_outline, color: colorScheme.error),
-                  title: Text('Remove Logo', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.error)),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onRemove();
-                  },
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
+                    title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onPick(ImageSource.camera);
+                    },
+                  ),
                 ),
+                if (logoPath != null) ...[
+                  Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      leading: Icon(Icons.visibility_outlined, color: colorScheme.onSurface),
+                      title: Text('View Image', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        SFOImageViewer.show(context, logoPath!);
+                      },
+                    ),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      leading: Icon(Icons.delete_outline, color: colorScheme.error),
+                      title: Text('Remove Logo', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.error)),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        onRemove();
+                      },
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },

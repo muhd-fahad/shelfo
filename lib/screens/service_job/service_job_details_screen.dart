@@ -28,8 +28,8 @@ class ServiceJobDetailsScreen extends StatelessWidget {
     final currency = context.watch<BusinessProvider>().selectedCurrency;
 
     // Refresh job data from provider in case it was updated
-    final currentJob = provider.jobs.firstWhere((j) => j.id == job.id, orElse: () => job);
-    final customer = customerProvider.customers.firstWhere((c) => c.name == currentJob.customerName);
+    final currentJob = provider.jobs.where((j) => j.id == job.id).firstOrNull ?? job;
+    final customer = customerProvider.customers.where((c) => c.name == currentJob.customerName).firstOrNull;
 
     return Scaffold(
       appBar: SFOHeader(
@@ -120,7 +120,7 @@ class ServiceJobDetailsScreen extends StatelessWidget {
                 icon: Icons.person_outline,
                 children: [
                   _InfoLabel(label: "Name", value: currentJob.customerName),
-                  _InfoLabel(label: "Phone", value: customer.phone ?? "N/A"),
+                  if (customer != null) _InfoLabel(label: "Phone", value: customer.phone ?? "N/A"),
                   _InfoLabel(label: "Received Date", value: _formatDate(currentJob.createdAt)),
                 ],
               ),

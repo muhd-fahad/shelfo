@@ -174,7 +174,7 @@ class _NewPurchaseOrderContent extends StatelessWidget {
                           if (formProvider.isEditing) {
                             poProvider.updateOrderFromForm(formProvider);
                           } else {
-                            poProvider.addOrderFromForm(formProvider);
+                            poProvider.addOrderFromForm(formProvider, productProvider: productProvider);
                           }
                           Navigator.pop(context);
                         },

@@ -25,31 +25,41 @@ class SFOImagePicker extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: theme.cardTheme.color,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      backgroundColor: Colors.transparent,
       builder: (BuildContext bc) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
-                title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onAddImage(ImageSource.gallery);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
-                title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onAddImage(ImageSource.camera);
-                },
-              ),
-            ],
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.cardTheme.color,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: Icon(Icons.photo_library, color: colorScheme.onSurface),
+                    title: Text('Photo Library', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onAddImage(ImageSource.gallery);
+                    },
+                  ),
+                ),
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    leading: Icon(Icons.photo_camera, color: colorScheme.onSurface),
+                    title: Text('Camera', style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onAddImage(ImageSource.camera);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

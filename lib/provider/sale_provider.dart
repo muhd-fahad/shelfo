@@ -3,6 +3,7 @@ import '../models/sale/sale_model.dart';
 import '../services/hive/sale_service.dart';
 import '../models/invoice/invoice_config_model.dart';
 import '../services/hive/invoice_service.dart';
+import 'product_provider.dart';
 
 class SaleProvider extends ChangeNotifier {
   List<Sale> _sales = [];
@@ -57,8 +58,20 @@ class SaleProvider extends ChangeNotifier {
     return "${config.prefix}$nextNumber";
   }
 
-  Future<void> addSale(Sale sale) async {
+  Future<void> addSale(Sale sale, {ProductProvider? productProvider}) async {
     await SaleHiveService.saveSale(sale);
+    
+    if (productProvider != null) {
+      for (var item in sale.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: false);
+        } catch (e) {
+          debugPrint("Product not found for stock update: ${item.productId}");
+        }
+      }
+    }
+    
     await loadSales();
   }
 
@@ -67,13 +80,35 @@ class SaleProvider extends ChangeNotifier {
     await loadSales();
   }
 
-  Future<void> deleteSale(Sale sale) async {
+  Future<void> deleteSale(Sale sale, {ProductProvider? productProvider}) async {
+    if (productProvider != null && sale.status != 'Refunded' && sale.status != 'Cancelled') {
+      // Return stock when deleting an active sale
+      for (var item in sale.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: true);
+        } catch (e) {
+          debugPrint("Product not found for stock return: ${item.productId}");
+        }
+      }
+    }
     await SaleHiveService.deleteSale(sale);
     await loadSales();
   }
 
-  Future<void> refundSale(Sale sale) async {
+  Future<void> refundSale(Sale sale, {ProductProvider? productProvider}) async {
     await updateSaleStatus(sale, 'Refunded');
+    
+    if (productProvider != null) {
+      for (var item in sale.items) {
+        try {
+          final product = productProvider.products.firstWhere((p) => p.id == item.productId);
+          await productProvider.adjustStock(product, item.quantity, isAddition: true);
+        } catch (e) {
+          debugPrint("Product not found for stock update: ${item.productId}");
+        }
+      }
+    }
   }
   
   Future<void> updateSaleStatus(Sale sale, String status) async {

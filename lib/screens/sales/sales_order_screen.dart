@@ -31,24 +31,18 @@ class SalesOrderScreen extends StatelessWidget {
     final currency = businessProvider.selectedCurrency;
 
     return Scaffold(
-      appBar: SFOHeader(
+      appBar: const SFOHeader(
         title: "Sales Orders",
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: SFOButton(
-              text: "New Order",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NewOrderScreen()),
-                );
-              },
-              icon: Icons.add,
-              width: 120.w,
-            ),
-          ),
-        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NewOrderScreen()),
+          );
+        },
+        label: const Text("New Order"),
+        icon: const Icon(Icons.add),
       ),
       body: SFOBackground(
         child: Column(

@@ -64,12 +64,15 @@ class CustomerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Customer get selectedCustomer => 
-      _customers.firstWhere((c) => c.id == _selectedCustomerId);
+  Customer? get selectedCustomer {
+    if (_selectedCustomerId == null) return null;
+    return _customers.where((c) => c.id == _selectedCustomerId).firstOrNull;
+  }
 
   List<Sale> get customerSales {
-    if (_selectedCustomerId == null || _saleProvider == null) return [];
-    final name = selectedCustomer.name;
+    final customer = selectedCustomer;
+    if (customer == null || _saleProvider == null) return [];
+    final name = customer.name;
     return _saleProvider!.sales.where((s) => s.customerName == name).toList();
   }
 
