@@ -2,69 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/sale/sales_order_model.dart';
 
 class SalesOrderProvider extends ChangeNotifier {
-  final List<SalesOrder> _orders = [
-    SalesOrder(
-      id: "SO-2024-001",
-      date: DateTime(2024, 10, 24),
-      customerName: "Gadget Corner",
-      items: [],
-      subtotal: 9184,
-      taxAmount: 0,
-      total: 9184,
-      status: SalesOrderStatus.fulfilled,
-    ),
-    SalesOrder(
-      id: "SO-2024-002",
-      date: DateTime(2024, 10, 24),
-      customerName: "Juan Dela Cruz",
-      items: [],
-      subtotal: 18999,
-      taxAmount: 2280,
-      total: 21279,
-      status: SalesOrderStatus.pending,
-      notes: "Rush delivery",
-    ),
-    SalesOrder(
-      id: "SO-2024-003",
-      date: DateTime(2024, 10, 23),
-      customerName: "City Repair Shop",
-      items: [],
-      subtotal: 9184,
-      taxAmount: 0,
-      total: 9184,
-      status: SalesOrderStatus.fulfilled,
-    ),
-    SalesOrder(
-      id: "SO-2024-004",
-      date: DateTime(2024, 10, 23),
-      customerName: "Cyber Cafe 24/7",
-      items: [],
-      subtotal: 47600,
-      taxAmount: 0,
-      total: 47600,
-      status: SalesOrderStatus.inTransit,
-    ),
-    SalesOrder(
-      id: "SO-2024-005",
-      date: DateTime(2024, 10, 22),
-      customerName: "Maria Santos",
-      items: [],
-      subtotal: 2800,
-      taxAmount: 0,
-      total: 2800,
-      status: SalesOrderStatus.cancelled,
-    ),
-    SalesOrder(
-      id: "SO-2024-006",
-      date: DateTime(2024, 10, 22),
-      customerName: "Cyber Cafe 24/7",
-      items: [],
-      subtotal: 201598,
-      taxAmount: 0,
-      total: 201598,
-      status: SalesOrderStatus.draft,
-    ),
-  ];
+  final List<SalesOrder> _orders = [];
   List<SalesOrder> _filteredOrders = [];
   final bool _isLoading = false;
   String _searchQuery = '';
