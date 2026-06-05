@@ -70,7 +70,7 @@ class OverviewTab extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SFOSectionHeader(title: "Revenue vs Profit"),
-                  _buildPeriodDropdown(context),
+                  _buildPeriodDropdown(context, reportProvider),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -129,7 +129,7 @@ class OverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _buildPeriodDropdown(BuildContext context) {
+  Widget _buildPeriodDropdown(BuildContext context, ReportProvider provider) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -138,11 +138,21 @@ class OverviewTab extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: colorScheme.outlineVariant),
       ),
-      child: Row(
-        children: [
-          Text("Last 30 Days", style: TextStyle(fontSize: 11.sp, color: colorScheme.onSurfaceVariant)),
-          Icon(Icons.keyboard_arrow_down, size: 14.sp, color: colorScheme.onSurfaceVariant),
-        ],
+      child: PopupMenuButton<ReportPeriod>(
+        initialValue: provider.selectedPeriod,
+        onSelected: provider.setPeriod,
+        itemBuilder: (context) => ReportPeriod.values
+            .map((p) => PopupMenuItem(
+                  value: p,
+                  child: Text(p.label),
+                ))
+            .toList(),
+        child: Row(
+          children: [
+            Text(provider.selectedPeriod.label, style: TextStyle(fontSize: 11.sp, color: colorScheme.onSurfaceVariant)),
+            Icon(Icons.keyboard_arrow_down, size: 14.sp, color: colorScheme.onSurfaceVariant),
+          ],
+        ),
       ),
     );
   }

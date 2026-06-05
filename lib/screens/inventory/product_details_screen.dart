@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
@@ -76,12 +77,19 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SFOBadge(
                       label: currentProduct.categoryName ?? "Uncategorized",
                     ),
-                    SizedBox(width: 8.w),
+                    if (currentProduct.brandName != null && currentProduct.brandName!.isNotEmpty) ...[
+                      SizedBox(width: 8.w),
+                      SFOBadge(
+                        label: currentProduct.brandName!,
+                        bgColor: Colors.orange.withOpacity(0.1),
+                        textColor: Colors.orange,
+                      ),
+                    ],
+                    const Spacer(),
                     SFOBadge(
                       label: currentProduct.productType.label,
                       bgColor: colorScheme.primary.withOpacity(0.1),
@@ -111,6 +119,26 @@ class ProductDetailsScreen extends StatelessWidget {
                     SFOMetricCard(label: "Min Level", value: currentProduct.minStock.toString()),
                     SizedBox(width: 12.w),
                     SFOMetricCard(label: "Reorder At", value: currentProduct.reorderPoint.toString()),
+                  ],
+                ),
+
+                SizedBox(height: 20.h),
+
+                // Inventory Info Card
+                SFOCard(
+                  padding: EdgeInsets.all(20.r),
+                  children: [
+                    Text("Inventory Details", style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 16.h),
+                    if (currentProduct.barcode != null && currentProduct.barcode!.isNotEmpty) ...[
+                      SFOPriceRow(label: "Barcode", value: currentProduct.barcode!),
+                      SizedBox(height: 12.h),
+                    ],
+                    if (currentProduct.unit != null && currentProduct.unit!.isNotEmpty) ...[
+                      SFOPriceRow(label: "Unit of Measure", value: currentProduct.unit!),
+                      SizedBox(height: 12.h),
+                    ],
+                    SFOPriceRow(label: "Created On", value: DateFormat('MMM dd, yyyy').format(currentProduct.createdAt)),
                   ],
                 ),
 

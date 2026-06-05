@@ -14,6 +14,7 @@ class SalesChart extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
     final reportProvider = context.watch<ReportProvider>();
     final spots = reportProvider.getWeeklySalesSpots();
+    final labels = reportProvider.getChartLabels();
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -31,17 +32,12 @@ class SalesChart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Weekly Sales",
+                "Sales Trends",
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "Last 7 Days",
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
+              _buildPeriodDropdown(context, reportProvider),
             ],
           ),
           SizedBox(height: 24.h),
@@ -51,7 +47,31 @@ class SalesChart extends StatelessWidget {
             child: LineChart(
               LineChartData(
                 gridData: const FlGridData(show: false),
-                titlesData: const FlTitlesData(show: false),
+                titlesData: FlTitlesData(
+                   leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                   rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                   topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                   bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 22,
+                        interval: labels.length > 10 ? 5 : 1,
+                        getTitlesWidget: (value, meta) {
+                           int index = value.toInt();
+                           if (index >= 0 && index < labels.length) {
+                             return Text(
+                               labels[index],
+                               style: TextStyle(
+                                 color: theme.colorScheme.onSurfaceVariant,
+                                 fontSize: 9.sp,
+                               ),
+                             );
+                           }
+                           return const Text('');
+                        },
+                      ),
+                   ),
+                ),
                 borderData: FlBorderData(show: false),
                 lineBarsData: [
                   LineChartBarData(
@@ -86,38 +106,39 @@ class SalesChart extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _getDays()
-                .map((day) => Text(
-                      day,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontSize: 10.sp,
-                      ),
-                    ))
-                .toList(),
-          ),
         ],
       ),
     );
   }
 
-  List<String> _getDays() {
-    final now = DateTime.now();
-    return List.generate(7, (i) {
-      final date = now.subtract(Duration(days: 6 - i));
-      switch (date.weekday) {
-        case 1: return "Mon";
-        case 2: return "Tue";
-        case 3: return "Wed";
-        case 4: return "Thu";
-        case 5: return "Fri";
-        case 6: return "Sat";
-        case 7: return "Sun";
-        default: return "";
-      }
-    });
+  Widget _buildPeriodDropdown(BuildContext context, ReportProvider provider) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return PopupMenuButton<ReportPeriod>(
+      initialValue: provider.selectedPeriod,
+      onSelected: provider.setPeriod,
+      itemBuilder: (context) => [
+        ReportPeriod.last7Days,
+        ReportPeriod.last30Days,
+        ReportPeriod.thisMonth,
+      ].map((p) => PopupMenuItem(
+            value: p,
+            child: Text(p.label),
+          ))
+      .toList(),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: colorScheme.outlineVariant),
+        ),
+        child: Row(
+          children: [
+            Text(provider.selectedPeriod.label, style: TextStyle(fontSize: 10.sp, color: colorScheme.onSurfaceVariant)),
+            Icon(Icons.keyboard_arrow_down, size: 12.sp, color: colorScheme.onSurfaceVariant),
+          ],
+        ),
+      ),
+    );
   }
 }

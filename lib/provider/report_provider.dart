@@ -7,10 +7,35 @@ import 'package:shelfo/provider/sale_provider.dart';
 import '../models/product/product_model.dart';
 import '../models/sale/sale_model.dart';
 
+enum ReportPeriod {
+  today,
+  yesterday,
+  last7Days,
+  last30Days,
+  thisMonth,
+  thisYear,
+}
+
+extension ReportPeriodExtension on ReportPeriod {
+  String get label {
+    switch (this) {
+      case ReportPeriod.today: return "Today";
+      case ReportPeriod.yesterday: return "Yesterday";
+      case ReportPeriod.last7Days: return "Last 7 Days";
+      case ReportPeriod.last30Days: return "Last 30 Days";
+      case ReportPeriod.thisMonth: return "This Month";
+      case ReportPeriod.thisYear: return "This Year";
+    }
+  }
+}
+
 class ReportProvider extends ChangeNotifier {
   SaleProvider? _saleProvider;
   ProductProvider? _productProvider;
   CategoryProvider? _categoryProvider;
+
+  ReportPeriod _selectedPeriod = ReportPeriod.last7Days;
+  ReportPeriod get selectedPeriod => _selectedPeriod;
 
   ReportProvider({
     SaleProvider? saleProvider,
@@ -31,29 +56,65 @@ class ReportProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPeriod(ReportPeriod period) {
+    _selectedPeriod = period;
+    notifyListeners();
+  }
+
   final _currencyFormat = NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0);
 
   String _format(double value) => _currencyFormat.format(value);
 
   List<Sale> get _paidSales => _saleProvider?.sales.where((s) => s.status == 'Paid').toList() ?? [];
+  
+  List<Sale> get _filteredSalesByPeriod {
+    final now = DateTime.now();
+    DateTime start;
+    DateTime end = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
+    switch (_selectedPeriod) {
+      case ReportPeriod.today:
+        start = DateTime(now.year, now.month, now.day);
+        break;
+      case ReportPeriod.yesterday:
+        start = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1));
+        end = DateTime(now.year, now.month, now.day).subtract(const Duration(seconds: 1));
+        break;
+      case ReportPeriod.last7Days:
+        start = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 6));
+        break;
+      case ReportPeriod.last30Days:
+        start = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 29));
+        break;
+      case ReportPeriod.thisMonth:
+        start = DateTime(now.year, now.month, 1);
+        break;
+      case ReportPeriod.thisYear:
+        start = DateTime(now.year, 1, 1);
+        break;
+    }
+
+    return _paidSales.where((s) => s.dateTime.isAfter(start) && s.dateTime.isBefore(end.add(const Duration(seconds: 1)))).toList();
+  }
+
   List<Product> get _allProducts => _productProvider?.products ?? [];
 
   String get totalRevenue {
-    double total = _paidSales.fold(0.0, (sum, sale) => sum + sale.total);
+    double total = _filteredSalesByPeriod.fold(0.0, (sum, sale) => sum + sale.total);
     return _format(total);
   }
 
   String get revenueTrend => "+0.0%"; // Placeholder
 
   String get grossProfit {
-    double totalRevenue = _paidSales.fold(0.0, (sum, sale) => sum + sale.total);
-    double cog = _calculateCOG();
+    double totalRevenue = _filteredSalesByPeriod.fold(0.0, (sum, sale) => sum + sale.total);
+    double cog = _calculateCOG(_filteredSalesByPeriod);
     return _format(totalRevenue - cog);
   }
 
-  double _calculateCOG() {
+  double _calculateCOG(List<Sale> sales) {
     double cog = 0;
-    for (var sale in _paidSales) {
+    for (var sale in sales) {
       for (var item in sale.items) {
         final product = _allProducts.where((p) => p.id == item.productId).firstOrNull;
         cog += item.quantity * (product?.costPrice ?? 0);
@@ -72,21 +133,21 @@ class ReportProvider extends ChangeNotifier {
   String get inventorySubtitle => "${_allProducts.fold(0, (sum, p) => sum + p.stockQuantity)} items in stock";
 
   String get activeCustomers {
-    final customers = _paidSales.map((s) => s.customerName).toSet();
+    final customers = _filteredSalesByPeriod.map((s) => s.customerName).toSet();
     return customers.length.toString();
   }
 
   String get customersTrend => "Ok";
 
   String get netProfitMargin {
-    double revenue = _paidSales.fold(0.0, (sum, sale) => sum + sale.total);
+    double revenue = _filteredSalesByPeriod.fold(0.0, (sum, sale) => sum + sale.total);
     if (revenue == 0) return "0.0 %";
-    double cog = _calculateCOG();
+    double cog = _calculateCOG(_filteredSalesByPeriod);
     double profit = revenue - cog;
     return "${((profit / revenue) * 100).toStringAsFixed(1)} %";
   }
 
-  String get costOfGoods => _format(_calculateCOG());
+  String get costOfGoods => _format(_calculateCOG(_filteredSalesByPeriod));
   
   String get operatingExpenses => "₹ 0";
 
@@ -94,7 +155,7 @@ class ReportProvider extends ChangeNotifier {
     Map<String, int> productUnits = {};
     Map<String, double> productRevenue = {};
 
-    for (var sale in _paidSales) {
+    for (var sale in _filteredSalesByPeriod) {
       for (var item in sale.items) {
         productUnits[item.productName] = (productUnits[item.productName] ?? 0) + item.quantity;
         productRevenue[item.productName] = (productRevenue[item.productName] ?? 0.0) + item.total;
@@ -152,7 +213,6 @@ class ReportProvider extends ChangeNotifier {
     final hiveCategories = _categoryProvider?.categories ?? [];
     Map<String, int> categoryCount = {};
     
-    // Initialize with all hive categories to show empty ones too
     for (var cat in hiveCategories) {
       categoryCount[cat.name] = 0;
     }
@@ -172,37 +232,72 @@ class ReportProvider extends ChangeNotifier {
     }).toList();
   }
 
-  // Real Data for Charts
+  // Real Data for Charts based on selected period
   List<FlSpot> getWeeklySalesSpots() {
-    final now = DateTime.now();
-    List<FlSpot> spots = [];
-    for (int i = 6; i >= 0; i--) {
-      final date = now.subtract(Duration(days: i));
-      final dailyTotal = _paidSales
-          .where((s) => s.dateTime.year == date.year && s.dateTime.month == date.month && s.dateTime.day == date.day)
-          .fold(0.0, (sum, s) => sum + s.total);
-      spots.add(FlSpot((6 - i).toDouble(), dailyTotal));
-    }
-    return spots;
+    return _getSpotsForPeriod((sales) => sales.fold(0.0, (sum, s) => sum + s.total));
   }
 
   List<FlSpot> getWeeklyProfitSpots() {
-    final now = DateTime.now();
-    List<FlSpot> spots = [];
-    for (int i = 6; i >= 0; i--) {
-      final date = now.subtract(Duration(days: i));
-      final dailySales = _paidSales.where((s) => s.dateTime.year == date.year && s.dateTime.month == date.month && s.dateTime.day == date.day);
-      double dailyProfit = 0;
-      for (var sale in dailySales) {
+    return _getSpotsForPeriod((sales) {
+      double profit = 0;
+      for (var sale in sales) {
         double cog = 0;
         for (var item in sale.items) {
           final product = _allProducts.where((p) => p.id == item.productId).firstOrNull;
           cog += item.quantity * (product?.costPrice ?? 0);
         }
-        dailyProfit += (sale.total - cog);
+        profit += (sale.total - cog);
       }
-      spots.add(FlSpot((6 - i).toDouble(), dailyProfit));
+      return profit;
+    });
+  }
+
+  List<FlSpot> _getSpotsForPeriod(double Function(List<Sale>) aggregator) {
+    final now = DateTime.now();
+    int days = 7;
+    if (_selectedPeriod == ReportPeriod.last30Days) days = 30;
+    if (_selectedPeriod == ReportPeriod.thisMonth) {
+       days = DateTime(now.year, now.month + 1, 0).day;
+    }
+
+    List<FlSpot> spots = [];
+    for (int i = days - 1; i >= 0; i--) {
+      DateTime date;
+      if (_selectedPeriod == ReportPeriod.thisMonth) {
+         date = DateTime(now.year, now.month, days - i);
+      } else {
+         date = now.subtract(Duration(days: i));
+      }
+      
+      final dailySales = _paidSales.where((s) => s.dateTime.year == date.year && s.dateTime.month == date.month && s.dateTime.day == date.day).toList();
+      spots.add(FlSpot((days - 1 - i).toDouble(), aggregator(dailySales)));
     }
     return spots;
+  }
+  
+  List<String> getChartLabels() {
+    final now = DateTime.now();
+    int days = 7;
+    if (_selectedPeriod == ReportPeriod.last30Days) days = 30;
+    if (_selectedPeriod == ReportPeriod.thisMonth) {
+       days = DateTime(now.year, now.month + 1, 0).day;
+    }
+
+    List<String> labels = [];
+    for (int i = days - 1; i >= 0; i--) {
+       DateTime date;
+       if (_selectedPeriod == ReportPeriod.thisMonth) {
+          date = DateTime(now.year, now.month, days - i);
+       } else {
+          date = now.subtract(Duration(days: i));
+       }
+       
+       if (days <= 7) {
+         labels.add(DateFormat('EEE').format(date));
+       } else {
+         labels.add(DateFormat('MMM dd').format(date));
+       }
+    }
+    return labels;
   }
 }
