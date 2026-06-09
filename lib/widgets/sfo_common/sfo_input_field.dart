@@ -58,7 +58,28 @@ class SFOInputField extends StatelessWidget {
           onChanged: onChanged,
           maxLines: maxLines,
           keyboardType: keyboardType,
-          validator: validator,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (isRequired && (value == null || value.trim().isEmpty)) {
+              return '$label is required';
+            }
+            if ((keyboardType == TextInputType.number || keyboardType == const TextInputType.numberWithOptions(decimal: true)) &&
+                value != null &&
+                value.isNotEmpty) {
+              if (double.tryParse(value) == null) {
+                return 'Please enter a valid number';
+              }
+            }
+            if (keyboardType == TextInputType.emailAddress && value != null && value.isNotEmpty) {
+              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                return 'Please enter a valid email';
+              }
+            }
+            if (validator != null) {
+              return validator!(value);
+            }
+            return null;
+          },
           decoration: InputDecoration(
             hintText: hint,
           ),

@@ -3,6 +3,7 @@ import 'package:shelfo/models/invoice/invoice_config_model.dart';
 import 'package:shelfo/services/hive/invoice_service.dart';
 
 class InvoiceProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController prefixController = TextEditingController(text: "INV-");
   final TextEditingController startingNumberController = TextEditingController(text: "1001");
   final TextEditingController footerTextController = TextEditingController(text: "Thank you for your business!");

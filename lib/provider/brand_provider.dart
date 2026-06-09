@@ -3,6 +3,7 @@ import 'package:shelfo/models/brand/brand_model.dart';
 import 'package:shelfo/services/hive/brand_service.dart';
 
 class BrandProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
 
   List<Brand> _brands = [];

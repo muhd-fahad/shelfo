@@ -77,7 +77,9 @@ class SettingsScreen extends StatelessWidget {
                     SFOTile(
                       icon: Icons.history_outlined,
                       title: "Sales History",
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.salesHistory);
+                      },
                     ),
                     const SFODivider(),
                     SFOTile(
@@ -96,47 +98,9 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: AppSpacing.md),
-                const SFOSectionHeader(title: "Module Configuration"),
-                SFOCard(
-                  children: [
-                    SFOSwitchTile(
-                      title: "POS Terminal",
-                      subtitle: "Enable Point of Sale interface for fast billing",
-                      value: true,
-                      onChanged: (v) {},
-                    ),
-                    const SFODivider(),
-                    SFOSwitchTile(
-                      title: "Service & Repairs",
-                      subtitle:
-                          "Track repair jobs, technicians, and service history",
-                      value: true,
-                      onChanged: (v) {},
-                    ),
-                    const SFODivider(),
-                    SFOSwitchTile(
-                      title: "Warranty Management",
-                      subtitle: "Track product warranties and policies",
-                      value: true,
-                      onChanged: (v) {},
-                    ),
-                    const SFODivider(),
-                    SFOSwitchTile(
-                      title: "Loyalty Program",
-                      subtitle: "Enable customer points and rewards",
-                      value: true,
-                      onChanged: (v) {},
-                    ),
-                    const SFODivider(),
-                    SFOSwitchTile(
-                      title: "Multi-Warehouse",
-                      subtitle: "Manage stock across multiple locations",
-                      value: false,
-                      onChanged: (v) {},
-                    ),
-                  ],
-                ),
+                // SizedBox(height: AppSpacing.md),
+                // const SFOSectionHeader(title: "Module Configuration"),
+                // _buildSfoCard(),
                 SizedBox(height: AppSpacing.md),
                 const SFOSectionHeader(title: "System"),
                 SFOCard(
@@ -170,5 +134,47 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  SFOCard _buildSfoCard() {
+    return SFOCard(
+                children: [
+                  SFOSwitchTile(
+                    title: "POS Terminal",
+                    subtitle: "Enable Point of Sale interface for fast billing",
+                    value: true,
+                    onChanged: (v) {},
+                  ),
+                  const SFODivider(),
+                  SFOSwitchTile(
+                    title: "Service & Repairs",
+                    subtitle:
+                        "Track repair jobs, technicians, and service history",
+                    value: true,
+                    onChanged: (v) {},
+                  ),
+                  const SFODivider(),
+                  SFOSwitchTile(
+                    title: "Warranty Management",
+                    subtitle: "Track product warranties and policies",
+                    value: true,
+                    onChanged: (v) {},
+                  ),
+                  const SFODivider(),
+                  SFOSwitchTile(
+                    title: "Loyalty Program",
+                    subtitle: "Enable customer points and rewards",
+                    value: true,
+                    onChanged: (v) {},
+                  ),
+                  const SFODivider(),
+                  SFOSwitchTile(
+                    title: "Multi-Warehouse",
+                    subtitle: "Manage stock across multiple locations",
+                    value: false,
+                    onChanged: (v) {},
+                  ),
+                ],
+              );
   }
 }

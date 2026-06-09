@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
-import '../../widgets/sfo_common/sfo_button.dart';
 import 'tabs/vendors_tab.dart';
 import 'tabs/purchase_orders_tab.dart';
 import 'add_vendor_screen.dart';

@@ -156,7 +156,7 @@ class VendorDetailsScreen extends StatelessWidget {
                                   ),
                                   SFOBadge(
                                     label: order.status.name[0].toUpperCase() + order.status.name.substring(1),
-                                    bgColor: theme.colorScheme.surfaceVariant,
+                                    bgColor: theme.colorScheme.surfaceContainerHighest,
                                     textColor: theme.colorScheme.onSurfaceVariant,
                                   ),
                                 ],

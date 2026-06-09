@@ -26,7 +26,7 @@ class CartProvider extends ChangeNotifier {
   String _selectedPaymentMethod = 'Cash';
   final TextEditingController amountTenderedController = TextEditingController();
   double _change = 0.0;
-  Customer? _selectedCustomer = null;
+  Customer? _selectedCustomer;
 
   List<CartItem> get items => _items;
 

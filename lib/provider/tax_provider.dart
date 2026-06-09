@@ -4,6 +4,7 @@ import 'package:shelfo/models/tax/tax_pricing_mode.dart';
 import 'package:shelfo/services/hive/tax_service.dart';
 
 class TaxProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController taxRateController = TextEditingController(text: "8.5");
   final TextEditingController taxLabelController = TextEditingController(text: "Sales Tax");
   

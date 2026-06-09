@@ -139,7 +139,7 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
                                     width: 48.r,
                                     height: 48.r,
                                     decoration: BoxDecoration(
-                                      color: theme.colorScheme.surfaceVariant,
+                                      color: theme.colorScheme.surfaceContainerHighest,
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: const Icon(Icons.inventory_2_outlined, color: Colors.grey),

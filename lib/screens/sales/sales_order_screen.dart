@@ -10,7 +10,6 @@ import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_badge.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';

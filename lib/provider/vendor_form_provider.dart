@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/vendor/vendor_model.dart';
 
 class VendorFormProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final Vendor? originalVendor;
 
   final TextEditingController nameController = TextEditingController();

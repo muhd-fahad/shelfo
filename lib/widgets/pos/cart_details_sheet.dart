@@ -46,7 +46,7 @@ class CartDetailsSheet extends StatelessWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: cartProvider.items.length,
-                  separatorBuilder: (_, __) => const SFODivider(),
+                  separatorBuilder: (_, _) => const SFODivider(),
                   itemBuilder: (context, index) {
                     final item = cartProvider.items[index];
                     return Padding(

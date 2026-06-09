@@ -3,6 +3,7 @@ import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/services/hive/category_service.dart';
 
 class CategoryProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   

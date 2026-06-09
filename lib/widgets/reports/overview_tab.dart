@@ -17,7 +17,6 @@ class OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reportProvider = context.watch<ReportProvider>();
-    final colorScheme = Theme.of(context).colorScheme;
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(20.r),

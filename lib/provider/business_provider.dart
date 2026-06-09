@@ -7,6 +7,7 @@ import 'package:shelfo/services/hive/business_service.dart';
 import 'package:shelfo/services/image_service.dart';
 
 class BusinessProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();

@@ -6,6 +6,7 @@ import '../models/product/product_model.dart';
 import '../services/image_service.dart';
 
 class ProductProvider extends ChangeNotifier {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   List<Product> _products = [];
   bool _isLoading = true;

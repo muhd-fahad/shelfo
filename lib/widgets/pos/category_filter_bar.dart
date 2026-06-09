@@ -19,7 +19,7 @@ class CategoryFilterBar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
         scrollDirection: Axis.horizontal,
         itemCount: categoryProvider.categories.length + 1,
-        separatorBuilder: (_, __) => SizedBox(width: AppSpacing.sm),
+        separatorBuilder: (_, _) => SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, index) {
           final isAll = index == 0;
           final categoryName = isAll ? "All" : categoryProvider.categories[index - 1].name;

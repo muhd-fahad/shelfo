@@ -32,80 +32,84 @@ class EditCategoryScreen extends StatelessWidget {
       body: Consumer<CategoryProvider>(
         builder: (context, provider, _) => SingleChildScrollView(
           padding: EdgeInsets.all(20.r),
-          child: Column(
-            children: [
-              SFOCard(
-                padding: EdgeInsets.all(20.r),
-                children: [
-                  SFOInputField(
-                    label: "Category Name",
-                    hint: "e.g. Smartphones",
-                    controller: provider.nameController,
-                  ),
-                  SizedBox(height: 20.h),
-                  SFOInputField(
-                    label: "Description",
-                    hint: "e.g. Mobile devices and phones",
-                    controller: provider.descController,
-                    maxLines: 3,
-                  ),
-                  SizedBox(height: 24.h),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Select Icon",
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: colorScheme.onSurfaceVariant,
+          child: Form(
+            key: provider.formKey,
+            child: Column(
+              children: [
+                SFOCard(
+                  padding: EdgeInsets.all(20.r),
+                  children: [
+                    SFOInputField(
+                      label: "Category Name",
+                      hint: "e.g. Smartphones",
+                      controller: provider.nameController,
+                      isRequired: true,
+                    ),
+                    SizedBox(height: 20.h),
+                    SFOInputField(
+                      label: "Description",
+                      hint: "e.g. Mobile devices and phones",
+                      controller: provider.descController,
+                      maxLines: 3,
+                    ),
+                    SizedBox(height: 24.h),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Select Icon",
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 12.h),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          mainAxisSpacing: 12.h,
-                          crossAxisSpacing: 12.w,
-                        ),
-                        itemCount: Category.availableIcons.length,
-                        itemBuilder: (context, index) {
-                          final icon = Category.availableIcons[index];
-                          final isSelected = provider.selectedIconCode == icon.codePoint;
-                          return InkWell(
-                            onTap: () => provider.setIconCode(icon.codePoint),
-                            borderRadius: BorderRadius.circular(12.r),
-                            child: Container(
-                              decoration: ShapeDecoration(
-                                color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
-                                shape: RoundedSuperellipseBorder(
-                                  borderRadius: AppRadius.sm,
-                                  side: BorderSide(
-                                    color: isSelected ? colorScheme.primary : colorScheme.outline,
-                                    width: isSelected ? 2 : 1,
+                        SizedBox(height: 12.h),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5,
+                            mainAxisSpacing: 12.h,
+                            crossAxisSpacing: 12.w,
+                          ),
+                          itemCount: Category.availableIcons.length,
+                          itemBuilder: (context, index) {
+                            final icon = Category.availableIcons[index];
+                            final isSelected = provider.selectedIconCode == icon.codePoint;
+                            return InkWell(
+                              onTap: () => provider.setIconCode(icon.codePoint),
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Container(
+                                decoration: ShapeDecoration(
+                                  color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
+                                  shape: RoundedSuperellipseBorder(
+                                    borderRadius: AppRadius.sm,
+                                    side: BorderSide(
+                                      color: isSelected ? colorScheme.primary : colorScheme.outline,
+                                      width: isSelected ? 2 : 1,
+                                    ),
                                   ),
                                 ),
+                                child: Icon(
+                                  icon,
+                                  size: 24.r,
+                                  color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                                ),
                               ),
-                              child: Icon(
-                                icon,
-                                size: 24.r,
-                                color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 32.h),
-              SFOButton(
-                text: category == null ? "Create Category" : "Save Changes",
-                onPressed: () => _save(context, provider),
-              ),
-            ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 32.h),
+                SFOButton(
+                  text: category == null ? "Create Category" : "Save Changes",
+                  onPressed: () => _save(context, provider),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -113,26 +117,19 @@ class EditCategoryScreen extends StatelessWidget {
   }
 
   void _save(BuildContext context, CategoryProvider provider) async {
-    if (provider.nameController.text.isEmpty) {
-      SFOSnackbar.show(
-        context,
-        message: "Please enter a category name",
-        isError: true,
-      );
-      return;
-    }
+    if (provider.formKey.currentState?.validate() ?? false) {
+      final success = await provider.saveCategory(category);
 
-    final success = await provider.saveCategory(category);
-    
-    if (context.mounted) {
-      if (!success) {
-        SFOSnackbar.show(
-          context,
-          message: "Category with this name already exists",
-          isError: true,
-        );
-      } else {
-        Navigator.pop(context);
+      if (context.mounted) {
+        if (!success) {
+          SFOSnackbar.show(
+            context,
+            message: "Category with this name already exists",
+            isError: true,
+          );
+        } else {
+          Navigator.pop(context);
+        }
       }
     }
   }

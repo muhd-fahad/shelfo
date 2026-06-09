@@ -30,101 +30,108 @@ class TaxConfigScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Column(
-          spacing: 24.h,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SFOSwitchTile(
-              title: "Enable Tax Calculation",
-              subtitle: "Automatically calculate tax on sales",
-              value: taxProvider.isTaxEnabled,
-              onChanged: (value) {
-                taxProvider.toggleTaxEnabled(value);
-              },
-            ),
-            if (taxProvider.isTaxEnabled) ...[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                spacing: AppSpacing.lg,
-                children: [
-                  Expanded(
-                    child: SFOInputField(
-                      label: "Default Tax Rate (%)",
-                      hint: "8.5",
-                      controller: taxProvider.taxRateController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    ),
-                  ),
-                  Expanded(
-                    child: SFOInputField(
-                      label: "Tax Label",
-                      hint: "Sales Tax",
-                      controller: taxProvider.taxLabelController,
-                    ),
-                  ),
-                ],
+        child: Form(
+          key: taxProvider.formKey,
+          child: Column(
+            spacing: 24.h,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SFOSwitchTile(
+                title: "Enable Tax Calculation",
+                subtitle: "Automatically calculate tax on sales",
+                value: taxProvider.isTaxEnabled,
+                onChanged: (value) {
+                  taxProvider.toggleTaxEnabled(value);
+                },
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: AppSpacing.xs,
-                children: [
-                  Text(
-                    "Tax Pricing Mode",
-                    style: SFOAppTheme.light.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondary,
+              if (taxProvider.isTaxEnabled) ...[
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  spacing: AppSpacing.lg,
+                  children: [
+                    Expanded(
+                      child: SFOInputField(
+                        label: "Default Tax Rate (%)",
+                        hint: "8.5",
+                        controller: taxProvider.taxRateController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        isRequired: true,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Row(
-                    mainAxisSize: .max,
-                    spacing: AppSpacing.lg,
-                    children: [
-                      Expanded(
-                        child: _PricingModeCard(
-                          title: "Tax Exclusive",
-                          isSelected: taxProvider.pricingMode == TaxPricingMode.exclusive,
-                          onTap: () => taxProvider.setPricingMode(TaxPricingMode.exclusive),
+                    Expanded(
+                      child: SFOInputField(
+                        label: "Tax Label",
+                        hint: "Sales Tax",
+                        controller: taxProvider.taxLabelController,
+                        isRequired: true,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: AppSpacing.xs,
+                  children: [
+                    Text(
+                      "Tax Pricing Mode",
+                      style: SFOAppTheme.light.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      mainAxisSize: .max,
+                      spacing: AppSpacing.lg,
+                      children: [
+                        Expanded(
+                          child: _PricingModeCard(
+                            title: "Tax Exclusive",
+                            isSelected: taxProvider.pricingMode == TaxPricingMode.exclusive,
+                            onTap: () => taxProvider.setPricingMode(TaxPricingMode.exclusive),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: _PricingModeCard(
-                          title: "Tax Inclusive",
-                          isSelected: taxProvider.pricingMode == TaxPricingMode.inclusive,
-                          onTap: () => taxProvider.setPricingMode(TaxPricingMode.inclusive),
+                        Expanded(
+                          child: _PricingModeCard(
+                            title: "Tax Inclusive",
+                            isSelected: taxProvider.pricingMode == TaxPricingMode.inclusive,
+                            onTap: () => taxProvider.setPricingMode(TaxPricingMode.inclusive),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    spacing: AppSpacing.xs,
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        size: AppSpacing.md,
-                        color: AppColors.textMuted,
-                      ),
-                      Text(
-                        "How do you enter product prices?",
-                        style: AppTextStyles.label,
-                      )
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                    Row(
+                      spacing: AppSpacing.xs,
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          size: AppSpacing.md,
+                          color: AppColors.textMuted,
+                        ),
+                        Text(
+                          "How do you enter product prices?",
+                          style: AppTextStyles.label,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+              SFOButton(
+                text: "Continue",
+                icon: Icons.arrow_forward_rounded,
+                onPressed: () async {
+                  if (taxProvider.formKey.currentState?.validate() ?? false) {
+                    await taxProvider.saveTaxConfig();
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, AppRoutes.invoiceSettings);
+                    }
+                  }
+                },
               ),
             ],
-            SFOButton(
-              text: "Continue",
-              icon: Icons.arrow_forward_rounded,
-              onPressed: () async {
-                await taxProvider.saveTaxConfig();
-                if (context.mounted) {
-                  Navigator.pushNamed(context, AppRoutes.invoiceSettings);
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

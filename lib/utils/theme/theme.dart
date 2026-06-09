@@ -30,7 +30,6 @@ class SFOAppTheme {
     final Color surface = isDark ? AppColors.darkSurface : AppColors.surface;
     final Color onSurface = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
     final Color onSurfaceVariant = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
-    final Color background = isDark ? AppColors.darkBackground : AppColors.background;
     final Color outline = isDark ? AppColors.darkBorder : AppColors.border;
     final Color outlineVariant = isDark ? AppColors.darkBorder : AppColors.borderLight;
 

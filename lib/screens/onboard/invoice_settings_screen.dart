@@ -30,61 +30,68 @@ class InvoiceSettingsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Column(
-          spacing: 24.h,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const InvoicePreviewWidget(),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              spacing: AppSpacing.lg,
-              children: [
-                Expanded(
-                  child: SFOInputField(
-                    label: "Invoice Prefix",
-                    hint: "INV-",
-                    controller: invoiceProvider.prefixController,
+        child: Form(
+          key: invoiceProvider.formKey,
+          child: Column(
+            spacing: 24.h,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const InvoicePreviewWidget(),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                spacing: AppSpacing.lg,
+                children: [
+                  Expanded(
+                    child: SFOInputField(
+                      label: "Invoice Prefix",
+                      hint: "INV-",
+                      controller: invoiceProvider.prefixController,
+                      isRequired: true,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: SFOInputField(
-                    label: "Starting Number",
-                    hint: "1001",
-                    controller: invoiceProvider.startingNumberController,
-                    keyboardType: TextInputType.number,
+                  Expanded(
+                    child: SFOInputField(
+                      label: "Starting Number",
+                      hint: "1001",
+                      controller: invoiceProvider.startingNumberController,
+                      keyboardType: TextInputType.number,
+                      isRequired: true,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SFOInputField(
-              label: "Footer Text",
-              hint: "Thank you for your business!",
-              controller: invoiceProvider.footerTextController,
-            ),
-            SFOSwitchTile(
-              title: "Show Logo on Receipt",
-              subtitle: "Include your business logo in the printed receipt",
-              value: invoiceProvider.showLogo,
-              onChanged: (value) {
-                invoiceProvider.toggleShowLogo(value);
-              },
-            ),
-            SFOButton(
-              text: "Complete Setup",
-              icon: Icons.check_rounded,
-              onPressed: () async {
-                await invoiceProvider.saveInvoiceConfig();
-                if (context.mounted) {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRoutes.bottomNavbar,
-                    (route) => false,
-                  );
-                }
-              },
-            ),
-          ],
+                ],
+              ),
+              SFOInputField(
+                label: "Footer Text",
+                hint: "Thank you for your business!",
+                controller: invoiceProvider.footerTextController,
+              ),
+              SFOSwitchTile(
+                title: "Show Logo on Receipt",
+                subtitle: "Include your business logo in the printed receipt",
+                value: invoiceProvider.showLogo,
+                onChanged: (value) {
+                  invoiceProvider.toggleShowLogo(value);
+                },
+              ),
+              SFOButton(
+                text: "Complete Setup",
+                icon: Icons.check_rounded,
+                onPressed: () async {
+                  if (invoiceProvider.formKey.currentState?.validate() ?? false) {
+                    await invoiceProvider.saveInvoiceConfig();
+                    if (context.mounted) {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRoutes.bottomNavbar,
+                        (route) => false,
+                      );
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

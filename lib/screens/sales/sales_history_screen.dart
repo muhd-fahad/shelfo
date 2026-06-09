@@ -10,7 +10,6 @@ import '../../utils/formatters/currency_formatter.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_search_bar.dart';
-import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_badge.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import 'invoice_detail_screen.dart';
@@ -21,7 +20,6 @@ class SalesHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final saleProvider = context.watch<SaleProvider>();
     final businessProvider = context.read<BusinessProvider>();
     final currency = businessProvider.selectedCurrency;
@@ -44,34 +42,34 @@ class SalesHistoryScreen extends StatelessWidget {
       body: SFOBackground(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SFOButton(
-                      text: "Date",
-                      icon: Icons.calendar_today_outlined,
-                      backgroundColor: theme.colorScheme.surface,
-                      onPressed: () {
-                        // Date filter logic
-                      },
-                    ),
-                  ),
-                  SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: SFOButton(
-                      text: "Export",
-                      icon: Icons.file_download_outlined,
-                      backgroundColor: theme.colorScheme.surface,
-                      onPressed: () {
-                        // Export all sales logic
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         child: SFOButton(
+            //           text: "Date",
+            //           icon: Icons.calendar_today_outlined,
+            //           backgroundColor: theme.colorScheme.surface,
+            //           onPressed: () {
+            //             // Date filter logic
+            //           },
+            //         ),
+            //       ),
+            //       SizedBox(width: AppSpacing.md),
+            //       Expanded(
+            //         child: SFOButton(
+            //           text: "Export",
+            //           icon: Icons.file_download_outlined,
+            //           backgroundColor: theme.colorScheme.surface,
+            //           onPressed: () {
+            //             // Export all sales logic
+            //           },
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: AppSpacing.lg),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.xl),

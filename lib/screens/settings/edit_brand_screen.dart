@@ -15,7 +15,6 @@ class EditBrandScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Initialize provider data when building the screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<BrandProvider>(context, listen: false).initBrand(brand);
@@ -29,24 +28,28 @@ class EditBrandScreen extends StatelessWidget {
       body: Consumer<BrandProvider>(
         builder: (context, provider, _) => SingleChildScrollView(
           padding: EdgeInsets.all(20.r),
-          child: Column(
-            children: [
-              SFOCard(
-                padding: EdgeInsets.all(20.r),
-                children: [
-                  SFOInputField(
-                    label: "Brand Name",
-                    hint: "e.g. Apple",
-                    controller: provider.nameController,
-                  ),
-                ],
-              ),
-              SizedBox(height: 32.h),
-              SFOButton(
-                text: brand == null ? "Create Brand" : "Save Changes",
-                onPressed: () => _save(context, provider),
-              ),
-            ],
+          child: Form(
+            key: provider.formKey,
+            child: Column(
+              children: [
+                SFOCard(
+                  padding: EdgeInsets.all(20.r),
+                  children: [
+                    SFOInputField(
+                      label: "Brand Name",
+                      hint: "e.g. Apple",
+                      controller: provider.nameController,
+                      isRequired: true,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 32.h),
+                SFOButton(
+                  text: brand == null ? "Create Brand" : "Save Changes",
+                  onPressed: () => _save(context, provider),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -54,26 +57,19 @@ class EditBrandScreen extends StatelessWidget {
   }
 
   void _save(BuildContext context, BrandProvider provider) async {
-    if (provider.nameController.text.isEmpty) {
-      SFOSnackbar.show(
-        context,
-        message: "Please enter a brand name",
-        isError: true,
-      );
-      return;
-    }
+    if (provider.formKey.currentState?.validate() ?? false) {
+      final success = await provider.saveBrand(brand);
 
-    final success = await provider.saveBrand(brand);
-    
-    if (context.mounted) {
-      if (!success) {
-        SFOSnackbar.show(
-          context,
-          message: "Brand with this name already exists",
-          isError: true,
-        );
-      } else {
-        Navigator.pop(context);
+      if (context.mounted) {
+        if (!success) {
+          SFOSnackbar.show(
+            context,
+            message: "Brand with this name already exists",
+            isError: true,
+          );
+        } else {
+          Navigator.pop(context);
+        }
       }
     }
   }

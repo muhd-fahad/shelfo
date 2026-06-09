@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/hive_registrar.g.dart';
-import 'package:shelfo/models/policy/policy_model.dart';
 import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/provider/navigation_provider.dart';
 import 'package:shelfo/provider/category_provider.dart';

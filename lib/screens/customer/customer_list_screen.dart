@@ -7,7 +7,6 @@ import '../../utils/formatters/currency_formatter.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_search_bar.dart';
-import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_chip.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import 'add_edit_customer_screen.dart';

@@ -43,14 +43,14 @@ class BusinessInfoScreen extends StatelessWidget {
               onRemove: () => businessProvider.removeLogo(),
               size: 96.r,
             ),
-    
+
             SFOInputField(
               label: "Store Name",
               hint: "e.g. Techno Mobiles",
               controller: businessProvider.nameController,
               isRequired: true,
             ),
-    
+
             Row(
               mainAxisSize: MainAxisSize.max,
               spacing: AppSpacing.lg,

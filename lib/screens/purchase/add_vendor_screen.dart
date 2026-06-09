@@ -27,11 +27,8 @@ class AddVendorScreen extends StatelessWidget {
 class _AddVendorContent extends StatelessWidget {
   const _AddVendorContent();
 
-  static final _formKey = GlobalKey<FormState>();
-
-  void _save(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      final formProvider = context.read<VendorFormProvider>();
+  void _save(BuildContext context, VendorFormProvider formProvider) {
+    if (formProvider.formKey.currentState?.validate() ?? false) {
       final vendorProvider = context.read<VendorProvider>();
       
       if (!formProvider.isEditing) {
@@ -71,7 +68,7 @@ class _AddVendorContent extends StatelessWidget {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.r),
           child: Form(
-            key: _formKey,
+            key: formProvider.formKey,
             child: SFOCard(
               padding: EdgeInsets.all(16.r),
               children: [
@@ -80,7 +77,6 @@ class _AddVendorContent extends StatelessWidget {
                   isRequired: true,
                   controller: formProvider.nameController,
                   hint: "Tech Distributors Inc.",
-                  validator: (value) => value == null || value.isEmpty ? "Required" : null,
                 ),
                 SizedBox(height: 16.h),
                 SFOInputField(
@@ -122,7 +118,7 @@ class _AddVendorContent extends StatelessWidget {
                 SizedBox(height: 32.h),
                 SFOButton(
                   text: formProvider.isEditing ? "Save Changes" : "Add Vendor",
-                  onPressed: () => _save(context),
+                  onPressed: () => _save(context, formProvider),
                   width: double.infinity,
                 ),
               ],

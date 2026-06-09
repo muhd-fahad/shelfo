@@ -33,105 +33,112 @@ class TaxSettingsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.r),
-        child: Column(
-          children: [
-            SFOCard(
-              children: [
-                SFOSwitchTile(
-                  title: "Enable Tax Calculation",
-                  subtitle: "Automatically calculate tax on sales",
-                  value: taxProvider.isTaxEnabled,
-                  onChanged: (value) {
-                    taxProvider.toggleTaxEnabled(value);
-                  },
-                ),
-              ],
-            ),
-            if (taxProvider.isTaxEnabled) ...[
-              SizedBox(height: 24.h),
+        child: Form(
+          key: taxProvider.formKey,
+          child: Column(
+            children: [
               SFOCard(
-                padding: EdgeInsets.all(16.r),
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: SFOInputField(
-                          label: "Default Tax Rate (%)",
-                          hint: "8.5",
-                          controller: taxProvider.taxRateController,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: SFOInputField(
-                          label: "Tax Label",
-                          hint: "Sales Tax",
-                          controller: taxProvider.taxLabelController,
-                        ),
-                      ),
-                    ],
+                  SFOSwitchTile(
+                    title: "Enable Tax Calculation",
+                    subtitle: "Automatically calculate tax on sales",
+                    value: taxProvider.isTaxEnabled,
+                    onChanged: (value) {
+                      taxProvider.toggleTaxEnabled(value);
+                    },
                   ),
-                  SizedBox(height: 24.h),
-                  Text(
-                    "Tax Pricing Mode",
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: _PricingModeCard(
-                          title: "Tax Exclusive",
-                          isSelected: taxProvider.pricingMode == TaxPricingMode.exclusive,
-                          onTap: () => taxProvider.setPricingMode(TaxPricingMode.exclusive),
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: _PricingModeCard(
-                          title: "Tax Inclusive",
-                          isSelected: taxProvider.pricingMode == TaxPricingMode.inclusive,
-                          onTap: () => taxProvider.setPricingMode(TaxPricingMode.inclusive),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        size: 16.r,
-                        color: colorScheme.onSurfaceVariant.withOpacity(0.6),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "How do you enter product prices?",
-                        style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withOpacity(0.6)),
-                      )
-                    ],
-                  )
                 ],
               ),
+              if (taxProvider.isTaxEnabled) ...[
+                SizedBox(height: 24.h),
+                SFOCard(
+                  padding: EdgeInsets.all(16.r),
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: SFOInputField(
+                            label: "Default Tax Rate (%)",
+                            hint: "8.5",
+                            controller: taxProvider.taxRateController,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            isRequired: true,
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                        Expanded(
+                          child: SFOInputField(
+                            label: "Tax Label",
+                            hint: "Sales Tax",
+                            controller: taxProvider.taxLabelController,
+                            isRequired: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 24.h),
+                    Text(
+                      "Tax Pricing Mode",
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: _PricingModeCard(
+                            title: "Tax Exclusive",
+                            isSelected: taxProvider.pricingMode == TaxPricingMode.exclusive,
+                            onTap: () => taxProvider.setPricingMode(TaxPricingMode.exclusive),
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: _PricingModeCard(
+                            title: "Tax Inclusive",
+                            isSelected: taxProvider.pricingMode == TaxPricingMode.inclusive,
+                            onTap: () => taxProvider.setPricingMode(TaxPricingMode.inclusive),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12.h),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline_rounded,
+                          size: 16.r,
+                          color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+                        ),
+                        SizedBox(width: 8.w),
+                        Text(
+                          "How do you enter product prices?",
+                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withOpacity(0.6)),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+              SizedBox(height: 32.h),
+              SFOButton(
+                text: "Save Changes",
+                onPressed: () async {
+                  if (taxProvider.formKey.currentState?.validate() ?? false) {
+                    await taxProvider.saveTaxConfig();
+                    if (context.mounted) {
+                      SFOSnackbar.show(context, message: "Tax settings updated successfully");
+                      Navigator.pop(context);
+                    }
+                  }
+                },
+              ),
             ],
-            SizedBox(height: 32.h),
-            SFOButton(
-              text: "Save Changes",
-              onPressed: () async {
-                await taxProvider.saveTaxConfig();
-                if (context.mounted) {
-                  SFOSnackbar.show(context, message:  "Tax settings updated successfully");
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
