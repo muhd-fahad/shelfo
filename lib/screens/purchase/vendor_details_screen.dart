@@ -58,7 +58,7 @@ class VendorDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 40.r,
-                    backgroundColor: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    backgroundColor: theme.colorScheme.primaryContainer.withValues(alpha:0.5),
                     child: Text(
                       vendor.companyName.substring(0, 1).toUpperCase(),
                       style: theme.textTheme.headlineMedium?.copyWith(
@@ -84,7 +84,7 @@ class VendorDetailsScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           SFOBadge(
                             label: "Due: ${CurrencyFormatter.format(vendor.dueAmount, currency)}",
-                            bgColor: Colors.red.withOpacity(0.1),
+                            bgColor: Colors.red.withValues(alpha:0.1),
                             textColor: Colors.red,
                           ),
                         ],

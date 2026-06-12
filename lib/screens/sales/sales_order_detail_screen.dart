@@ -205,7 +205,7 @@ class SalesOrderDetailScreen extends StatelessWidget {
         Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha:0.1),
               child: Text(order.customerName[0], style: const TextStyle(color: AppColors.primary)),
             ),
             SizedBox(width: 12.w),
@@ -323,7 +323,7 @@ class SalesOrderDetailScreen extends StatelessWidget {
 
     return SFOBadge(
       label: status.name[0].toUpperCase() + status.name.substring(1),
-      bgColor: color.withOpacity(0.1),
+      bgColor: color.withValues(alpha:0.1),
       textColor: color,
     );
   }

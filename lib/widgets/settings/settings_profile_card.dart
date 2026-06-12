@@ -25,7 +25,7 @@ class SettingsProfileCard extends StatelessWidget {
                 width: 60.r,
                 height: 60.r,
                 decoration: ShapeDecoration(
-                  color: colorScheme.primary.withOpacity(0.1),
+                  color: colorScheme.primary.withValues(alpha:0.1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r),
                   ),

@@ -61,7 +61,7 @@ class HomeSummaryCard extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                       decoration: BoxDecoration(
-                        color: (badgeColor ?? AppColors.primary).withOpacity(0.1),
+                        color: (badgeColor ?? AppColors.primary).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Text(
@@ -82,7 +82,7 @@ class HomeSummaryCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(6.r),
                     decoration: BoxDecoration(
-                      color: iconBgColor ?? AppColors.primary.withOpacity(0.1),
+                      color: iconBgColor ?? AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Icon(

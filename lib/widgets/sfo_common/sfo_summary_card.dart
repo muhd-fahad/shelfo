@@ -52,7 +52,7 @@ class SFOSummaryCard extends StatelessWidget {
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.lg,
             side: BorderSide(
-              color: colorScheme.outline.withOpacity(0.5),
+              color: colorScheme.outline.withValues(alpha:0.5),
               width: 0.5,
             ),
           ),
@@ -63,7 +63,7 @@ class SFOSummaryCard extends StatelessWidget {
             Text(
               label,
               style: theme.textTheme.labelMedium?.copyWith(
-                color: textColor.withOpacity(0.7),
+                color: textColor.withValues(alpha:0.7),
                 fontSize: 12.sp,
               ),
             ),

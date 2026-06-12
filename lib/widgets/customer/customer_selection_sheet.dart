@@ -88,7 +88,7 @@ class CustomerSelectionSheet extends StatelessWidget {
                       color: Colors.transparent,
                       child: ListTile(
                         leading: CircleAvatar(
-                        backgroundColor: AppColors.primary.withOpacity(0.1),
+                        backgroundColor: AppColors.primary.withValues(alpha:0.1),
                         child: Text(
                           customer.name[0],
                           style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),

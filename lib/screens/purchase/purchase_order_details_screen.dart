@@ -259,7 +259,7 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
 
     return SFOBadge(
       label: status.name[0].toUpperCase() + status.name.substring(1),
-      bgColor: color.withOpacity(0.1),
+      bgColor: color.withValues(alpha: 0.1),
       textColor: color,
     );
   }

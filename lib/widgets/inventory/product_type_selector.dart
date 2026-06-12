@@ -30,7 +30,7 @@ class ProductTypeSelector extends StatelessWidget {
           onTap: () => onTypeSelected(type),
           child: Container(
             decoration: ShapeDecoration(
-              color: isSelected ? colorScheme.primary.withOpacity(0.1) : Colors.transparent,
+              color: isSelected ? colorScheme.primary.withValues(alpha:0.1) : Colors.transparent,
               shape: RoundedSuperellipseBorder(
                 borderRadius: AppRadius.md,
                 side: BorderSide(

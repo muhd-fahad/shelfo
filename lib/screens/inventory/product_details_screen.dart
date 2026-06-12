@@ -85,14 +85,14 @@ class ProductDetailsScreen extends StatelessWidget {
                       SizedBox(width: 8.w),
                       SFOBadge(
                         label: currentProduct.brandName!,
-                        bgColor: Colors.orange.withOpacity(0.1),
+                        bgColor: Colors.orange.withValues(alpha: 0.1),
                         textColor: Colors.orange,
                       ),
                     ],
                     const Spacer(),
                     SFOBadge(
                       label: currentProduct.productType.label,
-                      bgColor: colorScheme.primary.withOpacity(0.1),
+                      bgColor: colorScheme.primary.withValues(alpha: 0.1),
                       textColor: colorScheme.primary,
                     ),
                   ],

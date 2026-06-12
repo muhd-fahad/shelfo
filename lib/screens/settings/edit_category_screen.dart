@@ -81,7 +81,7 @@ class EditCategoryScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12.r),
                               child: Container(
                                 decoration: ShapeDecoration(
-                                  color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
+                                  color: isSelected ? colorScheme.primary.withValues(alpha:0.05) : Colors.transparent,
                                   shape: RoundedSuperellipseBorder(
                                     borderRadius: AppRadius.sm,
                                     side: BorderSide(

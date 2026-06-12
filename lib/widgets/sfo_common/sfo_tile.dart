@@ -32,7 +32,7 @@ class SFOTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: ShapeDecoration(
-                color: colorScheme.primary.withOpacity(0.1),
+                color: colorScheme.primary.withValues(alpha:0.1),
                 shape: RoundedSuperellipseBorder(
                   borderRadius: AppRadius.sm,
                 ),
@@ -67,7 +67,7 @@ class SFOTile extends StatelessWidget {
             trailing ??
                 Icon(
                   Icons.chevron_right,
-                  color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+                  color: colorScheme.onSurfaceVariant.withValues(alpha:0.6),
                   size: 20,
                 ),
           ],

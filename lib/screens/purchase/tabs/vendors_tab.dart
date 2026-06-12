@@ -103,7 +103,7 @@ class _VendorCard extends StatelessWidget {
                           if (vendor.dueAmount > 0)
                             SFOBadge(
                               label: "Due: ${CurrencyFormatter.format(vendor.dueAmount, currency)}",
-                              bgColor: Colors.red.withOpacity(0.1),
+                              bgColor: Colors.red.withValues(alpha:0.1),
                               textColor: Colors.red,
                             ),
                         ],

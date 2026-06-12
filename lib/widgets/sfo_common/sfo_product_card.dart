@@ -39,7 +39,7 @@ class SFOProductCard extends StatelessWidget {
           color: theme.cardTheme.color,
           shadows: isDark ? [] : [
             BoxShadow(
-              color: AppColors.black.withOpacity(isSelected ? 0.1 : 0.05),
+              color: AppColors.black.withValues(alpha:isSelected ? 0.1 : 0.05),
               blurRadius: isSelected ? 8 : 2,
               offset: const Offset(0, 1),
             ),
@@ -78,7 +78,7 @@ class SFOProductCard extends StatelessWidget {
                             ? Image.network(imagePath!, fit: BoxFit.cover)
                             : Image.file(File(imagePath!), fit: BoxFit.cover)))
                     : Icon(Icons.inventory_2_outlined,
-                        size: 32, color: colorScheme.primary.withOpacity(0.2)),
+                        size: 32, color: colorScheme.primary.withValues(alpha:0.2)),
               ),
               SizedBox(height: AppSpacing.xs),
 
@@ -92,7 +92,7 @@ class SFOProductCard extends StatelessWidget {
                       child: Text(
                         sku!.toUpperCase(),
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+                          color: colorScheme.onSurfaceVariant.withValues(alpha:0.6),
                           fontSize: 10,
                         ),
                         maxLines: 1,

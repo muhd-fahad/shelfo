@@ -156,7 +156,7 @@ class _PricingModeCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: ShapeDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.transparent,
+          color: isSelected ? AppColors.primary.withValues(alpha:0.05) : Colors.transparent,
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.md,
             side: BorderSide(

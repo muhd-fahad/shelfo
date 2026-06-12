@@ -31,7 +31,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: colorScheme.outline),
         ),
-        child: Icon(Icons.inventory_2_outlined, size: 60, color: colorScheme.primary.withOpacity(0.2)),
+        child: Icon(Icons.inventory_2_outlined, size: 60, color: colorScheme.primary.withValues(alpha:0.2)),
       );
     }
 
@@ -84,7 +84,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: colorScheme.primary.withOpacity(
+                  color: colorScheme.primary.withValues(alpha:
                     _currentIndex == entry.key ? 0.9 : 0.2,
                   ),
                 ),

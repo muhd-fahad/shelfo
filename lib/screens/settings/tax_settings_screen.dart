@@ -112,12 +112,12 @@ class TaxSettingsScreen extends StatelessWidget {
                         Icon(
                           Icons.info_outline_rounded,
                           size: 16.r,
-                          color: colorScheme.onSurfaceVariant.withOpacity(0.6),
+                          color: colorScheme.onSurfaceVariant.withValues(alpha:0.6),
                         ),
                         SizedBox(width: 8.w),
                         Text(
                           "How do you enter product prices?",
-                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withOpacity(0.6)),
+                          style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant.withValues(alpha:0.6)),
                         )
                       ],
                     )
@@ -166,7 +166,7 @@ class _PricingModeCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 14.h),
         decoration: ShapeDecoration(
-          color: isSelected ? colorScheme.primary.withOpacity(0.05) : Colors.transparent,
+          color: isSelected ? colorScheme.primary.withValues(alpha:0.05) : Colors.transparent,
           shape: RoundedSuperellipseBorder(
             borderRadius: AppRadius.md,
             side: BorderSide(

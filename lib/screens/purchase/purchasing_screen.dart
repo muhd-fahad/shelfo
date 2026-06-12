@@ -66,7 +66,7 @@ class _PurchasingContent extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 padding: EdgeInsets.all(4.r),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha:0.3),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: TabBar(
@@ -76,7 +76,7 @@ class _PurchasingContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),

@@ -157,7 +157,7 @@ class SFOAppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: surface,
         disabledColor: outlineVariant,
-        selectedColor: primary.withOpacity(0.1),
+        selectedColor: primary.withValues(alpha:0.1),
         secondarySelectedColor: primary,
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         labelStyle: TextStyle(color: onSurface, fontSize: 12.sp),
