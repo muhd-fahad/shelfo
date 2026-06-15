@@ -101,8 +101,8 @@ class SFOLogoPicker extends StatelessWidget {
     Widget child;
     if (logoPath != null) {
       child = kIsWeb
-          ? Image.network(logoPath!, fit: BoxFit.cover)
-          : Image.file(File(logoPath!), fit: BoxFit.cover);
+          ? Image.network(logoPath!, fit: BoxFit.fitHeight)
+          : Image.file(File(logoPath!), fit: BoxFit.fitHeight);
     } else {
       child = Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +129,7 @@ class SFOLogoPicker extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            width: size,
+            width: .maxFinite,
             height: size,
             clipBehavior: Clip.antiAlias,
             decoration: ShapeDecoration(

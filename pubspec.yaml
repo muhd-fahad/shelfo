@@ -53,8 +53,7 @@ dev_dependencies:
 
   hive_ce_generator: ^1.11.1
   build_runner: ^2.12.2
-
-# The following section is specific to Flutter packages.
+  flutter_launcher_icons: ^0.14.4
 flutter:
 
 
@@ -89,3 +88,24 @@ flutter:
           weight: 900
         - asset: assets/fonts/Inter_18pt-Italic.ttf
           style: italic
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/shelfo-iOS-Default-1024x1024@1x.png"
+  min_sdk_android: 21
+  adaptive_icon_foreground_inset: 16
+
+  adaptive_icon_background_color: "#FFFFFF"
+  adaptive_icon_foreground_color: "#16A34A"
+  adaptive_icon_background: "assets/logo/bg.png"
+  adaptive_icon_foreground: "assets/logo/shelfo_app_logo_icon.png"
+  adaptive_monochrome_image: "assets/logo/shelfo_app_logo_icon.svg"
+  web:
+    generate: true
+    image_path: "assets/logo/shelfo-iOS-Dark-1024x1024@1x.png"
+    background_color: "#FFFFFF"
+    theme_color: "#16A34A"
+  macos:
+    generate: true
+    image_path: "assets/logo/shelfo-iOS-Default-1024x1024@1x.png"
