@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shelfo/provider/navigation_provider.dart';
 import 'package:shelfo/provider/report_provider.dart';
 import 'package:shelfo/utils/theme/app_constants/colors.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
@@ -10,6 +11,9 @@ import 'package:shelfo/widgets/reports/revenue_profit_chart.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_divider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
+
+import 'package:shelfo/routes/app_routes.dart';
+import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 
 class OverviewTab extends StatelessWidget {
   const OverviewTab({super.key});
@@ -65,13 +69,7 @@ class OverviewTab extends StatelessWidget {
           SFOCard(
             padding: EdgeInsets.all(16.r),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SFOSectionHeader(title: "Revenue vs Profit"),
-                  _buildPeriodDropdown(context, reportProvider),
-                ],
-              ),
+              const SFOSectionHeader(title: "Revenue vs Profit"),
               SizedBox(height: 24.h),
               const RevenueProfitChart(),
               SizedBox(height: 16.h),
@@ -102,7 +100,14 @@ class OverviewTab extends StatelessWidget {
             children: [
               const SFOSectionHeader(title: "Top Selling Products"),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  final width = MediaQuery.of(context).size.width;
+                  if (width >= AppBreakpoints.tablet) {
+                    context.read<NavigationProvider>().setIndex(6);
+                  } else {
+                    Navigator.pushNamed(context, AppRoutes.salesHistory);
+                  }
+                },
                 child: Text(
                   "View All Sales",
                   style: TextStyle(fontSize: 12.sp, color: AppColors.info),
@@ -124,34 +129,6 @@ class OverviewTab extends StatelessWidget {
             ),
           SizedBox(height: AppSpacing.xl),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPeriodDropdown(BuildContext context, ReportProvider provider) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
-      child: PopupMenuButton<ReportPeriod>(
-        initialValue: provider.selectedPeriod,
-        onSelected: provider.setPeriod,
-        itemBuilder: (context) => ReportPeriod.values
-            .map((p) => PopupMenuItem(
-                  value: p,
-                  child: Text(p.label),
-                ))
-            .toList(),
-        child: Row(
-          children: [
-            Text(provider.selectedPeriod.label, style: TextStyle(fontSize: 11.sp, color: colorScheme.onSurfaceVariant)),
-            Icon(Icons.keyboard_arrow_down, size: 14.sp, color: colorScheme.onSurfaceVariant),
-          ],
-        ),
       ),
     );
   }

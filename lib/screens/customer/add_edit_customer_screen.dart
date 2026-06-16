@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../models/customer/customer_model.dart';
 import '../../provider/customer_provider.dart';
 import '../../provider/customer_form_provider.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
@@ -28,85 +29,99 @@ class AddEditCustomerScreen extends StatelessWidget {
               title: customer == null ? "Add Customer" : "Edit Customer",
               centerTitle: true,
             ),
-            body: SingleChildScrollView(
-              padding: EdgeInsets.all(AppSpacing.xl),
-              child: Form(
-                key: formProvider.formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SFOInputField(
-                      label: "Name",
-                      hint: "Customer name",
-                      controller: formProvider.nameController,
-                      isRequired: true,
-                      validator: (val) => val == null || val.isEmpty ? "Required" : null,
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    Text("Type", style: theme.textTheme.labelLarge),
-                    SizedBox(height: AppSpacing.sm),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _TypeButton(
-                            label: "Business",
-                            isSelected: formProvider.selectedType == CustomerType.business,
-                            onTap: () => formProvider.setType(CustomerType.business),
-                          ),
-                        ),
-                        SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: _TypeButton(
-                            label: "Individual",
-                            isSelected: formProvider.selectedType == CustomerType.individual,
-                            onTap: () => formProvider.setType(CustomerType.individual),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    SFOInputField(
-                      label: "Email",
-                      hint: "email@example.com",
-                      controller: formProvider.emailController,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    SFOInputField(
-                      label: "Phone",
-                      hint: "+63 917 123 4567",
-                      controller: formProvider.phoneController,
-                      keyboardType: TextInputType.phone,
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    SFOInputField(
-                      label: "Address",
-                      hint: "123 Main St, Manila",
-                      controller: formProvider.addressController,
-                      maxLines: 2,
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    SFOInputField(
-                      label: "Credit Limit (₹)",
-                      hint: "10000",
-                      controller: formProvider.creditLimitController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(height: AppSpacing.xxl * 2),
-                  ],
-                ),
-              ),
+            body: SFOResponsive(
+              mobile: _buildForm(context, formProvider, theme),
+              desktop: SFOResponsive.constrained(_buildForm(context, formProvider, theme)),
             ),
-            bottomNavigationBar: Padding(
-              padding: EdgeInsets.all(AppSpacing.xl),
-              child: SFOButton(
-                text: customer == null ? "Add Customer" : "Save Changes",
-                onPressed: () => _save(context, formProvider),
-                backgroundColor: customer == null ? null : AppColors.success,
-              ),
+            bottomNavigationBar: SFOResponsive(
+              mobile: _buildBottomBar(context, formProvider),
+              desktop: SFOResponsive.constrained(_buildBottomBar(context, formProvider)),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context, CustomerFormProvider formProvider, ThemeData theme) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(AppSpacing.xl),
+      child: Form(
+        key: formProvider.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SFOInputField(
+              label: "Name",
+              hint: "Customer name",
+              controller: formProvider.nameController,
+              isRequired: true,
+              validator: (val) => val == null || val.isEmpty ? "Required" : null,
+            ),
+            SizedBox(height: AppSpacing.lg),
+            Text("Type", style: theme.textTheme.labelLarge),
+            SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                Expanded(
+                  child: _TypeButton(
+                    label: "Business",
+                    isSelected: formProvider.selectedType == CustomerType.business,
+                    onTap: () => formProvider.setType(CustomerType.business),
+                  ),
+                ),
+                SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: _TypeButton(
+                    label: "Individual",
+                    isSelected: formProvider.selectedType == CustomerType.individual,
+                    onTap: () => formProvider.setType(CustomerType.individual),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: AppSpacing.lg),
+            SFOInputField(
+              label: "Email",
+              hint: "email@example.com",
+              controller: formProvider.emailController,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: AppSpacing.lg),
+            SFOInputField(
+              label: "Phone",
+              hint: "+63 917 123 4567",
+              controller: formProvider.phoneController,
+              keyboardType: TextInputType.phone,
+            ),
+            SizedBox(height: AppSpacing.lg),
+            SFOInputField(
+              label: "Address",
+              hint: "123 Main St, Manila",
+              controller: formProvider.addressController,
+              maxLines: 2,
+            ),
+            SizedBox(height: AppSpacing.lg),
+            SFOInputField(
+              label: "Credit Limit (₹)",
+              hint: "10000",
+              controller: formProvider.creditLimitController,
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: AppSpacing.xxl * 2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomBar(BuildContext context, CustomerFormProvider formProvider) {
+    return Padding(
+      padding: EdgeInsets.all(AppSpacing.xl),
+      child: SFOButton(
+        text: customer == null ? "Add Customer" : "Save Changes",
+        onPressed: () => _save(context, formProvider),
+        backgroundColor: customer == null ? null : AppColors.success,
       ),
     );
   }

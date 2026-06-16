@@ -19,11 +19,13 @@ class SFOLogo extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final String assetPath = isDark ? AppAssets.logoSecondary : AppAssets.logoPrimary;
 
-    return SvgPicture.asset(
-      assetPath,
+    return SizedBox(
       height: height,
       width: width,
-      fit: fit,
+      child: SvgPicture.asset(
+        assetPath,
+        fit: fit,
+      ),
     );
   }
 }

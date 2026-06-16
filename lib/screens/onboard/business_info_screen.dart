@@ -11,7 +11,6 @@ import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 
-
 class BusinessInfoScreen extends StatelessWidget {
   const BusinessInfoScreen({super.key});
 
@@ -30,75 +29,83 @@ class BusinessInfoScreen extends StatelessWidget {
         title: "Business Details",
         subtitle: "Tell us about your store",
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Column(
-          spacing: 24.h,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SFOLogoPicker(
-              logoPath: businessProvider.logoPath,
-              onPick: (source) => businessProvider.pickLogo(source),
-              onRemove: () => businessProvider.removeLogo(),
-              size: 96.r,
-            ),
-
-            SFOInputField(
-              label: "Store Name",
-              hint: "e.g. Techno Mobiles",
-              controller: businessProvider.nameController,
-              isRequired: true,
-            ),
-
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              spacing: AppSpacing.lg,
-              children: [
-                Expanded(
-                  child: SFOInputField(
-                    label: "Phone Number",
-                    hint: "+1 (555) 000-0000",
-                    controller: businessProvider.phoneController,
-                    keyboardType: TextInputType.phone,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            child: Form(
+              key: businessProvider.formKey,
+              child: Column(
+                spacing: 24.h,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SFOLogoPicker(
+                    logoPath: businessProvider.logoPath,
+                    onPick: (source) => businessProvider.pickLogo(source),
+                    onRemove: () => businessProvider.removeLogo(),
+                    size: 96.r,
                   ),
-                ),
-                Expanded(
-                  child: SFODropdown<Currency>(
-                    label: "Currency",
-                    value: businessProvider.selectedCurrency,
-                    items: Currency.values.map((Currency value) {
-                      return DropdownMenuItem<Currency>(
-                        value: value,
-                        child: Text("${value.code} (${value.symbol})"),
-                      );
-                    }).toList(),
-                    onChanged: (Currency? newValue) {
-                      if (newValue != null) {
-                        businessProvider.setCurrency(newValue);
+                  SFOInputField(
+                    label: "Store Name",
+                    hint: "e.g. Techno Mobiles",
+                    controller: businessProvider.nameController,
+                    isRequired: true,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    spacing: AppSpacing.lg,
+                    children: [
+                      Expanded(
+                        child: SFOInputField(
+                          label: "Phone Number",
+                          hint: "+1 (555) 000-0000",
+                          controller: businessProvider.phoneController,
+                          keyboardType: TextInputType.phone,
+                        ),
+                      ),
+                      Expanded(
+                        child: SFODropdown<Currency>(
+                          label: "Currency",
+                          value: businessProvider.selectedCurrency,
+                          items: Currency.values.map((Currency value) {
+                            return DropdownMenuItem<Currency>(
+                              value: value,
+                              child: Text("${value.code} (${value.symbol})"),
+                            );
+                          }).toList(),
+                          onChanged: (Currency? newValue) {
+                            if (newValue != null) {
+                              businessProvider.setCurrency(newValue);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SFOInputField(
+                    label: "Address",
+                    hint: "Store address...",
+                    controller: businessProvider.addressController,
+                    maxLines: 3,
+                  ),
+                  SFOButton(
+                    text: "Continue",
+                    icon: Icons.arrow_forward_rounded,
+                    onPressed: () async {
+                      if (businessProvider.formKey.currentState?.validate() ?? false) {
+                        await businessProvider.saveBusiness();
+                        if (context.mounted) {
+                          Navigator.pushNamed(context, AppRoutes.taxConfig);
+                        }
                       }
                     },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            SFOInputField(
-              label: "Address",
-              hint: "Store address...",
-              controller: businessProvider.addressController,
-              maxLines: 3,
-            ),
-            SFOButton(
-              text: "Continue",
-              icon: Icons.arrow_forward_rounded,
-              onPressed: () async {
-                await businessProvider.saveBusiness();
-                if (context.mounted) {
-                  Navigator.pushNamed(context, AppRoutes.taxConfig);
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

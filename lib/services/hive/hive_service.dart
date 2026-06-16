@@ -42,8 +42,8 @@ class HiveService {
   }
 
   /// Clears all entries from a box
-  static Future<void> clearBox(String boxName) async {
-    final box = await getBox(boxName);
+  static Future<void> clearBox<T>(String boxName) async {
+    final box = await getBox<T>(boxName);
     await box.clear();
   }
 

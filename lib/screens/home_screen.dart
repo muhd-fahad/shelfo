@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/provider/business_provider.dart';
+import 'package:shelfo/provider/navigation_provider.dart';
 import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/provider/sale_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
@@ -19,7 +20,11 @@ import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 
 import '../models/product/product_model.dart';
-import '../utils/theme/theme.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
+
+import '../utils/theme/app_constants/colors.dart';
+import '../utils/theme/app_constants/radius.dart';
+import '../utils/theme/app_constants/spacing.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -35,23 +40,108 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: SFOBackground(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          children: [
-            _buildSummaryGrid(context,currency,productProvider),
-            SizedBox(height: AppSpacing.xl),
-            _buildQuickActionsSection(context),
-            SizedBox(height: 24.h),
-            _buildAnalyticsSection(),
-            SizedBox(height: 24.h),
-            _buildLowStockSection(context,),
-            SizedBox(height: 24.h),
-            _buildRecentTransactionsSection(context, recentSales, currency),
-            SizedBox(height: 40.h),
-          ],
+        child: SFOResponsive(
+          mobile: _buildHomeContent(context, currency, productProvider, recentSales, false),
+          tablet: _buildHomeContent(context, currency, productProvider, recentSales, true),
+          desktop: _buildHomeContent(context, currency, productProvider, recentSales, true),
         ),
       ),
     );
+  }
+
+  Widget _buildHomeContent(
+    BuildContext context,
+    Currency currency,
+    ProductProvider productProvider,
+    List<dynamic> recentSales,
+    bool isLargeScreen,
+  ) {
+    final double horizontalPadding = isLargeScreen ? 32.w : 16.w;
+
+    return ListView(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8.h),
+      children: [
+        _buildSummaryGrid(context, currency, productProvider, isLargeScreen),
+        SizedBox(height: AppSpacing.xl),
+        _buildQuickActionsSection(context),
+        SizedBox(height: 24.h),
+        _buildAnalyticsSection(),
+        SizedBox(height: 24.h),
+        if (isLargeScreen)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: _buildLowStockSection(context)),
+              SizedBox(width: 24.w),
+              Expanded(
+                child: _buildRecentTransactionsSection(
+                  context,
+                  recentSales,
+                  currency,
+                ),
+              ),
+            ],
+          )
+        else ...[
+          _buildLowStockSection(context),
+          SizedBox(height: 24.h),
+          _buildRecentTransactionsSection(context, recentSales, currency),
+        ],
+        SizedBox(height: 40.h),
+      ],
+    );
+  }
+
+  void _handleNavigation(BuildContext context, String route) {
+    final navProvider = context.read<NavigationProvider>();
+    final width = MediaQuery.of(context).size.width;
+    const double tabletBreakpoint = 600; // Consistent with AppBreakpoints if imported, but usually 600
+
+    // Root tabs indices in BottomNavbarWidget:
+    // 0: Home, 1: POS, 2: Sales, 3: Stock, 4: Customers, 5: Reports, 6: History, 7: Settings
+
+    if (width >= tabletBreakpoint) {
+      // Tablet/Desktop: All 8 indices are in the NavigationRail
+      switch (route) {
+        case AppRoutes.pos:
+          navProvider.setIndex(1);
+          return;
+        case AppRoutes.salesOrder:
+          navProvider.setIndex(2);
+          return;
+        case AppRoutes.inventory:
+          navProvider.setIndex(3);
+          return;
+        case AppRoutes.customers:
+          navProvider.setIndex(4);
+          return;
+        case AppRoutes.reports:
+          navProvider.setIndex(5);
+          return;
+        case AppRoutes.salesHistory:
+          navProvider.setIndex(6);
+          return;
+        case AppRoutes.settings:
+          navProvider.setIndex(7);
+          return;
+      }
+    } else {
+      // Mobile: Only indices 0-3 are in the BottomNavigationBar
+      switch (route) {
+        case AppRoutes.pos:
+          navProvider.setIndex(1);
+          return;
+        case AppRoutes.salesOrder:
+          navProvider.setIndex(2);
+          return;
+        case AppRoutes.inventory:
+          navProvider.setIndex(3);
+          return;
+      }
+    }
+
+    // Default: If not a root tab in the current mode, push normally
+    Navigator.pushNamed(context, route);
   }
 
   AppBar _buildAppBar(BuildContext context) {
@@ -63,7 +153,7 @@ class HomeScreen extends StatelessWidget {
           icon: Icon(Icons.notifications_none_rounded, size: 24.r),
         ),
         IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
+          onPressed: () => _handleNavigation(context, AppRoutes.settings),
           icon: Icon(Icons.account_circle_outlined, size: 24.r),
         ),
       ],
@@ -71,70 +161,90 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildSummaryGrid(
-      BuildContext context,
-      Currency currency,
-      ProductProvider productProvider,
-      ) {
-
+    BuildContext context,
+    Currency currency,
+    ProductProvider productProvider,
+    bool isLargeScreen,
+  ) {
     // Data preparation
     final now = DateTime.now();
-    final todaySales = context.watch<SaleProvider>().sales
+    final todaySales = context
+        .watch<SaleProvider>()
+        .sales
         .where((s) =>
-    s.dateTime.year == now.year &&
-        s.dateTime.month == now.month &&
-        s.dateTime.day == now.day &&
-        s.status != 'Refunded')
+            s.dateTime.year == now.year &&
+            s.dateTime.month == now.month &&
+            s.dateTime.day == now.day &&
+            s.status != 'Refunded')
         .fold(0.0, (sum, s) => sum + s.total);
 
+    final List<Widget> cards = [
+      HomeSummaryCard(
+        label: "Today's Sales",
+        value: CurrencyFormatter.formatCompact(todaySales, currency),
+        icon: Icons.trending_up,
+        badge: "+0%",
+        badgeColor: AppColors.success,
+      ),
+      HomeSummaryCard(
+        label: "Pending Orders",
+        value: "0 Items",
+        icon: Icons.refresh_rounded,
+        badge: "0",
+        badgeColor: Colors.orange,
+        iconColor: Colors.orange,
+        iconBgColor: Colors.orange.withValues(alpha: 0.1),
+        onTap: () => _handleNavigation(context, AppRoutes.salesOrder),
+      ),
+      HomeSummaryCard(
+        label: "Low Stock",
+        value: "${productProvider.lowStockCount} Items",
+        icon: Icons.error_outline_rounded,
+        badge: productProvider.lowStockCount.toString(),
+        badgeColor: AppColors.error,
+        iconColor: AppColors.error,
+        iconBgColor: AppColors.error.withValues(alpha: 0.1),
+      ),
+      HomeSummaryCard(
+        label: "Inventory Value",
+        value: CurrencyFormatter.formatCompact(
+          productProvider.inventoryValue,
+          currency,
+        ),
+        icon: Icons.inventory_2_outlined,
+        iconColor: Colors.blue,
+        iconBgColor: Colors.blue.withValues(alpha: 0.1),
+      ),
+    ];
 
+    if (isLargeScreen) {
+      return Row(
+        children: cards
+            .map((card) => Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: cards.last == card ? 0 : 12.w),
+                    child: card,
+                  ),
+                ))
+            .toList(),
+      );
+    }
 
     return Column(
       children: [
         Row(
           children: [
-            HomeSummaryCard(
-              label: "Today's Sales",
-              value: CurrencyFormatter.formatCompact(todaySales, currency),
-              icon: Icons.trending_up,
-              badge: "+0%",
-              badgeColor: AppColors.success,
-            ),
+            Expanded(child: cards[0]),
             SizedBox(width: 12.w),
-            HomeSummaryCard(
-              label: "Pending Orders",
-              value: "0 Items",
-              icon: Icons.refresh_rounded,
-              badge: "0",
-              badgeColor: Colors.orange,
-              iconColor: Colors.orange,
-              iconBgColor: Colors.orange.withValues(alpha: 0.1),
-              onTap: () => Navigator.pushNamed(context, AppRoutes.salesOrder),
-            ),
+            Expanded(child: cards[1]),
           ],
         ),
         SizedBox(height: AppSpacing.md),
         Row(
           children: [
-            HomeSummaryCard(
-              label: "Low Stock",
-              value: "${productProvider.lowStockCount} Items",
-              icon: Icons.error_outline_rounded,
-              badge: productProvider.lowStockCount.toString(),
-              badgeColor: AppColors.error,
-              iconColor: AppColors.error,
-              iconBgColor: AppColors.error.withValues(alpha: 0.1),
-            ),
+            Expanded(child: cards[2]),
             SizedBox(width: 12.w),
-            HomeSummaryCard(
-              label: "Inventory Value",
-              value: CurrencyFormatter.formatCompact(
-                productProvider.inventoryValue,
-                currency,
-              ),
-              icon: Icons.inventory_2_outlined,
-              iconColor: Colors.blue,
-              iconBgColor: Colors.blue.withValues(alpha: 0.1),
-            ),
+            Expanded(child: cards[3]),
           ],
         ),
       ],
@@ -154,7 +264,6 @@ class HomeScreen extends StatelessWidget {
               spacing: 16.w,
               runSpacing: 16.h,
               children: [
-                _buildQuickAction(context, "New Sale", Icons.add, AppRoutes.pos, isPrimary: true),
                 _buildQuickAction(context, "POS", Icons.desktop_windows_outlined, AppRoutes.pos),
                 _buildQuickAction(context, "Stock", Icons.inventory_2_outlined, AppRoutes.inventory),
                 _buildQuickAction(context, "Purchase", Icons.local_shipping_outlined, AppRoutes.purchaseOrder),
@@ -182,7 +291,7 @@ class HomeScreen extends StatelessWidget {
       label: label,
       icon: icon,
       isPrimary: isPrimary,
-      onTap: () => Navigator.pushNamed(context, route),
+      onTap: () => _handleNavigation(context, route),
     );
   }
 
@@ -281,7 +390,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildViewAllButton(BuildContext context, String route, Color color) {
     final theme = Theme.of(context);
     return TextButton(
-      onPressed: () => Navigator.pushNamed(context, route),
+      onPressed: () => _handleNavigation(context, route),
       child: Row(
         children: [
           Text(

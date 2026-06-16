@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import '../../models/currency/currency.dart';
+import '../../utils/theme/app_constants/colors.dart';
 import '../sfo_common/sfo_dropdown.dart';
 import '../sfo_common/sfo_input_field.dart';
 
@@ -17,6 +18,7 @@ class BusinessDetailsCard extends StatelessWidget {
   final Currency selectedCurrency;
   final ValueChanged<Currency?> onCurrencyChanged;
   final VoidCallback onSave;
+  final VoidCallback? onLogout;
 
   const BusinessDetailsCard({
     super.key,
@@ -29,6 +31,7 @@ class BusinessDetailsCard extends StatelessWidget {
     required this.selectedCurrency,
     required this.onCurrencyChanged,
     required this.onSave,
+    this.onLogout,
   });
 
   @override
@@ -95,6 +98,15 @@ class BusinessDetailsCard extends StatelessWidget {
             icon: Icons.save_outlined,
             onPressed: onSave,
           ),
+
+          if (onLogout != null)
+            SFOButton(
+              text: "Log out",
+              icon: Icons.logout_rounded,
+              onPressed: onLogout,
+              isSecondary: true,
+              type: .outlined,
+            ),
         ],
       ),
     );

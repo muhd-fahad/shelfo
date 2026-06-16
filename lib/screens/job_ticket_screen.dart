@@ -15,6 +15,9 @@ import 'package:shelfo/widgets/service_job/service_job_filter_sheet.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/provider/business_provider.dart';
 
+import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
+
 class JobTicketScreen extends StatelessWidget {
   const JobTicketScreen({super.key});
 
@@ -33,80 +36,105 @@ class JobTicketScreen extends StatelessWidget {
         icon: const Icon(Icons.add),
       ),
       body: SFOBackground(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.r),
-              child: SFOSearchBar(
-                hintText: "Search jobs, devices, or customers...",
-                onChanged: (val) => provider.setSearchQuery(val),
-                onFilterTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-                    ),
-                    builder: (context) => const ServiceJobFilterSheet(),
-                  );
-                },
-              ),
-            ),
-            Container(
-              height: 48.h,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: theme.brightness == Brightness.dark 
-                      ? theme.colorScheme.outlineVariant 
-                      : AppColors.borderLight,
-                  ),
-                ),
-              ),
-              child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-                scrollDirection: Axis.horizontal,
-                itemCount: ServiceJobStatus.values.length + 1,
-                separatorBuilder: (context, index) => SizedBox(width: 8.w),
-                itemBuilder: (context, index) {
-                  final isAll = index == 0;
-                  final status = isAll ? null : ServiceJobStatus.values[index - 1];
-                  final label = isAll ? "All" : _getStatusLabel(status!);
-                  final isSelected = isAll 
-                      ? provider.filterStatuses.isEmpty 
-                      : provider.filterStatuses.contains(status);
+        child: SFOResponsive(
+          mobile: _buildContent(context, provider, theme, 1, 16.w),
+          tablet: _buildContent(context, provider, theme, 2, 32.w),
+          desktop: _buildContent(context, provider, theme, 3, 32.w),
+        ),
+      ),
+    );
+  }
 
-                  return Center(
-                    child: SFOChip(
-                      label: label,
-                      isSelected: isSelected,
-                      onSelected: (val) => provider.toggleFilterStatus(status),
-                    ),
-                  );
-                },
+  Widget _buildContent(
+    BuildContext context,
+    ServiceJobProvider provider,
+    ThemeData theme,
+    int crossAxisCount,
+    double horizontalPadding,
+  ) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8.h),
+          child: SFOSearchBar(
+            hintText: "Search jobs, devices, or customers...",
+            onChanged: (val) => provider.setSearchQuery(val),
+            onFilterTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                ),
+                builder: (context) => const ServiceJobFilterSheet(),
+              );
+            },
+          ),
+        ),
+        Container(
+          height: 48.h,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: theme.brightness == Brightness.dark ? theme.colorScheme.outlineVariant : AppColors.borderLight,
               ),
             ),
-            SizedBox(height: 16.h),
-            Expanded(
-              child: provider.jobs.isEmpty
-                  ? Center(
-                      child: Text(
-                        "No jobs found",
-                        style: theme.textTheme.bodyMedium,
+          ),
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 4.h),
+            scrollDirection: Axis.horizontal,
+            itemCount: ServiceJobStatus.values.length + 1,
+            separatorBuilder: (context, index) => SizedBox(width: 8.w),
+            itemBuilder: (context, index) {
+              final isAll = index == 0;
+              final status = isAll ? null : ServiceJobStatus.values[index - 1];
+              final label = isAll ? "All" : _getStatusLabel(status!);
+              final isSelected = isAll ? provider.filterStatuses.isEmpty : provider.filterStatuses.contains(status);
+
+              return Center(
+                child: SFOChip(
+                  label: label,
+                  isSelected: isSelected,
+                  onSelected: (val) => provider.toggleFilterStatus(status),
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 16.h),
+        Expanded(
+          child: provider.jobs.isEmpty
+              ? Center(
+                  child: Text(
+                    "No jobs found",
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                )
+              : crossAxisCount > 1
+                  ? GridView.builder(
+                      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        mainAxisSpacing: 16.h,
+                        crossAxisSpacing: 16.w,
+                        mainAxisExtent: 260.h,
                       ),
+                      itemCount: provider.jobs.length,
+                      itemBuilder: (context, index) {
+                        final job = provider.jobs[index];
+                        return _JobCard(job: job);
+                      },
                     )
                   : ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                       itemCount: provider.jobs.length,
                       itemBuilder: (context, index) {
                         final job = provider.jobs[index];
                         return _JobCard(job: job);
                       },
                     ),
-            ),
-          ],
         ),
-      ),
+      ],
     );
   }
 

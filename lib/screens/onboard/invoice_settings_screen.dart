@@ -8,6 +8,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
+import 'package:shelfo/services/hive/settings_service.dart';
 import 'package:shelfo/widgets/invoice_preview_widget.dart';
 
 class InvoiceSettingsScreen extends StatelessWidget {
@@ -28,15 +29,18 @@ class InvoiceSettingsScreen extends StatelessWidget {
         title: "Invoice Settings",
         subtitle: "Customize your receipts and invoices",
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Form(
-          key: invoiceProvider.formKey,
-          child: Column(
-            spacing: 24.h,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            child: Form(
+              key: invoiceProvider.formKey,
+              child: Column(
+                spacing: 24.h,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
               const InvoicePreviewWidget(),
               Row(
                 mainAxisSize: MainAxisSize.max,
@@ -80,6 +84,7 @@ class InvoiceSettingsScreen extends StatelessWidget {
                 onPressed: () async {
                   if (invoiceProvider.formKey.currentState?.validate() ?? false) {
                     await invoiceProvider.saveInvoiceConfig();
+                    await SettingsHiveService.setOnboarded(true);
                     if (context.mounted) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -94,6 +99,8 @@ class InvoiceSettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

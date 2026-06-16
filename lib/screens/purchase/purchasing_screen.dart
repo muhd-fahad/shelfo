@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
+import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import 'tabs/vendors_tab.dart';
 import 'tabs/purchase_orders_tab.dart';
@@ -43,6 +45,7 @@ class _PurchasingContent extends StatelessWidget {
           title: "Purchasing",
         ),
         floatingActionButton: FloatingActionButton.extended(
+          heroTag: null,
           onPressed: () {
             if (tabProvider.index == 0) {
               Navigator.push(
@@ -60,51 +63,59 @@ class _PurchasingContent extends StatelessWidget {
           icon: const Icon(Icons.add),
         ),
         body: SFOBackground(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                padding: EdgeInsets.all(4.r),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha:0.3),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: TabBar(
-                  onTap: tabProvider.setIndex,
-                  indicator: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha:0.05),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-                  tabs: const [
-                    Tab(text: "Vendors"),
-                    Tab(text: "Purchase Orders"),
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(), // Sync with TabProvider
-                  children: [
-                    VendorsTab(),
-                    PurchaseOrdersTab(),
-                  ],
-                ),
-              ),
-            ],
+          child: SFOResponsive(
+            mobile: _buildContent(context, tabProvider, false),
+            desktop: _buildContent(context, tabProvider, true),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, PurchasingTabProvider tabProvider, bool isDesktop) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: isDesktop ? 32.w : 16.w, vertical: 8.h),
+          constraints: isDesktop ? const BoxConstraints(maxWidth: 600) : null,
+          padding: EdgeInsets.all(4.r),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: TabBar(
+            onTap: tabProvider.setIndex,
+            indicator: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            tabs: const [
+              Tab(text: "Vendors"),
+              Tab(text: "Purchase Orders"),
+            ],
+          ),
+        ),
+        const Expanded(
+          child: TabBarView(
+            physics: NeverScrollableScrollPhysics(), // Sync with TabProvider
+            children: [
+              VendorsTab(),
+              PurchaseOrdersTab(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

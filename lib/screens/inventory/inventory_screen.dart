@@ -13,7 +13,11 @@ import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
+import '../../models/currency/currency.dart';
 import '../../utils/theme/app_constants/colors.dart';
+
+import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -28,123 +32,143 @@ class InventoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: const SFOHeader(title: "Inventory"),
       body: SFOBackground(
-        child: Consumer2<ProductProvider, CategoryProvider>(
-          builder: (context, provider, categoryProvider, _) {
-            return Column(
-              children: [
-              // Summary Cards
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                child: Row(
-                  children: [
-                    SFOSummaryCard(
+        child: SFOResponsive(
+          mobile: _buildContent(context, theme, colorScheme, currency, 2, 16.w),
+          tablet: _buildContent(context, theme, colorScheme, currency, 3, 32.w),
+          desktop: _buildContent(context, theme, colorScheme, currency, 5, 32.w),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: null,
+        isExtended: false,
+        icon: Icon(Icons.add, size: 24.r),
+        label: const Text("Add"),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditProductScreen()),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    ThemeData theme,
+    ColorScheme colorScheme,
+    Currency currency,
+    int crossAxisCount,
+    double horizontalPadding,
+  ) {
+    final isTablet = SFOResponsive.isTablet(context) || SFOResponsive.isDesktop(context);
+    
+    return Consumer2<ProductProvider, CategoryProvider>(
+      builder: (context, provider, categoryProvider, _) {
+        return Column(
+          children: [
+            // Summary Cards
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8.h),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SFOSummaryCard(
                       label: "Total",
                       value: provider.totalProducts.toString(),
                       type: SFOSummaryType.primary,
                     ),
-                    SizedBox(width: 12.w),
-                    SFOSummaryCard(
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: SFOSummaryCard(
                       label: "Low Stock",
                       value: provider.lowStockCount.toString(),
                       type: SFOSummaryType.warning,
                     ),
-                    SizedBox(width: 12.w),
-                    SFOSummaryCard(
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: SFOSummaryCard(
                       label: "Out of Stock",
                       value: provider.outOfStockCount.toString(),
                       type: SFOSummaryType.error,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
 
-              // Search and Filter Bar
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: SFOSearchBar(
-                  hintText: "Search products...",
-                  onChanged: (val) => provider.setSearchQuery(val),
-                  onFilterTap: () => _showFilterSheet(context, categoryProvider, provider),
-                ),
+            // Search and Filter Bar
+            Padding(
+              padding: EdgeInsets.all(isTablet ? 24.r : 16.r),
+              child: SFOSearchBar(
+                hintText: "Search products...",
+                onChanged: (val) => provider.setSearchQuery(val),
+                onFilterTap: () => _showFilterSheet(context, categoryProvider, provider),
               ),
+            ),
 
-              // Categories Scroll
-              Container(
-                height: 48.h,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.brightness == Brightness.dark ? colorScheme.outlineVariant : AppColors.borderLight,
-                    ),
+            // Categories Scroll
+            Container(
+              height: 48.h,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: theme.brightness == Brightness.dark ? colorScheme.outlineVariant : AppColors.borderLight,
                   ),
                 ),
-                child: ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categoryProvider.categories.length + 1,
-                  separatorBuilder: (context, index) => SizedBox(width: 8.w),
-                  itemBuilder: (context, index) {
-                    final name = index == 0 ? "All" : categoryProvider.categories[index - 1].name;
-                    final isSelected = (index == 0 && provider.selectedFilterCategories.isEmpty) || 
-                                     (index != 0 && provider.selectedFilterCategories.contains(name));
-                    
-                    return Center(
-                      child: SFOChip(
-                        label: name,
-                        isSelected: isSelected,
-                        onSelected: (val) => provider.toggleFilterCategory(name == "All" ? null : name),
-                      ),
-                    );
-                  },
-                ),
               ),
+              child: ListView.separated(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 4.h),
+                scrollDirection: Axis.horizontal,
+                itemCount: categoryProvider.categories.length + 1,
+                separatorBuilder: (context, index) => SizedBox(width: 8.w),
+                itemBuilder: (context, index) {
+                  final name = index == 0 ? "All" : categoryProvider.categories[index - 1].name;
+                  final isSelected = (index == 0 && provider.selectedFilterCategories.isEmpty) ||
+                      (index != 0 && provider.selectedFilterCategories.contains(name));
 
-              SizedBox(height: 16.h),
+                  return Center(
+                    child: SFOChip(
+                      label: name,
+                      isSelected: isSelected,
+                      onSelected: (val) => provider.toggleFilterCategory(name == "All" ? null : name),
+                    ),
+                  );
+                },
+              ),
+            ),
 
-              // Product Grid
-              Expanded(
-                child: provider.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : provider.filteredProducts.isEmpty
-                        ? const Center(child: Text("No products found"))
-                        : GridView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.7,
-                              crossAxisSpacing: 16.r,
-                              mainAxisSpacing: 16.r,
-                            ),
-                            itemCount: provider.filteredProducts.length,
-                            itemBuilder: (context, index) {
-                              final product = provider.filteredProducts[index];
-                              return ProductGridItem(
-                                product: product,
-                                currency: currency,
-                              );
-                            },
+            SizedBox(height: 16.h),
+
+            // Product Grid
+            Expanded(
+              child: provider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : provider.filteredProducts.isEmpty
+                      ? const Center(child: Text("No products found"))
+                      : GridView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 16.r,
+                            mainAxisSpacing: 16.r,
                           ),
-              ),
-            ],
-          );
-        },
-      ),
-    ),
-      // floatingActionButtonLocation: .centerFloat,
-
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: null,
-        isExtended: false,
-        icon:Icon(Icons.add, size: 24.r),
-        label: Text("Add"),
-        onPressed:  ()=>
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EditProductScreen()),
-                ),
-      ),
-  );
-}
+                          itemCount: provider.filteredProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = provider.filteredProducts[index];
+                            return ProductGridItem(
+                              product: product,
+                              currency: currency,
+                            );
+                          },
+                        ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _showFilterSheet(BuildContext context, CategoryProvider catProvider, ProductProvider prodProvider) {
     showModalBottomSheet(

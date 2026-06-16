@@ -14,6 +14,7 @@ enum ReportPeriod {
   last30Days,
   thisMonth,
   thisYear,
+  custom,
 }
 
 extension ReportPeriodExtension on ReportPeriod {
@@ -25,6 +26,7 @@ extension ReportPeriodExtension on ReportPeriod {
       case ReportPeriod.last30Days: return "Last 30 Days";
       case ReportPeriod.thisMonth: return "This Month";
       case ReportPeriod.thisYear: return "This Year";
+      case ReportPeriod.custom: return "Custom Range";
     }
   }
 }
@@ -36,6 +38,9 @@ class ReportProvider extends ChangeNotifier {
 
   ReportPeriod _selectedPeriod = ReportPeriod.last7Days;
   ReportPeriod get selectedPeriod => _selectedPeriod;
+
+  DateTimeRange? _customRange;
+  DateTimeRange? get customRange => _customRange;
 
   ReportProvider({
     SaleProvider? saleProvider,
@@ -58,6 +63,12 @@ class ReportProvider extends ChangeNotifier {
 
   void setPeriod(ReportPeriod period) {
     _selectedPeriod = period;
+    notifyListeners();
+  }
+
+  void setCustomRange(DateTimeRange range) {
+    _selectedPeriod = ReportPeriod.custom;
+    _customRange = range;
     notifyListeners();
   }
 
@@ -92,9 +103,17 @@ class ReportProvider extends ChangeNotifier {
       case ReportPeriod.thisYear:
         start = DateTime(now.year, 1, 1);
         break;
+      case ReportPeriod.custom:
+        if (_customRange != null) {
+          start = DateTime(_customRange!.start.year, _customRange!.start.month, _customRange!.start.day);
+          end = DateTime(_customRange!.end.year, _customRange!.end.month, _customRange!.end.day, 23, 59, 59);
+        } else {
+          start = DateTime(now.year, now.month, now.day);
+        }
+        break;
     }
 
-    return _paidSales.where((s) => s.dateTime.isAfter(start) && s.dateTime.isBefore(end.add(const Duration(seconds: 1)))).toList();
+    return _paidSales.where((s) => s.dateTime.isAfter(start.subtract(const Duration(seconds: 1))) && s.dateTime.isBefore(end.add(const Duration(seconds: 1)))).toList();
   }
 
   List<Product> get _allProducts => _productProvider?.products ?? [];
@@ -259,12 +278,17 @@ class ReportProvider extends ChangeNotifier {
     if (_selectedPeriod == ReportPeriod.thisMonth) {
        days = DateTime(now.year, now.month + 1, 0).day;
     }
+    if (_selectedPeriod == ReportPeriod.custom && _customRange != null) {
+      days = _customRange!.duration.inDays + 1;
+    }
 
     List<FlSpot> spots = [];
     for (int i = days - 1; i >= 0; i--) {
       DateTime date;
       if (_selectedPeriod == ReportPeriod.thisMonth) {
          date = DateTime(now.year, now.month, days - i);
+      } else if (_selectedPeriod == ReportPeriod.custom && _customRange != null) {
+         date = _customRange!.start.add(Duration(days: days - 1 - i));
       } else {
          date = now.subtract(Duration(days: i));
       }
@@ -282,12 +306,17 @@ class ReportProvider extends ChangeNotifier {
     if (_selectedPeriod == ReportPeriod.thisMonth) {
        days = DateTime(now.year, now.month + 1, 0).day;
     }
+    if (_selectedPeriod == ReportPeriod.custom && _customRange != null) {
+       days = _customRange!.duration.inDays + 1;
+    }
 
     List<String> labels = [];
     for (int i = days - 1; i >= 0; i--) {
        DateTime date;
        if (_selectedPeriod == ReportPeriod.thisMonth) {
           date = DateTime(now.year, now.month, days - i);
+       } else if (_selectedPeriod == ReportPeriod.custom && _customRange != null) {
+          date = _customRange!.start.add(Duration(days: days - 1 - i));
        } else {
           date = now.subtract(Duration(days: i));
        }

@@ -28,15 +28,18 @@ class TaxConfigScreen extends StatelessWidget {
         title: "Tax Configuration",
         subtitle: "Set up how taxes are calculated",
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: Form(
-          key: taxProvider.formKey,
-          child: Column(
-            spacing: 24.h,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            child: Form(
+              key: taxProvider.formKey,
+              child: Column(
+                spacing: 24.h,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
               SFOSwitchTile(
                 title: "Enable Tax Calculation",
                 subtitle: "Automatically calculate tax on sales",
@@ -134,7 +137,9 @@ class TaxConfigScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }
 

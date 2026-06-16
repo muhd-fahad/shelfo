@@ -16,6 +16,8 @@ import 'package:shelfo/screens/settings/categories_settings_screen.dart';
 import 'package:shelfo/screens/settings/invoice_settings_detail_screen.dart';
 import 'package:shelfo/screens/settings/tax_settings_screen.dart';
 import 'package:shelfo/screens/settings/policies_screen.dart';
+import 'package:shelfo/screens/settings/privacy_policy_screen.dart';
+import 'package:shelfo/screens/settings/about_screen.dart';
 import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 
 import 'package:shelfo/screens/home_screen.dart';
@@ -53,6 +55,8 @@ class AppRoutes {
   static const String serviceJobForm = '/serviceJobForm';
   static const String serviceJobDetails = '/serviceJobDetails';
   static const String policies = '/policies';
+  static const String privacyPolicy = '/privacyPolicy';
+  static const String about = '/about';
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     splash: (context) => const SplashScreen(),
@@ -79,5 +83,7 @@ class AppRoutes {
     serviceJobForm: (context) => const ServiceJobFormScreen(),
     serviceJobDetails: (context) => const ServiceJobDetailsScreen(),
     policies: (context) => const PoliciesScreen(),
+    privacyPolicy: (context) => const PrivacyPolicyScreen(),
+    about: (context) => const AboutScreen(),
   };
 }

@@ -77,10 +77,29 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return ScreenUtilInit(
+            // designSize: const Size(375, 812),
+            // Adjust design size dynamically to prevent oversized elements on large screens
             designSize: const Size(375, 812),
             minTextAdapt: true,
             splitScreenMode: true,
+            useInheritedMediaQuery: true,
+            fontSizeResolver: (fontSize, instance) {
+              // Limit font scaling on larger screens to keep text readable but not massive
+              final double width = MediaQueryData.fromView(View.of(context)).size.width;
+              if (width >= 1024) return fontSize.toDouble(); // No scaling on desktop
+              return (fontSize * instance.scaleText).toDouble();
+            },
             builder: (context, child) {
+              // Re-initialize ScreenUtil if the screen size changes significantly
+              final double width = MediaQuery.of(context).size.width;
+              ScreenUtil.init(
+                context,
+                designSize: width >= 1024 
+                    ? const Size(1440, 900) 
+                    : width >= 600 
+                        ? const Size(768, 1024) 
+                        : const Size(375, 812),
+              );
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Shelfo inventory',

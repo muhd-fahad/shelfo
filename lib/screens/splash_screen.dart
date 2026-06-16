@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shelfo/routes/app_routes.dart';
+import 'package:shelfo/services/hive/settings_service.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
 
 import '../widgets/splash/stack_cards_splash.dart';
@@ -13,7 +14,15 @@ class SplashScreen extends StatelessWidget {
 
     if (!context.mounted) return;
 
-    Navigator.pushReplacementNamed(context, AppRoutes.businessInfo);
+    final isOnboarded = await SettingsHiveService.isOnboarded();
+
+    if (context.mounted) {
+      if (isOnboarded) {
+        Navigator.pushReplacementNamed(context, AppRoutes.bottomNavbar);
+      } else {
+        Navigator.pushReplacementNamed(context, AppRoutes.businessInfo);
+      }
+    }
     debugPrint("Splash");
   }
 

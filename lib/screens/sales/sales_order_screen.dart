@@ -20,6 +20,9 @@ import '../../widgets/sales/sales_order_filter_sheet.dart';
 import 'new_order_screen.dart';
 import 'sales_order_detail_screen.dart';
 
+import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
+
 class SalesOrderScreen extends StatelessWidget {
   const SalesOrderScreen({super.key});
 
@@ -34,6 +37,7 @@ class SalesOrderScreen extends StatelessWidget {
         title: "Sales Orders",
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: null,
         onPressed: () {
           Navigator.push(
             context,
@@ -44,60 +48,89 @@ class SalesOrderScreen extends StatelessWidget {
         icon: const Icon(Icons.add),
       ),
       body: SFOBackground(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              child: SFOSearchBar(
-                onChanged: orderProvider.setSearchQuery,
-                hintText: "Search orders...",
-                onFilterTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                    ),
-                    builder: (context) => const SalesOrderFilterSheet(),
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 36.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                itemCount: SalesOrderStatus.values.length,
-                separatorBuilder: (_, _) => SizedBox(width: 8.w),
-                itemBuilder: (context, index) {
-                  final status = SalesOrderStatus.values[index];
-                  final isSelected = orderProvider.statusFilter == status;
-                  return SFOChip(
-                    label: status.name[0].toUpperCase() + status.name.substring(1),
-                    isSelected: isSelected,
-                    onSelected: (_) => orderProvider.setStatusFilter(status),
-                  );
-                },
-              ),
-            ),
-            Expanded(
-              child: orderProvider.isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : orderProvider.orders.isEmpty
-                      ? const Center(child: Text("No orders found"))
+        child: SFOResponsive(
+          mobile: _buildContent(context, orderProvider, currency, 1, 16.w),
+          tablet: _buildContent(context, orderProvider, currency, 2, 32.w),
+          desktop: _buildContent(context, orderProvider, currency, 3, 32.w),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    SalesOrderProvider orderProvider,
+    Currency currency,
+    int crossAxisCount,
+    double horizontalPadding,
+  ) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8.h),
+          child: SFOSearchBar(
+            onChanged: orderProvider.setSearchQuery,
+            hintText: "Search orders...",
+            onFilterTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                builder: (context) => const SalesOrderFilterSheet(),
+              );
+            },
+          ),
+        ),
+        SizedBox(
+          height: 36.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            itemCount: SalesOrderStatus.values.length,
+            separatorBuilder: (_, _) => SizedBox(width: 8.w),
+            itemBuilder: (context, index) {
+              final status = SalesOrderStatus.values[index];
+              final isSelected = orderProvider.statusFilter == status;
+              return SFOChip(
+                label: status.name[0].toUpperCase() + status.name.substring(1),
+                isSelected: isSelected,
+                onSelected: (_) => orderProvider.setStatusFilter(status),
+              );
+            },
+          ),
+        ),
+        Expanded(
+          child: orderProvider.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : orderProvider.orders.isEmpty
+                  ? const Center(child: Text("No orders found"))
+                  : crossAxisCount > 1
+                      ? GridView.builder(
+                          padding: EdgeInsets.all(horizontalPadding),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: 12.h,
+                            crossAxisSpacing: 12.w,
+                            mainAxisExtent: 160.h,
+                          ),
+                          itemCount: orderProvider.orders.length,
+                          itemBuilder: (context, index) {
+                            final order = orderProvider.orders[index];
+                            return _OrderCard(order: order, currency: currency);
+                          },
+                        )
                       : ListView.builder(
-                          padding: EdgeInsets.all(16.w),
+                          padding: EdgeInsets.all(horizontalPadding),
                           itemCount: orderProvider.orders.length,
                           itemBuilder: (context, index) {
                             final order = orderProvider.orders[index];
                             return _OrderCard(order: order, currency: currency);
                           },
                         ),
-            ),
-          ],
         ),
-      ),
+      ],
     );
   }
 }

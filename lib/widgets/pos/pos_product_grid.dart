@@ -39,38 +39,46 @@ class PosProductGrid extends StatelessWidget {
       ));
     }
 
-    return GridView.builder(
-      padding: EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.xl),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 4,
-        crossAxisSpacing: AppSpacing.lg,
-        mainAxisSpacing: AppSpacing.lg,
-      ),
-      itemCount: filteredProducts.length,
-      itemBuilder: (context, index) {
-        final product = filteredProducts[index];
-        
-        // Calculate remaining stock based on cart
-        final cartItemIndex = cartProvider.items.indexWhere((item) => item.product.id == product.id);
-        final cartQuantity = cartItemIndex != -1 ? cartProvider.items[cartItemIndex].quantity : 0;
-        final availableStock = product.stockQuantity - cartQuantity;
-        
-        final isInCart = cartQuantity > 0;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isDesktop = constraints.maxWidth >= 1024;
+        final bool isTablet = constraints.maxWidth >= 600;
+        final int crossAxisCount = isDesktop ? 4 : (isTablet ? 3 : 2);
 
-        String? badgeText;
-        if (product.productType == ProductType.service) {
-          badgeText = "Service";
-        }
+        return GridView.builder(
+          padding: EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.xl),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: 3 / 4,
+            crossAxisSpacing: AppSpacing.lg,
+            mainAxisSpacing: AppSpacing.lg,
+          ),
+          itemCount: filteredProducts.length,
+          itemBuilder: (context, index) {
+            final product = filteredProducts[index];
 
-        return SFOPosCard(
-          name: product.name,
-          price: CurrencyFormatter.format(product.price, currency),
-          stockCount: availableStock,
-          badgeText: badgeText,
-          imagePath: product.imagePaths?.isNotEmpty == true ? product.imagePaths!.first : null,
-          isSelected: isInCart,
-          onTap: () => PosUI.addToCart(context, product),
+            // Calculate remaining stock based on cart
+            final cartItemIndex = cartProvider.items.indexWhere((item) => item.product.id == product.id);
+            final cartQuantity = cartItemIndex != -1 ? cartProvider.items[cartItemIndex].quantity : 0;
+            final availableStock = product.stockQuantity - cartQuantity;
+
+            final isInCart = cartQuantity > 0;
+
+            String? badgeText;
+            if (product.productType == ProductType.service) {
+              badgeText = "Service";
+            }
+
+            return SFOPosCard(
+              name: product.name,
+              price: CurrencyFormatter.format(product.price, currency),
+              stockCount: availableStock,
+              badgeText: badgeText,
+              imagePath: product.imagePaths?.isNotEmpty == true ? product.imagePaths!.first : null,
+              isSelected: isInCart,
+              onTap: () => PosUI.addToCart(context, product),
+            );
+          },
         );
       },
     );

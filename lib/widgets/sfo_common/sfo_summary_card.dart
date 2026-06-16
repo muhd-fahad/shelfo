@@ -44,50 +44,48 @@ class SFOSummaryCard extends StatelessWidget {
         break;
     }
 
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(12.r),
-        decoration: ShapeDecoration(
-          color: bgColor,
-          shape: RoundedSuperellipseBorder(
-            borderRadius: AppRadius.lg,
-            side: BorderSide(
-              color: colorScheme.outline.withValues(alpha:0.5),
-              width: 0.5,
-            ),
+    return Container(
+      padding: EdgeInsets.all(12.r),
+      decoration: ShapeDecoration(
+        color: bgColor,
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppRadius.lg,
+          side: BorderSide(
+            color: colorScheme.outline.withValues(alpha: 0.5),
+            width: 0.5,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: textColor.withValues(alpha:0.7),
-                fontSize: 12.sp,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: textColor.withValues(alpha: 0.7),
+              fontSize: 12.sp,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          Row(
+            spacing: AppSpacing.xs,
+            children: [
+              Icon(
+                iconData,
+                color: textColor,
+                size: 24.r,
               ),
-            ),
-            SizedBox(height: 4.h),
-            Row(
-              spacing: AppSpacing.xs,
-              children: [
-                Icon(
-                  iconData,
+              Text(
+                value,
+                style: theme.textTheme.titleLarge?.copyWith(
                   color: textColor,
-                  size: 24.r,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  value,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: textColor,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
