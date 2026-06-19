@@ -13,6 +13,7 @@ class SaleProvider extends ChangeNotifier {
   String _searchQuery = '';
 
   List<Sale> get sales => _filteredSales;
+  List<Sale> get allSales => _sales;
   bool get isLoading => _isLoading;
 
   SaleProvider() {

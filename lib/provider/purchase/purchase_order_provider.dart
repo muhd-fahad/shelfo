@@ -11,6 +11,7 @@ class PurchaseOrderProvider extends ChangeNotifier {
   PurchaseOrderStatus? _statusFilter;
 
   List<PurchaseOrder> get orders => _filteredOrders;
+  List<PurchaseOrder> get allOrders => _orders;
   PurchaseOrderStatus? get statusFilter => _statusFilter;
 
   PurchaseOrderProvider() {

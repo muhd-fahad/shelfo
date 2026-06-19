@@ -24,6 +24,7 @@ import '../../provider/business/navigation_provider.dart';
 import '../../provider/inventory/product_provider.dart';
 import '../../provider/purchase/purchase_order_provider.dart';
 import '../../provider/sales/sale_provider.dart';
+import '../../provider/business/notification_provider.dart';
 import '../../utils/theme/app_constants/colors.dart';
 import '../../utils/theme/app_constants/radius.dart';
 import '../../utils/theme/app_constants/spacing.dart';
@@ -153,9 +154,42 @@ class HomeScreen extends StatelessWidget {
     return AppBar(
       title: SFOLogo(height: 24.h, fit: BoxFit.fitWidth),
       actions: [
-        IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.notification),
-          icon: Icon(Icons.notifications_none_rounded, size: 24.r),
+        Consumer<NotificationProvider>(
+          builder: (context, provider, child) {
+            return Stack(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pushNamed(context, AppRoutes.notification),
+                  icon: Icon(Icons.notifications_none_rounded, size: 24.r),
+                ),
+                if (provider.unreadCount > 0)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.error,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 12,
+                        minHeight: 12,
+                      ),
+                      child: Text(
+                        provider.unreadCount > 9 ? '9+' : provider.unreadCount.toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onError,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
         IconButton(
           onPressed: () => _handleNavigation(context, AppRoutes.settings),

@@ -6,6 +6,7 @@ import 'package:shelfo/hive_registrar.g.dart';
 import 'package:shelfo/provider/business/business_provider.dart';
 import 'package:shelfo/provider/business/invoice_provider.dart';
 import 'package:shelfo/provider/business/navigation_provider.dart';
+import 'package:shelfo/provider/business/notification_provider.dart';
 import 'package:shelfo/provider/business/tax_provider.dart';
 import 'package:shelfo/provider/business/theme_provider.dart';
 import 'package:shelfo/provider/customer/customer_provider.dart';
@@ -70,6 +71,21 @@ class MyApp extends StatelessWidget {
           ),
           update: (context, saleProvider, productProvider, categoryProvider, previous) =>
               previous!..update(saleProvider, productProvider, categoryProvider),
+        ),
+        ChangeNotifierProxyProvider4<ProductProvider, PurchaseOrderProvider, SaleProvider, BusinessProvider, NotificationProvider>(
+          create: (context) => NotificationProvider(
+            productProvider: context.read<ProductProvider>(),
+            purchaseOrderProvider: context.read<PurchaseOrderProvider>(),
+            saleProvider: context.read<SaleProvider>(),
+            businessProvider: context.read<BusinessProvider>(),
+          ),
+          update: (context, productProvider, poProvider, saleProvider, businessProvider, previous) =>
+              previous!..update(
+                productProvider: productProvider,
+                purchaseOrderProvider: poProvider,
+                saleProvider: saleProvider,
+                businessProvider: businessProvider,
+              ),
         ),
         ChangeNotifierProvider(create: (_) => PosProvider()),
         ChangeNotifierProxyProvider<TaxProvider, CartProvider>(

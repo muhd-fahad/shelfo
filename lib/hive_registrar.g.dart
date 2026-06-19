@@ -9,6 +9,7 @@ import 'package:shelfo/models/category/category_model.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/models/invoice/invoice_config_model.dart';
+import 'package:shelfo/models/notification/notification_model.dart';
 import 'package:shelfo/models/policy/policy_model.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/models/purchase/purchase_item_model.dart';
@@ -30,6 +31,8 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(CustomerAdapter());
     registerAdapter(CustomerTypeAdapter());
     registerAdapter(InvoiceConfigAdapter());
+    registerAdapter(NotificationModelAdapter());
+    registerAdapter(NotificationTypeAdapter());
     registerAdapter(PolicyAdapter());
     registerAdapter(PolicyTypeAdapter());
     registerAdapter(ProductAdapter());
@@ -59,6 +62,8 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(CustomerAdapter());
     registerAdapter(CustomerTypeAdapter());
     registerAdapter(InvoiceConfigAdapter());
+    registerAdapter(NotificationModelAdapter());
+    registerAdapter(NotificationTypeAdapter());
     registerAdapter(PolicyAdapter());
     registerAdapter(PolicyTypeAdapter());
     registerAdapter(ProductAdapter());
