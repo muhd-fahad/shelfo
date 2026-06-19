@@ -9,8 +9,11 @@ import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
 import '../../models/business/business_model.dart';
 import '../../models/policy/policy_model.dart';
+import '../../models/invoice/invoice_config_model.dart';
 import '../../services/hive/policy_service.dart';
+import '../../services/hive/invoice_service.dart';
 import '../../utils/formatters/currency_formatter.dart';
+import '../../utils/theme/app_constants/assets.dart';
 
 class PdfService {
   static Future<void> generateAndPrintInvoice(Sale sale, Business? business, dynamic currency) async {
@@ -38,6 +41,10 @@ class PdfService {
     final dateFormat = DateFormat('MMM dd, yyyy');
     final timeFormat = DateFormat('hh:mm a');
 
+    // Fetch invoice config
+    final invoiceConfig = await InvoiceHiveService.getInvoiceConfig();
+    final bool showLogo = invoiceConfig?.showLogo ?? true;
+
     // Fetch active policies
     final allPolicies = await PolicyHiveService.getPolicies();
     final activePolicies = allPolicies.where((p) => p.isActive).toList();
@@ -47,6 +54,29 @@ class PdfService {
     final ttf = pw.Font.ttf(fontData);
     final boldFontData = await rootBundle.load("assets/fonts/Inter_18pt-Bold.ttf");
     final boldTtf = pw.Font.ttf(boldFontData);
+
+    // Load logo if enabled
+    pw.ImageProvider? logoImage;
+    if (showLogo && business?.logoPath != null) {
+      try {
+        if (business!.logoPath!.startsWith('assets/')) {
+          String assetPath = business.logoPath!;
+          if (assetPath.endsWith('.svg')) {
+            assetPath = 'assets/logo/shelfo_app_logo_icon.png';
+          }
+          final bytes = await rootBundle.load(assetPath);
+          logoImage = pw.MemoryImage(bytes.buffer.asUint8List());
+        } else {
+          final file = File(business.logoPath!);
+          if (await file.exists()) {
+            final bytes = await file.readAsBytes();
+            logoImage = pw.MemoryImage(bytes);
+          }
+        }
+      } catch (e) {
+        // Fallback or ignore
+      }
+    }
 
     pdf.addPage(
       pw.MultiPage(
@@ -59,10 +89,19 @@ class PdfService {
           return [
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
+                    if (logoImage != null) ...[
+                      pw.Container(
+                        height: 50,
+                        width: 50,
+                        child: pw.Image(logoImage),
+                      ),
+                      pw.SizedBox(height: 10),
+                    ],
                     pw.Text(
                       business?.name ?? "Business Name",
                       style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),

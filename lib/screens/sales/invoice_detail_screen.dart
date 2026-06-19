@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:shelfo/provider/business/business_provider.dart';
+import 'package:shelfo/provider/business/invoice_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../models/sale/sale_model.dart';
 import '../../models/business/business_model.dart';
 import '../../models/currency/currency.dart';
@@ -33,6 +36,7 @@ class InvoiceDetailScreen extends StatelessWidget {
         final colorScheme = theme.colorScheme;
         final isDark = theme.brightness == Brightness.dark;
         final businessProvider = context.watch<BusinessProvider>();
+        final invoiceProvider = context.watch<InvoiceProvider>();
         final business = snapshot.data;
         final currency = businessProvider.selectedCurrency;
 
@@ -79,7 +83,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildInvoiceHeader(context, theme, business, isRefunded),
+                      _buildInvoiceHeader(context, theme, business, isRefunded, invoiceProvider.showLogo),
                       SizedBox(height: AppSpacing.xl),
                       const SFODivider(),
                       SizedBox(height: AppSpacing.md),
@@ -103,7 +107,7 @@ class InvoiceDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInvoiceHeader(BuildContext context, ThemeData theme, Business? business, bool isRefunded) {
+  Widget _buildInvoiceHeader(BuildContext context, ThemeData theme, Business? business, bool isRefunded, bool showLogo) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,6 +116,18 @@ class InvoiceDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (showLogo && business?.logoPath != null) ...[
+                Container(
+                  width: 50.r,
+                  height: 50.r,
+                  margin: EdgeInsets.only(bottom: 8.h),
+                  child: business!.logoPath!.startsWith('assets/')
+                      ? (business.logoPath!.endsWith('.svg')
+                          ? SvgPicture.asset(business.logoPath!)
+                          : Image.asset(business.logoPath!))
+                      : Image.file(File(business.logoPath!)),
+                ),
+              ],
               Text(
                 business?.name ?? "Business Name",
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
