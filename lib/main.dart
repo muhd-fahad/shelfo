@@ -24,12 +24,14 @@ import 'package:shelfo/provider/sales/sale_provider.dart';
 import 'package:shelfo/provider/sales/sales_order_provider.dart';
 import 'package:shelfo/provider/service_job/service_job_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
+import 'package:shelfo/services/notification/local_notification_service.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapters();
+  await LocalNotificationService.init();
 
   runApp(const MyApp());
 }
@@ -72,18 +74,20 @@ class MyApp extends StatelessWidget {
           update: (context, saleProvider, productProvider, categoryProvider, previous) =>
               previous!..update(saleProvider, productProvider, categoryProvider),
         ),
-        ChangeNotifierProxyProvider4<ProductProvider, PurchaseOrderProvider, SaleProvider, BusinessProvider, NotificationProvider>(
+        ChangeNotifierProxyProvider5<ProductProvider, PurchaseOrderProvider, SaleProvider, ServiceJobProvider, BusinessProvider, NotificationProvider>(
           create: (context) => NotificationProvider(
             productProvider: context.read<ProductProvider>(),
             purchaseOrderProvider: context.read<PurchaseOrderProvider>(),
             saleProvider: context.read<SaleProvider>(),
+            serviceJobProvider: context.read<ServiceJobProvider>(),
             businessProvider: context.read<BusinessProvider>(),
           ),
-          update: (context, productProvider, poProvider, saleProvider, businessProvider, previous) =>
+          update: (context, productProvider, poProvider, saleProvider, jobProvider, businessProvider, previous) =>
               previous!..update(
                 productProvider: productProvider,
                 purchaseOrderProvider: poProvider,
                 saleProvider: saleProvider,
+                serviceJobProvider: jobProvider,
                 businessProvider: businessProvider,
               ),
         ),
@@ -121,6 +125,7 @@ class MyApp extends StatelessWidget {
                         : const Size(412, 917),
               );
               return MaterialApp(
+                navigatorKey: LocalNotificationService.navigatorKey,
                 debugShowCheckedModeBanner: false,
                 title: 'Shelfo inventory',
                 theme: SFOAppTheme.light,

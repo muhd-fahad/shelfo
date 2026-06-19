@@ -11,6 +11,7 @@ class ServiceJobProvider extends ChangeNotifier {
   final List<ServiceJobStatus> _filterStatuses = [];
 
   List<ServiceJob> get jobs => _filteredJobs;
+  List<ServiceJob> get allJobs => _jobs;
   bool get isLoading => _isLoading;
   List<ServiceJobStatus> get filterStatuses => _filterStatuses;
 

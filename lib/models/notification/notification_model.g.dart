@@ -69,6 +69,8 @@ class NotificationTypeAdapter extends TypeAdapter<NotificationType> {
       case 2:
         return NotificationType.sales;
       case 3:
+        return NotificationType.serviceJob;
+      case 4:
         return NotificationType.general;
       default:
         return NotificationType.stock;
@@ -84,8 +86,10 @@ class NotificationTypeAdapter extends TypeAdapter<NotificationType> {
         writer.writeByte(1);
       case NotificationType.sales:
         writer.writeByte(2);
-      case NotificationType.general:
+      case NotificationType.serviceJob:
         writer.writeByte(3);
+      case NotificationType.general:
+        writer.writeByte(4);
     }
   }
 

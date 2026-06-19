@@ -11,6 +11,8 @@ enum NotificationType {
   @HiveField(2)
   sales,
   @HiveField(3)
+  serviceJob,
+  @HiveField(4)
   general,
 }
 

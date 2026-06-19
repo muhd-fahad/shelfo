@@ -215,6 +215,10 @@ class _NotificationTile extends StatelessWidget {
         iconData = Icons.trending_up;
         iconColor = colorScheme.primary;
         break;
+      case NotificationType.serviceJob:
+        iconData = Icons.handyman_outlined;
+        iconColor = Colors.blue;
+        break;
       case NotificationType.general:
         iconData = Icons.notifications_outlined;
         iconColor = colorScheme.outline;
