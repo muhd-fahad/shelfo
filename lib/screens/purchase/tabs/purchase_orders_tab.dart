@@ -11,6 +11,7 @@ import '../../../widgets/sfo_common/sfo_search_bar.dart';
 import '../../../widgets/sfo_common/sfo_card.dart';
 import '../../../widgets/sfo_common/sfo_badge.dart';
 import '../../../widgets/sfo_common/sfo_chip.dart';
+import '../../../widgets/sfo_common/sfo_empty_state.dart';
 import '../../../utils/theme/theme.dart';
 import '../purchase_order_details_screen.dart';
 
@@ -56,7 +57,10 @@ class PurchaseOrdersTab extends StatelessWidget {
         ),
         Expanded(
           child: orderProvider.orders.isEmpty
-              ? const Center(child: Text("No purchase orders found"))
+              ? const SFOEmptyState(
+                  title: "No purchase orders found",
+                  subtitle: "Your purchase history will appear here",
+                )
               : ListView.builder(
                   padding: EdgeInsets.all(16.w),
                   itemCount: orderProvider.orders.length,

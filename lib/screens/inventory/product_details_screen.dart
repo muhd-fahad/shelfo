@@ -36,8 +36,9 @@ class ProductDetailsScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit_outlined, color: colorScheme.onSurface),
             onPressed: () {
-              final freshProduct = Provider.of<ProductProvider>(context, listen: false)
-                  .products.firstWhere((p) => p.id == product.id, orElse: () => product);
+              final productProvider = Provider.of<ProductProvider>(context, listen: false);
+              final freshProduct = productProvider.products.firstWhere((p) => p.id == product.id, orElse: () => product);
+              productProvider.initProduct(freshProduct);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => EditProductScreen(product: freshProduct)),

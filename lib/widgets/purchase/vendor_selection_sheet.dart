@@ -5,6 +5,7 @@ import '../../models/vendor/vendor_model.dart';
 import '../../provider/purchase/vendor_provider.dart';
 import '../../screens/purchase/add_vendor_screen.dart';
 import '../../utils/theme/theme.dart';
+import '../sfo_common/sfo_empty_state.dart';
 import '../sfo_common/sfo_search_bar.dart';
 
 class VendorSelectionSheet extends StatelessWidget {
@@ -54,29 +55,22 @@ class VendorSelectionSheet extends StatelessWidget {
         SizedBox(
           height: 400.h,
           child: vendorProvider.vendors.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No vendors found",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final newVendor = await Navigator.push<Vendor>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddVendorScreen(),
-                            ),
-                          );
-                          if (newVendor != null && context.mounted) {
-                            Navigator.pop(context, newVendor);
-                          }
-                        },
-                        child: const Text("Create New Vendor"),
-                      ),
-                    ],
+              ? SFOEmptyState(
+                  title: "No vendors found",
+                  subtitle: "Try searching again or add a new vendor",
+                  action: TextButton(
+                    onPressed: () async {
+                      final newVendor = await Navigator.push<Vendor>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddVendorScreen(),
+                        ),
+                      );
+                      if (newVendor != null && context.mounted) {
+                        Navigator.pop(context, newVendor);
+                      }
+                    },
+                    child: const Text("Create New Vendor"),
                   ),
                 )
               : ListView.builder(

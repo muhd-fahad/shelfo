@@ -23,12 +23,15 @@ class CategoriesSettingsScreen extends StatelessWidget {
         subtitle: "Organize your products",
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const EditCategoryScreen(),
-          ),
-        ),
+        onPressed: () {
+          context.read<CategoryProvider>().initCategory(null);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditCategoryScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: categoryProvider.isLoading
@@ -83,12 +86,15 @@ class CategoriesSettingsScreen extends StatelessWidget {
                             size: 20.r,
                             color: colorScheme.onSurfaceVariant,
                           ),
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditCategoryScreen(category: category),
-                            ),
-                          ),
+                          onPressed: () {
+                            context.read<CategoryProvider>().initCategory(category);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditCategoryScreen(category: category),
+                              ),
+                            );
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.delete_outline_rounded, size: 20.r, color: AppColors.error),

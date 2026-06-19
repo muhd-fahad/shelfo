@@ -13,6 +13,7 @@ class SFOBottomSheet {
     return showModalBottomSheet<T>(
       context: context,
       isScrollControlled: true,
+      enableDrag: true,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         decoration: BoxDecoration(

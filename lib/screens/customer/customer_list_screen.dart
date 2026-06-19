@@ -14,6 +14,7 @@ import '../../widgets/sfo_common/sfo_background.dart';
 import 'add_edit_customer_screen.dart';
 import 'customer_details_screen.dart';
 
+import 'package:shelfo/widgets/sfo_common/sfo_empty_state.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 class CustomerListScreen extends StatelessWidget {
@@ -93,7 +94,10 @@ class CustomerListScreen extends StatelessWidget {
           child: provider.isLoading
               ? const Center(child: CircularProgressIndicator())
               : provider.customers.isEmpty
-                  ? const Center(child: Text("No customers found"))
+                  ? const SFOEmptyState(
+                      title: "No customers found",
+                      subtitle: "Try searching for a different name or add a new customer",
+                    )
                   : crossAxisCount > 1
                       ? GridView.builder(
                           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),

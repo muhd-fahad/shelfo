@@ -5,6 +5,7 @@ import '../../models/category/category_model.dart';
 import '../../provider/inventory/category_provider.dart';
 import '../../screens/settings/edit_category_screen.dart';
 import '../../utils/theme/theme.dart';
+import '../sfo_common/sfo_empty_state.dart';
 import '../sfo_common/sfo_search_bar.dart';
 
 class CategorySelectionSheet extends StatelessWidget {
@@ -31,6 +32,7 @@ class CategorySelectionSheet extends StatelessWidget {
               SizedBox(width: 8.w),
               IconButton.filled(
                 onPressed: () async {
+                  context.read<CategoryProvider>().initCategory(null);
                   final newCategory = await Navigator.push<Category>(
                     context,
                     MaterialPageRoute(
@@ -54,29 +56,23 @@ class CategorySelectionSheet extends StatelessWidget {
         SizedBox(
           height: 400.h,
           child: categoryProvider.categories.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No categories found",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final newCategory = await Navigator.push<Category>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditCategoryScreen(),
-                            ),
-                          );
-                          if (newCategory != null && context.mounted) {
-                            Navigator.pop(context, newCategory);
-                          }
-                        },
-                        child: const Text("Create New Category"),
-                      ),
-                    ],
+              ? SFOEmptyState(
+                  title: "No categories found",
+                  subtitle: "Try searching again or create one",
+                  action: TextButton(
+                    onPressed: () async {
+                      context.read<CategoryProvider>().initCategory(null);
+                      final newCategory = await Navigator.push<Category>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditCategoryScreen(),
+                        ),
+                      );
+                      if (newCategory != null && context.mounted) {
+                        Navigator.pop(context, newCategory);
+                      }
+                    },
+                    child: const Text("Create New Category"),
                   ),
                 )
               : ListView.builder(

@@ -10,6 +10,7 @@ import '../../../utils/formatters/currency_formatter.dart';
 import '../../../widgets/sfo_common/sfo_search_bar.dart';
 import '../../../widgets/sfo_common/sfo_card.dart';
 import '../../../widgets/sfo_common/sfo_badge.dart';
+import '../../../widgets/sfo_common/sfo_empty_state.dart';
 import '../vendor_details_screen.dart';
 
 class VendorsTab extends StatelessWidget {
@@ -32,7 +33,10 @@ class VendorsTab extends StatelessWidget {
         ),
         Expanded(
           child: vendorProvider.vendors.isEmpty
-              ? const Center(child: Text("No vendors found"))
+              ? const SFOEmptyState(
+                  title: "No vendors found",
+                  subtitle: "Your supplier list will appear here",
+                )
               : ListView.builder(
                   padding: EdgeInsets.all(16.w),
                   itemCount: vendorProvider.vendors.length,

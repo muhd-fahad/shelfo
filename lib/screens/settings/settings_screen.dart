@@ -127,13 +127,6 @@ class SettingsScreen extends StatelessWidget {
               subtitle: _getThemeModeName(themeProvider.themeMode),
               onTap: () => _showThemeSelector(context, themeProvider),
             ),
-            // const SFODivider(),
-            // SFOTile(
-            //   icon: Icons.storage_outlined,
-            //   title: "Backup & Restore",
-            //   subtitle: "Export data, import backups",
-            //   onTap: () {},
-            // ),
           ],
         ),
       ],

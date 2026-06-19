@@ -53,6 +53,11 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSearch() {
+    _searchQuery = "";
+    notifyListeners();
+  }
+
   void initCategory(Category? category) {
     if (category != null) {
       nameController.text = category.name;

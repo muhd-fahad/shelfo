@@ -5,6 +5,7 @@ import '../../models/customer/customer_model.dart';
 import '../../provider/customer/customer_provider.dart';
 import '../../screens/customer/add_edit_customer_screen.dart';
 import '../../utils/theme/theme.dart';
+import '../sfo_common/sfo_empty_state.dart';
 import '../sfo_common/sfo_search_bar.dart';
 
 class CustomerSelectionSheet extends StatelessWidget {
@@ -54,29 +55,22 @@ class CustomerSelectionSheet extends StatelessWidget {
         SizedBox(
           height: 400.h,
           child: customerProvider.customers.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No customers found",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final newCustomer = await Navigator.push<Customer>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddEditCustomerScreen(),
-                            ),
-                          );
-                          if (newCustomer != null && context.mounted) {
-                            Navigator.pop(context, newCustomer);
-                          }
-                        },
-                        child: const Text("Create New Customer"),
-                      ),
-                    ],
+              ? SFOEmptyState(
+                  title: "No customers found",
+                  subtitle: "Try searching again or create one",
+                  action: TextButton(
+                    onPressed: () async {
+                      final newCustomer = await Navigator.push<Customer>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddEditCustomerScreen(),
+                        ),
+                      );
+                      if (newCustomer != null && context.mounted) {
+                        Navigator.pop(context, newCustomer);
+                      }
+                    },
+                    child: const Text("Create New Customer"),
                   ),
                 )
               : ListView.builder(

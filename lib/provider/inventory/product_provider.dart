@@ -174,6 +174,8 @@ class ProductProvider extends ChangeNotifier {
     _minPrice = null;
     _maxPrice = null;
     _stockStatuses.clear();
+    _searchQuery = '';
+    searchController.clear();
     minPriceController.clear();
     maxPriceController.clear();
     notifyListeners();

@@ -13,6 +13,7 @@ import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_search_bar.dart';
 import '../../widgets/sfo_common/sfo_badge.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
+import '../../widgets/sfo_common/sfo_empty_state.dart';
 import 'invoice_detail_screen.dart';
 import 'invoice_form_screen.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
@@ -74,7 +75,10 @@ class SalesHistoryScreen extends StatelessWidget {
           child: saleProvider.isLoading
               ? const Center(child: CircularProgressIndicator())
               : saleProvider.sales.isEmpty
-                  ? const Center(child: Text("No transactions found"))
+                  ? const SFOEmptyState(
+                      title: "No transactions found",
+                      subtitle: "Your sales history will appear here",
+                    )
                   : crossAxisCount > 1
                       ? GridView.builder(
                           padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: AppSpacing.sm),

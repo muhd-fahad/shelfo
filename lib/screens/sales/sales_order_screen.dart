@@ -12,6 +12,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 
+import 'package:shelfo/widgets/sfo_common/sfo_empty_state.dart';
+
 import '../../provider/business/business_provider.dart';
 import '../../provider/customer/customer_provider.dart';
 import '../../provider/sales/sales_order_provider.dart';
@@ -103,7 +105,10 @@ class SalesOrderScreen extends StatelessWidget {
           child: orderProvider.isLoading
               ? const Center(child: CircularProgressIndicator())
               : orderProvider.orders.isEmpty
-                  ? const Center(child: Text("No orders found"))
+                  ? const SFOEmptyState(
+                      title: "No orders found",
+                      subtitle: "Your sales orders will appear here",
+                    )
                   : crossAxisCount > 1
                       ? GridView.builder(
                           padding: EdgeInsets.all(horizontalPadding),

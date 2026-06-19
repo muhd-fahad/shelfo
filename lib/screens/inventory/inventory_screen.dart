@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_empty_state.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_summary_card.dart';
 import 'package:shelfo/widgets/inventory/product_grid_item.dart';
 import 'package:shelfo/widgets/inventory/inventory_filter_sheet.dart';
@@ -12,6 +13,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
 import '../../models/currency/currency.dart';
 import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/brand_provider.dart';
 import '../../provider/inventory/category_provider.dart';
 import '../../provider/inventory/product_provider.dart';
 import '../../utils/theme/app_constants/colors.dart';
@@ -41,10 +43,13 @@ class InventoryScreen extends StatelessWidget {
         isExtended: false,
         icon: Icon(Icons.add, size: 24.r),
         label: const Text("Add"),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const EditProductScreen()),
-        ),
+        onPressed: () {
+          context.read<ProductProvider>().initProduct(null);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditProductScreen()),
+          );
+        },
       ),
     );
   }
@@ -109,7 +114,7 @@ class InventoryScreen extends StatelessWidget {
               padding: EdgeInsets.all(isTablet ? 24.r : 16.r),
               child: SFOSearchBar(
                 hintText: "Search products...",
-                onChanged: (val) => provider.setSearchQuery(val),
+                controller: provider.searchController,
                 onFilterTap: () => _showFilterSheet(context, categoryProvider, provider),
               ),
             ),
@@ -152,12 +157,15 @@ class InventoryScreen extends StatelessWidget {
               child: provider.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : provider.filteredProducts.isEmpty
-                      ? const Center(child: Text("No products found"))
+                      ? const SFOEmptyState(
+                          title: "No products found",
+                          subtitle: "Start by adding some products to your inventory",
+                        )
                       : GridView.builder(
                           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: crossAxisCount,
-                            childAspectRatio: 0.7,
+                            childAspectRatio: 3/4,
                             crossAxisSpacing: 16.r,
                             mainAxisSpacing: 16.r,
                           ),
@@ -171,6 +179,7 @@ class InventoryScreen extends StatelessWidget {
                           },
                         ),
             ),
+            
           ],
         );
       },
@@ -178,6 +187,8 @@ class InventoryScreen extends StatelessWidget {
   }
 
   void _showFilterSheet(BuildContext context, CategoryProvider catProvider, ProductProvider prodProvider) {
+    catProvider.clearSearch();
+    context.read<BrandProvider>().clearSearch();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

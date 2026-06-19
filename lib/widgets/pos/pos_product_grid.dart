@@ -11,6 +11,7 @@ import '../../provider/business/business_provider.dart';
 import '../../provider/inventory/product_provider.dart';
 import '../../provider/sales/cart_provider.dart';
 import '../../provider/sales/pos_provider.dart';
+import '../sfo_common/sfo_empty_state.dart';
 
 class PosProductGrid extends StatelessWidget {
   const PosProductGrid({super.key});
@@ -30,14 +31,10 @@ class PosProductGrid extends StatelessWidget {
     final filteredProducts = posProvider.getFilteredProducts(productProvider);
 
     if (filteredProducts.isEmpty) {
-      return const Center(child: Column(
-        crossAxisAlignment: .center,
-        mainAxisAlignment: .center,
-        children: [
-          Image(image: AssetImage("assets/images/bibo_curious.png"),width: 150,),
-          Text("No products found"),
-        ],
-      ));
+      return const SFOEmptyState(
+        title: "No products found",
+        subtitle: "Try adjusting your filters or search query",
+      );
     }
 
     return LayoutBuilder(
@@ -50,7 +47,7 @@ class PosProductGrid extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.xl),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            childAspectRatio: 3 / 4,
+            childAspectRatio: 3/4,
             crossAxisSpacing: AppSpacing.lg,
             mainAxisSpacing: AppSpacing.lg,
           ),

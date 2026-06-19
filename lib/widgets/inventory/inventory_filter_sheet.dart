@@ -32,11 +32,13 @@ class InventoryFilterSheet extends StatelessWidget {
                 color: theme.cardTheme.color,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              child: Form(
+                key: productProvider.filterFormKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -228,8 +230,9 @@ class InventoryFilterSheet extends StatelessWidget {
                   ],
                 ),
               ),
-            );
-          },
+            ),
+          );
+        },
     );
   }
 

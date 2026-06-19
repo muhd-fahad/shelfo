@@ -12,6 +12,7 @@ import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/service_job/service_job_filter_sheet.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_empty_state.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 import '../../provider/business/business_provider.dart';
@@ -103,11 +104,9 @@ class JobTicketScreen extends StatelessWidget {
         SizedBox(height: 16.h),
         Expanded(
           child: provider.jobs.isEmpty
-              ? Center(
-                  child: Text(
-                    "No jobs found",
-                    style: theme.textTheme.bodyMedium,
-                  ),
+              ? const SFOEmptyState(
+                  title: "No jobs found",
+                  subtitle: "Start by creating a new service ticket",
                 )
               : crossAxisCount > 1
                   ? GridView.builder(

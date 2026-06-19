@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/theme/theme.dart';
 
 class SFOProductCard extends StatelessWidget {
@@ -55,36 +56,36 @@ class SFOProductCard extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(13),
+          padding: const EdgeInsets.all(12),
           child: Column(
-            spacing: AppSpacing.xs,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image Container
-              Container(
-                width: double.maxFinite,
-                height: 140,
-                clipBehavior: Clip.antiAlias,
-                decoration: ShapeDecoration(
-                  color: isDark ? colorScheme.surface : colorScheme.surfaceContainerHighest,
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: AppRadius.md,
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  width: double.maxFinite,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: isDark ? colorScheme.surface : colorScheme.surfaceContainerHighest,
+                    shape: RoundedSuperellipseBorder(
+                      borderRadius: AppRadius.md,
+                    ),
                   ),
+                  child: imagePath != null
+                      ? (imagePath!.startsWith('assets/')
+                          ? Image.asset(imagePath!, fit: BoxFit.contain)
+                          : (kIsWeb 
+                              ? Image.network(imagePath!, fit: BoxFit.cover)
+                              : Image.file(File(imagePath!), fit: BoxFit.cover)))
+                      : Icon(Icons.inventory_2_outlined,
+                          size: 32, color: colorScheme.primary.withValues(alpha:0.2)),
                 ),
-                child: imagePath != null
-                    ? (imagePath!.startsWith('assets/')
-                        ? Image.asset(imagePath!, fit: BoxFit.contain)
-                        : (kIsWeb 
-                            ? Image.network(imagePath!, fit: BoxFit.cover)
-                            : Image.file(File(imagePath!), fit: BoxFit.cover)))
-                    : Icon(Icons.inventory_2_outlined,
-                        size: 32, color: colorScheme.primary.withValues(alpha:0.2)),
               ),
               SizedBox(height: AppSpacing.xs),
 
               // SKU and Status Dot
               Row(
-                spacing: 4,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (sku != null)
@@ -99,6 +100,7 @@ class SFOProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                  SizedBox(width: 4.w),
                   if (showStatusDot)
                     Container(
                       width: 8,
@@ -108,14 +110,15 @@ class SFOProductCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
+                  SizedBox(width: 4.w),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      "$stockCount left",
+                      "$stockCount",
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                         fontSize: 9,
@@ -125,6 +128,7 @@ class SFOProductCard extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 2.h),
 
               // Product Name
               Text(
@@ -134,9 +138,11 @@ class SFOProductCard extends StatelessWidget {
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontSize: 12,
                   color: colorScheme.onSurface,
-                  height: 1.3,
+                  height: 1.2,
                 ),
               ),
+              
+              const Spacer(),
 
               Text(
                 price,

@@ -23,12 +23,15 @@ class BrandsSettingsScreen extends StatelessWidget {
         subtitle: "Manage your product brands",
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const EditBrandScreen(),
-          ),
-        ),
+        onPressed: () {
+          context.read<BrandProvider>().initBrand(null);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditBrandScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: brandProvider.isLoading
@@ -60,12 +63,15 @@ class BrandsSettingsScreen extends StatelessWidget {
                             size: 20.r,
                             color: colorScheme.onSurfaceVariant,
                           ),
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditBrandScreen(brand: brand),
-                            ),
-                          ),
+                          onPressed: () {
+                            context.read<BrandProvider>().initBrand(brand);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditBrandScreen(brand: brand),
+                              ),
+                            );
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.delete_outline_rounded, size: 20.r, color: AppColors.error),

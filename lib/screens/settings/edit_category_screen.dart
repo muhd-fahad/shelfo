@@ -20,11 +20,6 @@ class EditCategoryScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Initialize provider data when building the screen
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CategoryProvider>(context, listen: false).initCategory(category);
-    });
-
     return Scaffold(
       appBar: SFOHeader(
         title: category == null ? "Add Category" : "Edit Category",
@@ -135,3 +130,5 @@ class EditCategoryScreen extends StatelessWidget {
     }
   }
 }
+
+

@@ -5,6 +5,7 @@ import '../../models/brand/brand_model.dart';
 import '../../provider/inventory/brand_provider.dart';
 import '../../screens/settings/edit_brand_screen.dart';
 import '../../utils/theme/theme.dart';
+import '../sfo_common/sfo_empty_state.dart';
 import '../sfo_common/sfo_search_bar.dart';
 
 class BrandSelectionSheet extends StatelessWidget {
@@ -31,6 +32,7 @@ class BrandSelectionSheet extends StatelessWidget {
               SizedBox(width: 8.w),
               IconButton.filled(
                 onPressed: () async {
+                  context.read<BrandProvider>().initBrand(null);
                   final newBrand = await Navigator.push<Brand>(
                     context,
                     MaterialPageRoute(
@@ -54,29 +56,23 @@ class BrandSelectionSheet extends StatelessWidget {
         SizedBox(
           height: 400.h,
           child: brandProvider.brands.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No brands found",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final newBrand = await Navigator.push<Brand>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditBrandScreen(),
-                            ),
-                          );
-                          if (newBrand != null && context.mounted) {
-                            Navigator.pop(context, newBrand);
-                          }
-                        },
-                        child: const Text("Create New Brand"),
-                      ),
-                    ],
+              ? SFOEmptyState(
+                  title: "No brands found",
+                  subtitle: "Try searching again or create one",
+                  action: TextButton(
+                    onPressed: () async {
+                      context.read<BrandProvider>().initBrand(null);
+                      final newBrand = await Navigator.push<Brand>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditBrandScreen(),
+                        ),
+                      );
+                      if (newBrand != null && context.mounted) {
+                        Navigator.pop(context, newBrand);
+                      }
+                    },
+                    child: const Text("Create New Brand"),
                   ),
                 )
               : ListView.builder(

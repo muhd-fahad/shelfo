@@ -16,11 +16,6 @@ class EditBrandScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize provider data when building the screen
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<BrandProvider>(context, listen: false).initBrand(brand);
-    });
-
     return Scaffold(
       appBar: SFOHeader(
         title: brand == null ? "Add Brand" : "Edit Brand",
@@ -75,3 +70,5 @@ class EditBrandScreen extends StatelessWidget {
     }
   }
 }
+
+

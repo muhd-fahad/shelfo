@@ -32,10 +32,6 @@ class EditProductScreen extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final currencySymbol = Provider.of<BusinessProvider>(context).selectedCurrency.symbol;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProductProvider>(context, listen: false).initProduct(product);
-    });
-
     return Scaffold(
       appBar: SFOHeader(
         title: product == null ? "New Product" : "Edit Product",
@@ -270,3 +266,5 @@ class EditProductScreen extends StatelessWidget {
     }
   }
 }
+
+

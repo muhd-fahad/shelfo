@@ -5,6 +5,7 @@ import '../../models/product/product_model.dart';
 import '../../provider/inventory/product_provider.dart';
 import '../../screens/inventory/edit_product_screen.dart';
 import '../../utils/theme/theme.dart';
+import '../sfo_common/sfo_empty_state.dart';
 import '../sfo_common/sfo_search_bar.dart';
 
 class ProductSelectionSheet extends StatelessWidget {
@@ -25,12 +26,13 @@ class ProductSelectionSheet extends StatelessWidget {
               Expanded(
                 child: SFOSearchBar(
                   hintText: "Search product...",
-                  onChanged: (val) => productProvider.setSearchQuery(val),
+                  controller: productProvider.searchController,
                 ),
               ),
               SizedBox(width: 8.w),
               IconButton.filled(
                 onPressed: () async {
+                  context.read<ProductProvider>().initProduct(null);
                   final newProduct = await Navigator.push<Product>(
                     context,
                     MaterialPageRoute(
@@ -54,29 +56,23 @@ class ProductSelectionSheet extends StatelessWidget {
         SizedBox(
           height: 400.h,
           child: productProvider.filteredProducts.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "No products found",
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final newProduct = await Navigator.push<Product>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProductScreen(),
-                            ),
-                          );
-                          if (newProduct != null && context.mounted) {
-                            Navigator.pop(context, newProduct);
-                          }
-                        },
-                        child: const Text("Create New Product"),
-                      ),
-                    ],
+              ? SFOEmptyState(
+                  title: "No products found",
+                  subtitle: "Try searching for a different item",
+                  action: TextButton(
+                    onPressed: () async {
+                      context.read<ProductProvider>().initProduct(null);
+                      final newProduct = await Navigator.push<Product>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditProductScreen(),
+                        ),
+                      );
+                      if (newProduct != null && context.mounted) {
+                        Navigator.pop(context, newProduct);
+                      }
+                    },
+                    child: const Text("Create New Product"),
                   ),
                 )
               : ListView.builder(

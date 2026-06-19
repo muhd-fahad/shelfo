@@ -52,8 +52,6 @@ class SFOPosCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        // width: 174.5,
-        height: 400.5,
         decoration: ShapeDecoration(
           color: isDark ? colorScheme.surface : AppColors.white,
           shadows: [
@@ -72,40 +70,42 @@ class SFOPosCard extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.all(AppSpacing.md),
+          padding: EdgeInsets.all(AppSpacing.sm),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Image Container
-              Container(
-                width: 148.5,
-                height: 148.5,
-                decoration: ShapeDecoration(
-                  color: currentImageBg,
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: AppRadius.md,
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  decoration: ShapeDecoration(
+                    color: currentImageBg,
+                    shape: RoundedSuperellipseBorder(
+                      borderRadius: AppRadius.md,
+                    ),
                   ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: imagePath != null
-                    ? (imagePath!.startsWith('assets/')
-                        ? Image.asset(imagePath!, fit: BoxFit.cover)
-                        : (kIsWeb
-                            ? Image.network(imagePath!, fit: BoxFit.cover)
-                            : Image.file(File(imagePath!), fit: BoxFit.cover)))
-                    : Center(
-                        child: Icon(
-                          Icons.inventory_2_outlined,
-                          size: 32,
-                          color: colorScheme.primary.withValues(alpha: 0.2),
+                  clipBehavior: Clip.antiAlias,
+                  child: imagePath != null
+                      ? (imagePath!.startsWith('assets/')
+                          ? Image.asset(imagePath!, fit: BoxFit.cover)
+                          : (kIsWeb
+                              ? Image.network(imagePath!, fit: BoxFit.cover)
+                              : Image.file(File(imagePath!), fit: BoxFit.cover)))
+                      : Center(
+                          child: Icon(
+                            Icons.inventory_2_outlined,
+                            size: 32,
+                            color: colorScheme.primary.withValues(alpha: 0.2),
+                          ),
                         ),
-                      ),
+                ),
               ),
-              SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.xs),
 
               // Product Name
               Text(
                 name,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontSize: 12.sp,
@@ -113,18 +113,24 @@ class SFOPosCard extends StatelessWidget {
                   color: isDark ? colorScheme.onSurface : AppColors.textPrimary,
                 ),
               ),
+              
+              const Spacer(),
 
               // Price and Badge Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    price,
-                    style: AppTextStyles.price.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 14.sp,
+                  Expanded(
+                    child: Text(
+                      price,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.price.copyWith(
+                        color: AppColors.primary,
+                        fontSize: 13.sp,
+                      ),
                     ),
                   ),
+                  SizedBox(width: 4.w),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
                     decoration: BoxDecoration(
@@ -132,7 +138,7 @@ class SFOPosCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      badgeText ?? "$stockCount left",
+                      badgeText ?? "$stockCount",
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: badgeTextColor,
                         fontSize: 8.5,

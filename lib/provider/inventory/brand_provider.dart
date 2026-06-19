@@ -76,6 +76,11 @@ class BrandProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSearch() {
+    _searchQuery = "";
+    notifyListeners();
+  }
+
   void initBrand(Brand? brand) {
     if (brand != null) {
       nameController.text = brand.name;
