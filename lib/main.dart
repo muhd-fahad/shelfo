@@ -23,15 +23,20 @@ import 'package:shelfo/provider/sales/pos_provider.dart';
 import 'package:shelfo/provider/sales/sale_provider.dart';
 import 'package:shelfo/provider/sales/sales_order_provider.dart';
 import 'package:shelfo/provider/service_job/service_job_provider.dart';
+import 'package:shelfo/provider/splash/splash_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/services/notification/local_notification_service.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapters();
-  await LocalNotificationService.init();
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Hive.initFlutter();
+    Hive.registerAdapters();
+    await LocalNotificationService.init();
+  } catch (e) {
+    debugPrint("Initialization error: $e");
+  }
 
   runApp(const MyApp());
 }
@@ -43,6 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => SplashProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(create: (_) => BusinessProvider()),
@@ -101,38 +107,37 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return ScreenUtilInit(
-            // designSize: const Size(375, 812),
-            // Adjust design size dynamically to prevent oversized elements on large screens
             designSize: const Size(375, 812),
             minTextAdapt: true,
             splitScreenMode: true,
-            useInheritedMediaQuery: true,
-            fontSizeResolver: (fontSize, instance) {
-              // Limit font scaling on larger screens to keep text readable but not massive
-              final double width = MediaQueryData.fromView(View.of(context)).size.width;
-              if (width >= 1024) return fontSize.toDouble(); // No scaling on desktop
-              return (fontSize * instance.scaleText).toDouble();
-            },
             builder: (context, child) {
-              // Re-initialize ScreenUtil if the screen size changes significantly
-              final double width = MediaQuery.of(context).size.width;
-              ScreenUtil.init(
-                context,
-                designSize: width >= 1024 
-                    ? const Size(1440, 900) 
-                    : width >= 600 
-                        ? const Size(768, 1024) 
-                        : const Size(412, 917),
-              );
-              return MaterialApp(
-                navigatorKey: LocalNotificationService.navigatorKey,
-                debugShowCheckedModeBanner: false,
-                title: 'Shelfo inventory',
-                theme: SFOAppTheme.light,
-                darkTheme: SFOAppTheme.dark,
-                themeMode: themeProvider.themeMode,
-                initialRoute: AppRoutes.splash,
-                routes: AppRoutes.routes,
+              // Get the screen width safely using View.of(context)
+              // This avoids the 'MediaQuery.of(context)' dependency during startup
+              final double width = View.of(context).physicalSize.width / View.of(context).devicePixelRatio;
+              
+              // Apply dynamic design size based on breakpoints
+              final Size designSize = width >= 1024 
+                  ? const Size(1440, 900) 
+                  : width >= 600 
+                      ? const Size(768, 1024) 
+                      : const Size(375, 812);
+
+              return ScreenUtilInit(
+                designSize: designSize,
+                minTextAdapt: true,
+                splitScreenMode: true,
+                builder: (context, child) {
+                  return MaterialApp(
+                    navigatorKey: LocalNotificationService.navigatorKey,
+                    debugShowCheckedModeBanner: false,
+                    title: 'Shelfo inventory',
+                    theme: SFOAppTheme.light,
+                    darkTheme: SFOAppTheme.dark,
+                    themeMode: themeProvider.themeMode,
+                    initialRoute: AppRoutes.splash,
+                    routes: AppRoutes.routes,
+                  );
+                },
               );
             },
           );
@@ -141,3 +146,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

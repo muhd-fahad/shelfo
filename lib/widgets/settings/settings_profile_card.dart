@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 
@@ -26,11 +27,12 @@ class SettingsProfileCard extends StatelessWidget {
                 width: 60.r,
                 height: 60.r,
                 decoration: ShapeDecoration(
-                  color: colorScheme.primary.withValues(alpha:0.1),
+                  color: colorScheme.primary.withValues(alpha: 0.1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.r),
                   ),
-                  image: businessProvider.logoPath != null
+                  image: businessProvider.logoPath != null &&
+                          !businessProvider.logoPath!.endsWith('.svg')
                       ? DecorationImage(
                           image: businessProvider.logoPath!.startsWith('assets/')
                               ? AssetImage(businessProvider.logoPath!)
@@ -40,13 +42,21 @@ class SettingsProfileCard extends StatelessWidget {
                         )
                       : null,
                 ),
-                child: businessProvider.logoPath == null
-                    ? Icon(
+                child: businessProvider.logoPath != null
+                    ? (businessProvider.logoPath!.endsWith('.svg')
+                        ? Padding(
+                            padding: EdgeInsets.all(8.r),
+                            child: SvgPicture.asset(
+                              businessProvider.logoPath!,
+                              fit: BoxFit.contain,
+                            ),
+                          )
+                        : null)
+                    : Icon(
                         Icons.store_rounded,
                         color: colorScheme.primary,
                         size: 30.r,
-                      )
-                    : null,
+                      ),
               ),
               SizedBox(width: 16.w),
               Expanded(

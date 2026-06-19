@@ -5,6 +5,7 @@ import 'package:shelfo/models/business/business_model.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/services/hive/business_service.dart';
 import 'package:shelfo/services/image_service.dart';
+import 'package:shelfo/utils/theme/app_constants/assets.dart';
 
 class BusinessProvider extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -15,7 +16,7 @@ class BusinessProvider extends ChangeNotifier {
   Currency _selectedCurrency = Currency.inr;
   Currency get selectedCurrency => _selectedCurrency;
 
-  String? _logoPath;
+  String? _logoPath = AppAssets.logoPrimary;
   String? get logoPath => _logoPath;
 
   bool _isLoading = true;
@@ -36,7 +37,9 @@ class BusinessProvider extends ChangeNotifier {
       phoneController.text = business.phoneNumber;
       addressController.text = business.address;
       _selectedCurrency = business.currency;
-      _logoPath = business.logoPath;
+      _logoPath = business.logoPath ?? AppAssets.logoPrimary;
+    } else {
+      _logoPath = AppAssets.logoPrimary;
     }
 
     _isLoading = false;
@@ -65,9 +68,9 @@ class BusinessProvider extends ChangeNotifier {
   void removeLogo() {
     if (_logoPath != null && !_logoPath!.startsWith('assets/')) {
       ImageService.deleteImage(_logoPath);
-      _logoPath = null;
-      notifyListeners();
     }
+    _logoPath = AppAssets.logoPrimary;
+    notifyListeners();
   }
 
   Future<void> saveBusiness() async {

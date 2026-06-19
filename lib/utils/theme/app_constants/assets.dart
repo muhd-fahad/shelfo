@@ -1,6 +1,7 @@
 class AppAssets {
   static const String logoPrimary = 'assets/logo/app_logo_Primary.svg';
   static const String logoSecondary = 'assets/logo/app_logo_Secondary.svg';
+  static const String logoIcon = 'assets/logo/shelfo_app_logo_icon.svg';
 
   // Bibo Images
   static const String biboHappy = 'assets/images/bibo_happy.png';

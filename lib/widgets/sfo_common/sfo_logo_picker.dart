@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_viewer.dart';
 import '../../utils/theme/theme.dart';
@@ -100,9 +101,17 @@ class SFOLogoPicker extends StatelessWidget {
 
     Widget child;
     if (logoPath != null) {
-      child = kIsWeb
-          ? Image.network(logoPath!, fit: BoxFit.fitHeight)
-          : Image.file(File(logoPath!), fit: BoxFit.fitHeight);
+      if (logoPath!.startsWith('assets/')) {
+        if (logoPath!.endsWith('.svg')) {
+          child = SvgPicture.asset(logoPath!, fit: BoxFit.fitHeight);
+        } else {
+          child = Image.asset(logoPath!, fit: BoxFit.fitHeight);
+        }
+      } else {
+        child = kIsWeb
+            ? Image.network(logoPath!, fit: BoxFit.fitHeight)
+            : Image.file(File(logoPath!), fit: BoxFit.fitHeight);
+      }
     } else {
       child = Column(
         mainAxisAlignment: MainAxisAlignment.center,

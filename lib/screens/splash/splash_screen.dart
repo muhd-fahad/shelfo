@@ -1,35 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shelfo/routes/app_routes.dart';
-import 'package:shelfo/services/hive/settings_service.dart';
+import 'package:provider/provider.dart';
+import 'package:shelfo/provider/splash/splash_provider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
-
 import '../../widgets/splash/stack_cards_splash.dart';
-
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
-  void _splash(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 3));
-
-    if (!context.mounted) return;
-
-    final isOnboarded = await SettingsHiveService.isOnboarded();
-
-    if (context.mounted) {
-      if (isOnboarded) {
-        Navigator.pushReplacementNamed(context, AppRoutes.bottomNavbar);
-      } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.businessInfo);
-      }
-    }
-    debugPrint("Splash");
-  }
-
   @override
   Widget build(BuildContext context) {
-    _splash(context);
+    // Trigger initialization logic via Provider
+    // Using context.read because we only want to call it once without rebuilding on change
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SplashProvider>().init();
+    });
 
     return Scaffold(
       body: Center(
@@ -37,7 +22,6 @@ class SplashScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Row(
-                spacing: 8.w,
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
