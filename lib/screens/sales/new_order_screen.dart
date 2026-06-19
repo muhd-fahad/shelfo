@@ -5,24 +5,26 @@ import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/models/sale/sales_order_model.dart';
 import 'package:shelfo/models/customer/customer_model.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/customer_provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/sales_order_provider.dart';
-import 'package:shelfo/provider/sales_order_form_provider.dart';
-import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_selection_field.dart';
+import 'package:shelfo/widgets/inventory/product_selection_sheet.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
 import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
 
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/business/tax_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/sales/sales_order_form_provider.dart';
+import '../../provider/sales/sales_order_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 
 class NewOrderScreen extends StatelessWidget {
@@ -31,8 +33,14 @@ class NewOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final taxProvider = context.read<TaxProvider>();
+    final taxProvider = context.watch<TaxProvider>();
     final customerProvider = context.read<CustomerProvider>();
+
+    if (taxProvider.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return ChangeNotifierProvider(
       create: (_) => SalesOrderFormProvider(
@@ -40,6 +48,7 @@ class NewOrderScreen extends StatelessWidget {
         isTaxEnabled: taxProvider.isTaxEnabled,
         taxRate: double.tryParse(taxProvider.taxRateController.text) ?? 0.0,
         taxLabel: taxProvider.taxLabelController.text,
+        pricingMode: taxProvider.pricingMode,
         allCustomers: customerProvider.customers,
       ),
       child: const _NewOrderContent(),
@@ -177,17 +186,20 @@ class _NewOrderContent extends StatelessWidget {
             children: [
               const SFOSectionHeader(title: "Add Items"),
               SizedBox(height: 16.h),
-              SFODropdown<Product>(
+              SFOSelectionField(
                 label: "Select product",
-                value: formProvider.selectedProduct,
+                value: formProvider.selectedProduct?.name,
                 hint: "Select product...",
-                items: productProvider.products
-                    .map((p) => DropdownMenuItem(
-                          value: p,
-                          child: Text(p.name),
-                        ))
-                    .toList(),
-                onChanged: formProvider.setProduct,
+                onTap: () async {
+                  final product = await SFOBottomSheet.show<Product>(
+                    context,
+                    title: "Select Product",
+                    child: const ProductSelectionSheet(),
+                  );
+                  if (product != null) {
+                    formProvider.setProduct(product);
+                  }
+                },
               ),
               SizedBox(height: 16.h),
               Row(

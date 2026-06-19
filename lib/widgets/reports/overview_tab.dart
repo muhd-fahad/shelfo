@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/navigation_provider.dart';
-import 'package:shelfo/provider/report_provider.dart';
 import 'package:shelfo/utils/theme/app_constants/colors.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
 import 'package:shelfo/widgets/reports/category_distribution_chart.dart';
@@ -14,6 +12,9 @@ import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
+
+import '../../provider/business/navigation_provider.dart';
+import '../../provider/reports/report_provider.dart';
 
 class OverviewTab extends StatelessWidget {
   const OverviewTab({super.key});

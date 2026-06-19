@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/invoice_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
@@ -10,6 +9,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
 import 'package:shelfo/services/hive/settings_service.dart';
 import 'package:shelfo/widgets/invoice_preview_widget.dart';
+
+import '../../provider/business/invoice_provider.dart';
 
 class InvoiceSettingsScreen extends StatelessWidget {
   const InvoiceSettingsScreen({super.key});

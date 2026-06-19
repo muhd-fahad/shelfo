@@ -3,9 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../../models/purchase/purchase_order_model.dart';
-import '../../../provider/purchase_order_provider.dart';
-import '../../../provider/business_provider.dart';
-import '../../../provider/product_provider.dart';
 import '../../../utils/formatters/currency_formatter.dart';
 import '../../../widgets/sfo_common/sfo_background.dart';
 import '../../../widgets/sfo_common/sfo_header.dart';
@@ -13,6 +10,9 @@ import '../../../widgets/sfo_common/sfo_badge.dart';
 import '../../../widgets/sfo_common/sfo_button.dart';
 import '../../../widgets/sfo_common/sfo_card.dart';
 import '../../../utils/theme/theme.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/purchase/purchase_order_provider.dart';
 import 'new_purchase_order_screen.dart';
 
 class PurchaseOrderDetailsScreen extends StatelessWidget {
@@ -168,6 +168,26 @@ class PurchaseOrderDetailsScreen extends StatelessWidget {
                               ),
                             )),
                         const Divider(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Subtotal", style: theme.textTheme.bodySmall),
+                              Text(CurrencyFormatter.format(currentOrder.subtotal, currency), style: theme.textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Tax", style: theme.textTheme.bodySmall),
+                              Text(CurrencyFormatter.format(currentOrder.taxAmount, currency), style: theme.textTheme.bodySmall),
+                            ],
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(top: 8.h),
                           child: Row(

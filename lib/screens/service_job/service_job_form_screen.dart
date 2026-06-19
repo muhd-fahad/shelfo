@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
-import 'package:shelfo/provider/service_job_provider.dart';
-import 'package:shelfo/provider/customer_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_selection_field.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
+import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
+import 'package:shelfo/models/customer/customer_model.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
@@ -15,7 +17,10 @@ import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 
-import 'package:shelfo/provider/service_job_form_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/service_job/service_job_form_provider.dart';
+import '../../provider/service_job/service_job_provider.dart';
+
 
 class ServiceJobFormScreen extends StatelessWidget {
   final ServiceJob? job;
@@ -69,17 +74,20 @@ class _ServiceJobFormContent extends StatelessWidget {
           children: [
             const SFOSectionHeader(title: "Customer"),
             SizedBox(height: 12.h),
-            SFODropdown<String>(
+            SFOSelectionField(
+              label: "Select Customer",
               value: formProvider.customerName.isEmpty ? null : formProvider.customerName,
               hint: "Select a customer...",
-              label: "Select Customer",
-              items: customerProvider.customers
-                  .map((c) => DropdownMenuItem(
-                        value: c.name,
-                        child: Text(c.name),
-                      ))
-                  .toList(),
-              onChanged: (val) => formProvider.setCustomerName(val ?? ""),
+              onTap: () async {
+                final customer = await SFOBottomSheet.show<Customer>(
+                  context,
+                  title: "Select Customer",
+                  child: const CustomerSelectionSheet(),
+                );
+                if (customer != null) {
+                  formProvider.setCustomerName(customer.name);
+                }
+              },
             ),
 
             SizedBox(height: 24.h),

@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/report_provider.dart';
+import '../../provider/reports/report_provider.dart';
 import '../../utils/theme/theme.dart';
 
 class SalesChart extends StatelessWidget {

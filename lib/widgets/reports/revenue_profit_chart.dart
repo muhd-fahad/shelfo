@@ -2,8 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/report_provider.dart';
 import 'package:shelfo/utils/theme/app_constants/colors.dart';
+
+import '../../provider/reports/report_provider.dart';
 
 class RevenueProfitChart extends StatelessWidget {
   const RevenueProfitChart({super.key});

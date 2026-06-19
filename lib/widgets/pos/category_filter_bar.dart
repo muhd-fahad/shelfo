@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
-import 'package:shelfo/provider/pos_provider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
+
+import '../../provider/inventory/category_provider.dart';
+import '../../provider/sales/pos_provider.dart';
 
 class CategoryFilterBar extends StatelessWidget {
   const CategoryFilterBar({super.key});

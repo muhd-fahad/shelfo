@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/report_provider.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_divider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
+
+import '../../provider/reports/report_provider.dart';
 
 class InventoryTab extends StatelessWidget {
   const InventoryTab({super.key});

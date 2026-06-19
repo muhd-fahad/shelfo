@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../models/sale/sales_order_model.dart';
-import '../../provider/sales_order_provider.dart';
+import '../../provider/sales/sales_order_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_input_field.dart';

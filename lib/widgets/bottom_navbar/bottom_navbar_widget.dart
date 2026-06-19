@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory/inventory_screen.dart';
 import 'package:shelfo/screens/customer/customer_list_screen.dart';
-import 'package:shelfo/screens/report_screen.dart';
-import 'package:shelfo/screens/sales/sales_history_screen.dart';
-import '../../provider/navigation_provider.dart';
-import '../../screens/home_screen.dart';
+import '../../provider/business/navigation_provider.dart';
+import '../../screens/home/home_screen.dart';
 import '../../screens/pos/pos_screen.dart';
+import '../../screens/reports/report_screen.dart';
+import '../../screens/sales/sales_history_screen.dart';
 import '../../screens/sales/sales_order_screen.dart';
 import 'package:shelfo/screens/settings/settings_screen.dart';
 import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
@@ -57,6 +57,11 @@ class BottomNavbarWidget extends StatelessWidget {
                   icon: Icon(Icons.monitor_outlined, size: 24.r),
                   selectedIcon: Icon(Icons.monitor_rounded, size: 24.r),
                   label: const Text("POS"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.shopping_cart_outlined, size: 24.r),
+                  selectedIcon: Icon(Icons.shopping_cart_rounded, size: 24.r),
+                  label: const Text("Sales"),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.shopping_cart_outlined, size: 24.r),

@@ -27,6 +27,7 @@ class SFOHeader extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: centerTitle,
+      automaticallyImplyLeading: false,
       leading: leading ??
           (Navigator.canPop(context)
               ? IconButton(

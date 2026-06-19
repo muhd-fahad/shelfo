@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/customer/customer_model.dart';
-import 'package:shelfo/provider/cart_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/sale_provider.dart';
-import 'package:shelfo/provider/customer_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
@@ -14,6 +9,12 @@ import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
 import 'package:shelfo/widgets/customer/customer_selection_sheet.dart';
+
+import '../../provider/business/business_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/sales/cart_provider.dart';
+import '../../provider/sales/sale_provider.dart';
 
 class CompleteSaleSheet extends StatelessWidget {
   const CompleteSaleSheet({super.key});

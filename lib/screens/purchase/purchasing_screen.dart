@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
-import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import 'tabs/vendors_tab.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../provider/policy_provider.dart';
-import '../../provider/policy_form_provider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
+import '../../provider/policy/policy_form_provider.dart';
+import '../../provider/policy/policy_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import '../../widgets/sfo_common/sfo_input_field.dart';

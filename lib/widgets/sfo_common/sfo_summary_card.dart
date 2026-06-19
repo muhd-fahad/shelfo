@@ -8,12 +8,14 @@ class SFOSummaryCard extends StatelessWidget {
   final String label;
   final String value;
   final SFOSummaryType type;
+  final VoidCallback? onTap;
 
   const SFOSummaryCard({
     super.key,
     required this.label,
     required this.value,
     this.type = SFOSummaryType.primary,
+    this.onTap,
   });
 
   @override
@@ -44,48 +46,51 @@ class SFOSummaryCard extends StatelessWidget {
         break;
     }
 
-    return Container(
-      padding: EdgeInsets.all(12.r),
-      decoration: ShapeDecoration(
-        color: bgColor,
-        shape: RoundedSuperellipseBorder(
-          borderRadius: AppRadius.lg,
-          side: BorderSide(
-            color: colorScheme.outline.withValues(alpha: 0.5),
-            width: 0.5,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: textColor.withValues(alpha: 0.7),
-              fontSize: 12.sp,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(12.r),
+        decoration: ShapeDecoration(
+          color: bgColor,
+          shape: RoundedSuperellipseBorder(
+            borderRadius: AppRadius.lg,
+            side: BorderSide(
+              color: colorScheme.outline.withValues(alpha: 0.5),
+              width: 0.5,
             ),
           ),
-          SizedBox(height: 4.h),
-          Row(
-            spacing: AppSpacing.xs,
-            children: [
-              Icon(
-                iconData,
-                color: textColor,
-                size: 24.r,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: textColor.withValues(alpha: 0.7),
+                fontSize: 12.sp,
               ),
-              Text(
-                value,
-                style: theme.textTheme.titleLarge?.copyWith(
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              spacing: AppSpacing.xs,
+              children: [
+                Icon(
+                  iconData,
                   color: textColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
+                  size: 24.r,
                 ),
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  value,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: textColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

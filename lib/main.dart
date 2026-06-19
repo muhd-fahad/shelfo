@@ -3,25 +3,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/hive_registrar.g.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/navigation_provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
-import 'package:shelfo/provider/brand_provider.dart';
-import 'package:shelfo/provider/invoice_provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/cart_provider.dart';
-import 'package:shelfo/provider/pos_provider.dart';
-import 'package:shelfo/provider/theme_provider.dart';
-import 'package:shelfo/provider/tax_provider.dart';
-import 'package:shelfo/provider/customer_provider.dart';
-import 'package:shelfo/provider/sale_provider.dart';
-import 'package:shelfo/provider/sales_order_provider.dart';
-import 'package:shelfo/provider/policy_provider.dart';
-import 'package:shelfo/provider/policy_form_provider.dart';
-import 'package:shelfo/provider/report_provider.dart';
-import 'package:shelfo/provider/service_job_provider.dart';
-import 'package:shelfo/provider/vendor_provider.dart';
-import 'package:shelfo/provider/purchase_order_provider.dart';
+import 'package:shelfo/provider/business/business_provider.dart';
+import 'package:shelfo/provider/business/invoice_provider.dart';
+import 'package:shelfo/provider/business/navigation_provider.dart';
+import 'package:shelfo/provider/business/tax_provider.dart';
+import 'package:shelfo/provider/business/theme_provider.dart';
+import 'package:shelfo/provider/customer/customer_provider.dart';
+import 'package:shelfo/provider/inventory/brand_provider.dart';
+import 'package:shelfo/provider/inventory/category_provider.dart';
+import 'package:shelfo/provider/inventory/product_provider.dart';
+import 'package:shelfo/provider/policy/policy_form_provider.dart';
+import 'package:shelfo/provider/policy/policy_provider.dart';
+import 'package:shelfo/provider/purchase/purchase_order_provider.dart';
+import 'package:shelfo/provider/purchase/vendor_provider.dart';
+import 'package:shelfo/provider/reports/report_provider.dart';
+import 'package:shelfo/provider/sales/cart_provider.dart';
+import 'package:shelfo/provider/sales/pos_provider.dart';
+import 'package:shelfo/provider/sales/sale_provider.dart';
+import 'package:shelfo/provider/sales/sales_order_provider.dart';
+import 'package:shelfo/provider/service_job/service_job_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 
@@ -71,8 +71,12 @@ class MyApp extends StatelessWidget {
           update: (context, saleProvider, productProvider, categoryProvider, previous) =>
               previous!..update(saleProvider, productProvider, categoryProvider),
         ),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => PosProvider()),
+        ChangeNotifierProxyProvider<TaxProvider, CartProvider>(
+          create: (_) => CartProvider(),
+          update: (_, taxProvider, cartProvider) =>
+              cartProvider!..updateTaxProvider(taxProvider),
+        ),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -98,7 +102,7 @@ class MyApp extends StatelessWidget {
                     ? const Size(1440, 900) 
                     : width >= 600 
                         ? const Size(768, 1024) 
-                        : const Size(375, 812),
+                        : const Size(412, 917),
               );
               return MaterialApp(
                 debugShowCheckedModeBanner: false,

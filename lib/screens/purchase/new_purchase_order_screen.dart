@@ -3,17 +3,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../../models/purchase/purchase_order_model.dart';
-import '../../../provider/purchase_order_provider.dart';
-import '../../../provider/purchase_order_form_provider.dart';
-import '../../../provider/vendor_provider.dart';
-import '../../../provider/product_provider.dart';
 import '../../../models/product/product_model.dart';
 import '../../../widgets/sfo_common/sfo_background.dart';
 import '../../../widgets/sfo_common/sfo_header.dart';
 import '../../../widgets/sfo_common/sfo_input_field.dart';
 import '../../../widgets/sfo_common/sfo_button.dart';
-import '../../../widgets/sfo_common/sfo_dropdown.dart';
+import '../../../widgets/sfo_common/sfo_selection_field.dart';
+import '../../../widgets/sfo_common/sfo_bottom_sheet.dart';
+import '../../../widgets/purchase/vendor_selection_sheet.dart';
+import '../../../widgets/inventory/product_selection_sheet.dart';
+import '../../../models/vendor/vendor_model.dart';
 import '../../../widgets/sfo_common/sfo_card.dart';
+import '../../provider/business/tax_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/purchase/purchase_order_form_provider.dart';
+import '../../provider/purchase/purchase_order_provider.dart';
+import '../../provider/purchase/vendor_provider.dart';
 
 class NewPurchaseOrderScreen extends StatelessWidget {
   final PurchaseOrder? order;
@@ -22,8 +27,22 @@ class NewPurchaseOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vendors = context.read<VendorProvider>().vendors;
+    final taxProvider = context.watch<TaxProvider>();
+
+    if (taxProvider.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return ChangeNotifierProvider(
-      create: (_) => PurchaseOrderFormProvider(originalOrder: order, vendors: vendors),
+      create: (_) => PurchaseOrderFormProvider(
+        originalOrder: order,
+        vendors: vendors,
+        isTaxEnabled: taxProvider.isTaxEnabled,
+        taxRate: double.tryParse(taxProvider.taxRateController.text) ?? 0.0,
+        pricingMode: taxProvider.pricingMode,
+      ),
       child: const _NewPurchaseOrderContent(),
     );
   }
@@ -53,16 +72,19 @@ class _NewPurchaseOrderContent extends StatelessWidget {
                 SFOCard(
                   padding: EdgeInsets.all(16.r),
                   children: [
-                    SFODropdown<String>(
+                    SFOSelectionField(
                       label: "Vendor",
                       isRequired: true,
-                      value: formProvider.selectedVendor?.id,
-                      items: vendorProvider.vendors
-                          .map((v) => DropdownMenuItem(value: v.id, child: Text(v.companyName)))
-                          .toList(),
-                      onChanged: (id) {
-                        final vendor = vendorProvider.vendors.firstWhere((v) => v.id == id);
-                        formProvider.setVendor(vendor);
+                      value: formProvider.selectedVendor?.companyName,
+                      onTap: () async {
+                        final vendor = await SFOBottomSheet.show<Vendor>(
+                          context,
+                          title: "Select Vendor",
+                          child: const VendorSelectionSheet(),
+                        );
+                        if (vendor != null) {
+                          formProvider.setVendor(vendor);
+                        }
                       },
                       hint: "Select vendor...",
                     ),
@@ -104,13 +126,19 @@ class _NewPurchaseOrderContent extends StatelessWidget {
                   children: [
                     Text("Add Items", style: Theme.of(context).textTheme.titleSmall),
                     SizedBox(height: 12.h),
-                    SFODropdown<Product>(
+                    SFOSelectionField(
                       label: "Product",
-                      value: formProvider.selectedProduct,
-                      items: productProvider.products
-                          .map((p) => DropdownMenuItem(value: p, child: Text(p.name)))
-                          .toList(),
-                      onChanged: formProvider.setProduct,
+                      value: formProvider.selectedProduct?.name,
+                      onTap: () async {
+                        final product = await SFOBottomSheet.show<Product>(
+                          context,
+                          title: "Select Product",
+                          child: const ProductSelectionSheet(),
+                        );
+                        if (product != null) {
+                          formProvider.setProduct(product);
+                        }
+                      },
                       hint: "Select product...",
                     ),
                     SizedBox(height: 12.h),
@@ -161,6 +189,38 @@ class _NewPurchaseOrderContent extends StatelessWidget {
                             ),
                           );
                         },
+                      ),
+                      const Divider(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Subtotal", style: Theme.of(context).textTheme.bodyMedium),
+                            Text("₹ ${formProvider.subtotal.toStringAsFixed(2)}", style: Theme.of(context).textTheme.bodyMedium),
+                          ],
+                        ),
+                      ),
+                      if (formProvider.isTaxEnabled)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Tax (${formProvider.taxRate}%)", style: Theme.of(context).textTheme.bodyMedium),
+                              Text("₹ ${formProvider.taxAmount.toStringAsFixed(2)}", style: Theme.of(context).textTheme.bodyMedium),
+                            ],
+                          ),
+                        ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Total", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                            Text("₹ ${formProvider.total.toStringAsFixed(2)}", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
                       ),
                     ],
                   ],

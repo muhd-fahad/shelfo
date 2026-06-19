@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
-import 'package:shelfo/provider/theme_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/settings/settings_profile_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
@@ -13,6 +12,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_tile.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
+
+import '../../provider/business/theme_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -52,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
             SFOTile(
               icon: Icons.category_outlined,
               title: "Product Categories",
-              subtitle: "Manage inventory categories",
+              // subtitle: "Manage inventory categories",
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.categoriesSettings);
               },
@@ -61,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
             SFOTile(
               icon: Icons.branding_watermark_outlined,
               title: "Product Brands",
-              subtitle: "Manage your product brands",
+              // subtitle: "Manage your product brands",
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.brandsSettings);
               },
@@ -70,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
             SFOTile(
               icon: Icons.percent_outlined,
               title: "Tax Configuration",
-              subtitle: "Manage tax rates and calculation",
+              // subtitle: "Manage tax rates and calculation",
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.taxSettings);
               },
@@ -79,7 +80,7 @@ class SettingsScreen extends StatelessWidget {
             SFOTile(
               icon: Icons.receipt_long_outlined,
               title: "Invoice Settings",
-              subtitle: "Customize receipts and numbering",
+              // subtitle: "Customize receipts and numbering",
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.invoiceDetails);
               },
@@ -100,6 +101,7 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.pushNamed(context, AppRoutes.policies);
               },
             ),
+            const SFODivider(),
             SFOTile(
               icon: Icons.bar_chart_outlined,
               title: "Reports & Analysis",

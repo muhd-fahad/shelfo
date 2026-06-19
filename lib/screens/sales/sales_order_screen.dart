@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/models/sale/sales_order_model.dart';
-import 'package:shelfo/provider/sales_order_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
@@ -14,13 +12,13 @@ import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_chip.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_search_bar.dart';
 
-import '../../provider/customer_provider.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/sales/sales_order_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sales/sales_order_filter_sheet.dart';
 import 'new_order_screen.dart';
 import 'sales_order_detail_screen.dart';
-
-import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 class SalesOrderScreen extends StatelessWidget {

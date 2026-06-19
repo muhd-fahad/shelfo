@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
-import 'package:shelfo/provider/brand_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
-import 'package:shelfo/widgets/sfo_common/sfo_dropdown.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_selection_field.dart';
+import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
+import 'package:shelfo/widgets/settings/category_selection_sheet.dart';
+import 'package:shelfo/widgets/settings/brand_selection_sheet.dart';
+import 'package:shelfo/models/category/category_model.dart';
+import 'package:shelfo/models/brand/brand_model.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
+import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/brand_provider.dart';
+import '../../provider/inventory/category_provider.dart';
+import '../../provider/inventory/product_provider.dart';
 import '../../widgets/inventory/product_type_selector.dart';
 
 class EditProductScreen extends StatelessWidget {
@@ -89,24 +94,38 @@ class EditProductScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: SFODropdown<String?>(
+                          child: SFOSelectionField(
                             label: "Category",
                             value: provider.selectedCategory,
-                            items: categoryProvider.categories.map((cat) {
-                              return DropdownMenuItem(value: cat.name, child: Text(cat.name));
-                            }).toList(),
-                            onChanged: (val) => provider.setCategory(val),
+                            onTap: () async {
+                              final category = await SFOBottomSheet.show<Category>(
+                                context,
+                                title: "Select Category",
+                                child: const CategorySelectionSheet(),
+                              );
+                              if (category != null) {
+                                provider.setCategory(category.name);
+                              }
+                            },
+                            hint: "Select category",
                           ),
                         ),
                         SizedBox(width: 16.w),
                         Expanded(
-                          child: SFODropdown<String?>(
+                          child: SFOSelectionField(
                             label: "Brand",
                             value: provider.selectedBrand,
-                            items: brandProvider.brands.map((brand) {
-                              return DropdownMenuItem(value: brand.name, child: Text(brand.name));
-                            }).toList(),
-                            onChanged: (val) => provider.setBrand(val),
+                            onTap: () async {
+                              final brand = await SFOBottomSheet.show<Brand>(
+                                context,
+                                title: "Select Brand",
+                                child: const BrandSelectionSheet(),
+                              );
+                              if (brand != null) {
+                                provider.setBrand(brand.name);
+                              }
+                            },
+                            hint: "Select brand",
                           ),
                         ),
                       ],

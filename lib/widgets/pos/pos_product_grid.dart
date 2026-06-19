@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/cart_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_pos_card.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
 import 'package:shelfo/models/product/product_model.dart';
 
-import 'package:shelfo/provider/pos_provider.dart';
 import 'package:shelfo/screens/pos/pos_ui.dart';
+
+import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/sales/cart_provider.dart';
+import '../../provider/sales/pos_provider.dart';
 
 class PosProductGrid extends StatelessWidget {
   const PosProductGrid({super.key});

@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/service_job/service_job_model.dart';
-import 'package:shelfo/provider/service_job_provider.dart';
-import 'package:shelfo/provider/customer_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_badge.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
@@ -14,6 +11,9 @@ import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_section_header.dart';
 import 'package:shelfo/screens/service_job/service_job_form_screen.dart';
 
+import '../../provider/business/business_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/service_job/service_job_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 
 class ServiceJobDetailsScreen extends StatelessWidget {

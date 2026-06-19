@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../models/service_job/service_job_model.dart';
-import '../../provider/service_job_provider.dart';
+import '../../provider/service_job/service_job_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_chip.dart';

@@ -4,10 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/currency/currency.dart';
 import 'package:shelfo/models/sale/sales_order_model.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/sales_order_provider.dart';
-import 'package:shelfo/provider/tax_provider.dart';
-import 'package:shelfo/provider/sale_provider.dart';
 import 'package:shelfo/models/sale/sale_model.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
@@ -15,9 +11,12 @@ import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_badge.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
-
-import '../../provider/customer_provider.dart';
-import '../../provider/product_provider.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/business/tax_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/inventory/product_provider.dart';
+import '../../provider/sales/sale_provider.dart';
+import '../../provider/sales/sales_order_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import 'new_order_screen.dart';
 

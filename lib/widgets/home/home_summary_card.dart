@@ -46,8 +46,11 @@ class HomeSummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              alignment: .spaceBetween,
+              runAlignment: .spaceBetween,
+              crossAxisAlignment: .center,
+              spacing: AppSpacing.sm,
               children: [
                 Text(
                   label,

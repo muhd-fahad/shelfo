@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../models/customer/customer_model.dart';
-import '../../provider/customer_provider.dart';
+import '../../provider/customer/customer_provider.dart';
 import '../../screens/customer/add_edit_customer_screen.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_search_bar.dart';

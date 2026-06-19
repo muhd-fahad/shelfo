@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/cart_provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import 'package:shelfo/utils/theme/app_constants/colors.dart';
 import 'package:shelfo/utils/theme/app_constants/spacing.dart';
 
 import 'package:shelfo/screens/pos/pos_ui.dart';
+
+import '../../provider/business/business_provider.dart';
+import '../../provider/sales/cart_provider.dart';
 
 class CartSummaryBar extends StatelessWidget {
   const CartSummaryBar({super.key});

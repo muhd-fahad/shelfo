@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
+
+import '../../provider/business/business_provider.dart';
 
 class SettingsProfileCard extends StatelessWidget {
   const SettingsProfileCard({super.key});

@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:shelfo/models/currency/currency.dart';
-import 'package:shelfo/provider/business_provider.dart';
 import 'package:shelfo/services/hive/hive_service.dart';
 import 'package:shelfo/routes/app_routes.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/business/business_details_card.dart';
+
+import '../../provider/business/business_provider.dart';
 
 class BusinessDetailsScreen extends StatelessWidget {
   const BusinessDetailsScreen({super.key});

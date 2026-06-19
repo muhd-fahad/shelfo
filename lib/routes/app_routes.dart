@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shelfo/screens/customer/customer_list_screen.dart';
-import 'package:shelfo/screens/notification_screen.dart';
 import 'package:shelfo/screens/onboard/business_info_screen.dart';
 import 'package:shelfo/screens/onboard/invoice_settings_screen.dart';
 import 'package:shelfo/screens/onboard/tax_config_screen.dart';
@@ -12,7 +11,6 @@ import 'package:shelfo/screens/service_job/service_job_form_screen.dart';
 import 'package:shelfo/screens/sales/sales_history_screen.dart';
 import 'package:shelfo/screens/settings/brands_settings_screen.dart';
 import 'package:shelfo/screens/settings/business_details_screen.dart';
-import 'package:shelfo/screens/settings/categories_settings_screen.dart';
 import 'package:shelfo/screens/settings/invoice_settings_detail_screen.dart';
 import 'package:shelfo/screens/settings/tax_settings_screen.dart';
 import 'package:shelfo/screens/settings/policies_screen.dart';
@@ -20,12 +18,15 @@ import 'package:shelfo/screens/settings/privacy_policy_screen.dart';
 import 'package:shelfo/screens/settings/about_screen.dart';
 import 'package:shelfo/widgets/bottom_navbar/bottom_navbar_widget.dart';
 
-import 'package:shelfo/screens/home_screen.dart';
 import 'package:shelfo/screens/inventory/inventory_screen.dart';
-import 'package:shelfo/screens/job_ticket_screen.dart';
-import 'package:shelfo/screens/report_screen.dart';
 import 'package:shelfo/screens/settings/settings_screen.dart';
-import 'package:shelfo/screens/splash_screen.dart';
+
+import '../screens/home/home_screen.dart';
+import '../screens/notifications/notification_screen.dart';
+import '../screens/reports/report_screen.dart';
+import '../screens/service_job/job_ticket_screen.dart';
+import '../screens/settings/categories_settings_screen.dart';
+import '../screens/splash/splash_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';

@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/currency/currency.dart';
 import '../../models/sale/sale_model.dart';
-import '../../provider/customer_provider.dart';
-import '../../provider/sale_provider.dart';
-import '../../provider/business_provider.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/customer/customer_provider.dart';
+import '../../provider/sales/sale_provider.dart';
 import '../../utils/formatters/currency_formatter.dart';
 import '../../utils/theme/theme.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
@@ -15,8 +15,6 @@ import '../../widgets/sfo_common/sfo_badge.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import 'invoice_detail_screen.dart';
 import 'invoice_form_screen.dart';
-
-import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 class SalesHistoryScreen extends StatelessWidget {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/models/tax/tax_pricing_mode.dart';
-import 'package:shelfo/provider/tax_provider.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
@@ -10,6 +9,8 @@ import 'package:shelfo/widgets/sfo_common/sfo_input_field.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_switch_tile.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
+
+import '../../provider/business/tax_provider.dart';
 
 class TaxSettingsScreen extends StatelessWidget {
   const TaxSettingsScreen({super.key});

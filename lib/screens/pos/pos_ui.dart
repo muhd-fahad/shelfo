@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/cart_provider.dart';
 import 'package:shelfo/models/product/product_model.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_bottom_sheet.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_snackbar.dart';
+import '../../provider/sales/cart_provider.dart';
 import '../../widgets/pos/cart_details_sheet.dart';
 
 import '../../widgets/pos/complete_sale_sheet.dart';

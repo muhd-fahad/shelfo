@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_summary_card.dart';
 import 'package:shelfo/widgets/inventory/product_grid_item.dart';
@@ -14,9 +11,10 @@ import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_background.dart';
 
 import '../../models/currency/currency.dart';
+import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/category_provider.dart';
+import '../../provider/inventory/product_provider.dart';
 import '../../utils/theme/app_constants/colors.dart';
-
-import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_responsive.dart';
 
 class InventoryScreen extends StatelessWidget {
@@ -75,6 +73,7 @@ class InventoryScreen extends StatelessWidget {
                       label: "Total",
                       value: provider.totalProducts.toString(),
                       type: SFOSummaryType.primary,
+                      onTap: () => provider.clearFilters(),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -83,6 +82,10 @@ class InventoryScreen extends StatelessWidget {
                       label: "Low Stock",
                       value: provider.lowStockCount.toString(),
                       type: SFOSummaryType.warning,
+                      onTap: () {
+                        provider.clearFilters();
+                        provider.toggleStockStatus('Low Stock');
+                      },
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -91,6 +94,10 @@ class InventoryScreen extends StatelessWidget {
                       label: "Out of Stock",
                       value: provider.outOfStockCount.toString(),
                       type: SFOSummaryType.error,
+                      onTap: () {
+                        provider.clearFilters();
+                        provider.toggleStockStatus('Out of Stock');
+                      },
                     ),
                   ),
                 ],

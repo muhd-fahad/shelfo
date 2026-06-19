@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../models/vendor/vendor_model.dart';
-import '../../provider/vendor_provider.dart';
-import '../../provider/vendor_form_provider.dart';
+import '../../provider/purchase/vendor_form_provider.dart';
+import '../../provider/purchase/vendor_provider.dart';
 import '../../widgets/sfo_common/sfo_background.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 import '../../widgets/sfo_common/sfo_input_field.dart';
 import '../../widgets/sfo_common/sfo_button.dart';
-import '../../widgets/sfo_common/sfo_dropdown.dart';
+import '../../widgets/sfo_common/sfo_selection_field.dart';
+import '../../widgets/sfo_common/sfo_bottom_sheet.dart';
+import '../../widgets/settings/category_selection_sheet.dart';
+import '../../models/category/category_model.dart';
 import '../../widgets/sfo_common/sfo_card.dart';
 
 class AddVendorScreen extends StatelessWidget {
@@ -106,13 +109,19 @@ class _AddVendorContent extends StatelessWidget {
                   maxLines: 2,
                 ),
                 SizedBox(height: 16.h),
-                SFODropdown<String>(
+                SFOSelectionField(
                   label: "Category",
                   value: formProvider.selectedCategory,
-                  items: ["Electronics", "Components", "Accessories", "Software"]
-                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                      .toList(),
-                  onChanged: formProvider.setCategory,
+                  onTap: () async {
+                    final category = await SFOBottomSheet.show<Category>(
+                      context,
+                      title: "Select Category",
+                      child: const CategorySelectionSheet(),
+                    );
+                    if (category != null) {
+                      formProvider.setCategory(category.name);
+                    }
+                  },
                   hint: "Select category",
                 ),
                 SizedBox(height: 32.h),

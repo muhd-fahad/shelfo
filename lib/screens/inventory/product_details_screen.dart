@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:shelfo/models/product/product_model.dart';
-import 'package:shelfo/provider/business_provider.dart';
-import 'package:shelfo/provider/product_provider.dart';
 import 'package:shelfo/utils/formatters/currency_formatter.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_card.dart';
@@ -17,6 +15,8 @@ import 'package:shelfo/widgets/inventory/stock_adjustment_dialog.dart';
 import 'package:shelfo/widgets/inventory/product_image_carousel.dart';
 import 'package:shelfo/screens/inventory/edit_product_screen.dart';
 
+import '../../provider/business/business_provider.dart';
+import '../../provider/inventory/product_provider.dart';
 import '../../widgets/sfo_common/sfo_header.dart';
 
 class ProductDetailsScreen extends StatelessWidget {

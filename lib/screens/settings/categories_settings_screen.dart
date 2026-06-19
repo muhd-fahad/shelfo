@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shelfo/provider/category_provider.dart';
 import 'package:shelfo/screens/settings/edit_category_screen.dart';
 import 'package:shelfo/utils/theme/theme.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_header.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_dialog.dart';
 import '../../models/category/category_model.dart';
+import '../../provider/inventory/category_provider.dart';
 
 class CategoriesSettingsScreen extends StatelessWidget {
   const CategoriesSettingsScreen({super.key});

@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo_picker.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_button.dart';
 import '../../models/currency/currency.dart';
-import '../../utils/theme/app_constants/colors.dart';
 import '../sfo_common/sfo_dropdown.dart';
 import '../sfo_common/sfo_input_field.dart';
 

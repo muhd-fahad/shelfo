@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/product/product_model.dart';
-import '../../provider/product_provider.dart';
+import '../../provider/inventory/product_provider.dart';
 import '../../utils/theme/theme.dart';
 import '../sfo_common/sfo_button.dart';
 import '../sfo_common/sfo_input_field.dart';
