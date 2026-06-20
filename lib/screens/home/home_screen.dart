@@ -107,12 +107,13 @@ class HomeScreen extends StatelessWidget {
     final Map<String, int> routeToIndex = {
       AppRoutes.home: 0,
       AppRoutes.purchaseOrder: 1,
-      AppRoutes.salesOrder: 2,
-      AppRoutes.inventory: 3,
-      AppRoutes.customers: 4,
-      AppRoutes.reports: 5,
-      AppRoutes.salesHistory: 6,
-      AppRoutes.settings: 7,
+      AppRoutes.inventory: 2,
+      AppRoutes.serviceJobs: 3,
+      AppRoutes.salesOrder: 4,
+      AppRoutes.customers: 5,
+      AppRoutes.reports: 6,
+      AppRoutes.salesHistory: 7,
+      AppRoutes.settings: 8,
     };
 
     if (routeToIndex.containsKey(route)) {

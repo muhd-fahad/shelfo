@@ -165,7 +165,7 @@ class InventoryScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: crossAxisCount,
-                            childAspectRatio: 3/4,
+                            childAspectRatio: 3/4.35,
                             crossAxisSpacing: 16.r,
                             mainAxisSpacing: 16.r,
                           ),

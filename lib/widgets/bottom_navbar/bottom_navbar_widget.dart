@@ -9,6 +9,7 @@ import '../../screens/home/home_screen.dart';
 import '../../screens/reports/report_screen.dart';
 import '../../screens/sales/sales_history_screen.dart';
 import '../../screens/sales/sales_order_screen.dart';
+import '../../screens/service_job/job_ticket_screen.dart';
 import 'package:shelfo/screens/settings/settings_screen.dart';
 import 'package:shelfo/utils/theme/app_constants/breakpoints.dart';
 import 'package:shelfo/widgets/sfo_common/sfo_logo.dart';
@@ -19,8 +20,9 @@ class BottomNavbarWidget extends StatelessWidget {
   final _pages = const [
     HomeScreen(),
     PurchasingScreen(),
-    SalesOrderScreen(),
     InventoryScreen(),
+    JobTicketScreen(),
+    SalesOrderScreen(),
     CustomerListScreen(),
     ReportScreen(),
     SalesHistoryScreen(),
@@ -67,14 +69,19 @@ class BottomNavbarWidget extends StatelessWidget {
                   label: const Text("Purchase"),
                 ),
                 NavigationRailDestination(
-                  icon: const Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: const Icon(Icons.shopping_cart_rounded),
-                  label: const Text("Sales"),
-                ),
-                NavigationRailDestination(
                   icon: const Icon(Icons.inventory_2_outlined),
                   selectedIcon: const Icon(Icons.inventory_2_rounded),
                   label: const Text("Stock"),
+                ),
+                NavigationRailDestination(
+                  icon: const Icon(Icons.miscellaneous_services_outlined),
+                  selectedIcon: const Icon(Icons.miscellaneous_services_rounded),
+                  label: const Text("Service"),
+                ),
+                NavigationRailDestination(
+                  icon: const Icon(Icons.shopping_cart_outlined),
+                  selectedIcon: const Icon(Icons.shopping_cart_rounded),
+                  label: const Text("Sales"),
                 ),
                 NavigationRailDestination(
                   icon: const Icon(Icons.people_outline_rounded),
@@ -125,14 +132,14 @@ class BottomNavbarWidget extends StatelessWidget {
                   label: "Purchase",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: Icon(Icons.shopping_cart_rounded),
-                  label: "Sales",
-                ),
-                NavigationDestination(
                   icon: Icon(Icons.inventory_2_outlined),
                   selectedIcon: Icon(Icons.inventory_2_rounded),
                   label: "Stock",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.handyman_outlined),
+                  selectedIcon: Icon(Icons.handyman_rounded),
+                  label: "Service",
                 ),
               ],
             )
