@@ -72,6 +72,9 @@ class _PurchasingContent extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context, PurchasingTabProvider tabProvider, bool isDesktop) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       children: [
         Container(
@@ -79,13 +82,13 @@ class _PurchasingContent extends StatelessWidget {
           constraints: isDesktop ? const BoxConstraints(maxWidth: 600) : null,
           padding: EdgeInsets.all(4.r),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: TabBar(
             onTap: tabProvider.setIndex,
             indicator: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(8.r),
               boxShadow: [
                 BoxShadow(
@@ -96,8 +99,9 @@ class _PurchasingContent extends StatelessWidget {
               ],
             ),
             indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
+            dividerColor: Colors.transparent,
+            labelColor: colorScheme.primary,
+            unselectedLabelColor: colorScheme.onSurfaceVariant,
             labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
             tabs: const [
               Tab(text: "Vendors"),

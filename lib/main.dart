@@ -71,14 +71,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ServiceJobProvider()),
         ChangeNotifierProvider(create: (_) => PolicyProvider()),
         ChangeNotifierProvider(create: (_) => PolicyFormProvider()),
-        ChangeNotifierProxyProvider3<SaleProvider, ProductProvider, CategoryProvider, ReportProvider>(
+        ChangeNotifierProxyProvider4<SaleProvider, ProductProvider, CategoryProvider, PurchaseOrderProvider, ReportProvider>(
           create: (context) => ReportProvider(
             saleProvider: context.read<SaleProvider>(),
             productProvider: context.read<ProductProvider>(),
             categoryProvider: context.read<CategoryProvider>(),
+            purchaseProvider: context.read<PurchaseOrderProvider>(),
           ),
-          update: (context, saleProvider, productProvider, categoryProvider, previous) =>
-              previous!..update(saleProvider, productProvider, categoryProvider),
+          update: (context, saleProvider, productProvider, categoryProvider, purchaseProvider, previous) =>
+              previous!..update(saleProvider, productProvider, categoryProvider, purchaseProvider),
         ),
         ChangeNotifierProxyProvider5<ProductProvider, PurchaseOrderProvider, SaleProvider, ServiceJobProvider, BusinessProvider, NotificationProvider>(
           create: (context) => NotificationProvider(

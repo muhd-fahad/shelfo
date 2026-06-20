@@ -212,6 +212,54 @@ class SFOAppTheme {
         selectedLabelStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600, fontFamily: _fontFamily),
         unselectedLabelStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, fontFamily: _fontFamily),
       ),
+
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
+        indicatorColor: primary.withValues(alpha: 0.1),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return IconThemeData(color: primary, size: 24.r);
+          }
+          return IconThemeData(color: onSurfaceVariant, size: 24.r);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              color: primary,
+              fontFamily: _fontFamily,
+            );
+          }
+          return TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500,
+            color: onSurfaceVariant,
+            fontFamily: _fontFamily,
+          );
+        }),
+      ),
+
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
+        indicatorColor: primary.withValues(alpha: 0.1),
+        selectedIconTheme: IconThemeData(color: primary, size: 24.r),
+        unselectedIconTheme: IconThemeData(color: onSurfaceVariant, size: 24.r),
+        selectedLabelTextStyle: TextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+          color: primary,
+          fontFamily: _fontFamily,
+        ),
+        unselectedLabelTextStyle: TextStyle(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w500,
+          color: onSurfaceVariant,
+          fontFamily: _fontFamily,
+        ),
+        labelType: NavigationRailLabelType.all,
+        useIndicator: true,
+      ),
     );
   }
 }

@@ -101,52 +101,40 @@ class HomeScreen extends StatelessWidget {
   void _handleNavigation(BuildContext context, String route) {
     final navProvider = context.read<NavigationProvider>();
     final width = MediaQuery.of(context).size.width;
-    const double tabletBreakpoint = 600; // Consistent with AppBreakpoints if imported, but usually 600
+    const double tabletBreakpoint = 600;
 
-    // Root tabs indices in BottomNavbarWidget:
-    // 0: Home, 1: POS, 2: Sales, 3: Stock, 4: Customers, 5: Reports, 6: History, 7: Settings
+    // Mapping of routes to BottomNavbarWidget indices
+    final Map<String, int> routeToIndex = {
+      AppRoutes.home: 0,
+      AppRoutes.purchaseOrder: 1,
+      AppRoutes.salesOrder: 2,
+      AppRoutes.inventory: 3,
+      AppRoutes.customers: 4,
+      AppRoutes.reports: 5,
+      AppRoutes.salesHistory: 6,
+      AppRoutes.settings: 7,
+    };
 
-    if (width >= tabletBreakpoint) {
-      // Tablet/Desktop: All 8 indices are in the NavigationRail
-      switch (route) {
-        case AppRoutes.pos:
-          navProvider.setIndex(1);
+    if (routeToIndex.containsKey(route)) {
+      int index = routeToIndex[route]!;
+      
+      if (width < tabletBreakpoint) {
+        // Mobile: Only indices 0–3 are in the BottomNavigationBar directly.
+        // If it's one of those, we switch the tab.
+        if (index >= 0 && index <= 3) {
+          navProvider.setIndex(index);
           return;
-        case AppRoutes.salesOrder:
-          navProvider.setIndex(2);
-          return;
-        case AppRoutes.inventory:
-          navProvider.setIndex(3);
-          return;
-        case AppRoutes.customers:
-          navProvider.setIndex(4);
-          return;
-        case AppRoutes.reports:
-          navProvider.setIndex(5);
-          return;
-        case AppRoutes.salesHistory:
-          navProvider.setIndex(6);
-          return;
-        case AppRoutes.settings:
-          navProvider.setIndex(7);
-          return;
-      }
-    } else {
-      // Mobile: Only indices 0–3 are in the BottomNavigationBar
-      switch (route) {
-        case AppRoutes.pos:
-          navProvider.setIndex(1);
-          return;
-        case AppRoutes.salesOrder:
-          navProvider.setIndex(2);
-          return;
-        case AppRoutes.inventory:
-          navProvider.setIndex(3);
-          return;
+        }
+        // For index 7 (Settings) or others, we fall through to Navigator.pushNamed
+        // to show the screen without the BottomNavigationBar.
+      } else {
+        // Tablet/Desktop: All indices are in the NavigationRail
+        navProvider.setIndex(index);
+        return;
       }
     }
 
-    // Default: If not a root tab in the current mode, push normally
+    // Default: If not a root tab or if on mobile and not in the main navbar, push normally
     Navigator.pushNamed(context, route);
   }
 
@@ -250,7 +238,7 @@ class HomeScreen extends StatelessWidget {
     final lowStockCount = productProvider.lowStockCount;
     final outOfStockCount = productProvider.outOfStockCount;
 
-    final List<Widget> cards = [
+    final List<HomeSummaryCard> cards = [
       HomeSummaryCard(
         label: "Today's Sales",
         value: CurrencyFormatter.formatCompact(todaySales, currency),
@@ -263,8 +251,6 @@ class HomeScreen extends StatelessWidget {
         label: "Pending Orders",
         value: "$pendingOrdersCount Items",
         icon: Icons.refresh_rounded,
-        // badge: pendingOrdersCount.toString(),
-        // badgeColor: Colors.orange,
         iconColor: Colors.orange,
         iconBgColor: Colors.orange.withValues(alpha: 0.1),
         onTap: () => _handleNavigation(context, AppRoutes.purchaseOrder),
@@ -295,37 +281,28 @@ class HomeScreen extends StatelessWidget {
       ),
     ];
 
-    if (isLargeScreen) {
-      return Row(
-        children: cards
-            .map((card) => Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: cards.last == card ? 0 : 12.w),
-                    child: card,
-                  ),
-                ))
-            .toList(),
-      );
-    }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        int crossAxisCount = 2;
+        if (constraints.maxWidth > 900) {
+          crossAxisCount = 4;
+        } else if (constraints.maxWidth > 600) {
+          crossAxisCount = 3;
+        }
 
-    return Column(
-      children: [
-        Row(
-            spacing:  AppSpacing.sm,
-          children: [
-            Expanded(child: cards[0]),
-            Expanded(child: cards[1]),
-          ],
-        ),
-        SizedBox(height: AppSpacing.sm),
-        Row(
-          spacing:  AppSpacing.sm,
-          children: [
-            Expanded(child: cards[2]),
-            Expanded(child: cards[3]),
-          ],
-        ),
-      ],
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: cards.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: AppSpacing.sm,
+            crossAxisSpacing: AppSpacing.sm,
+            mainAxisExtent: 115.h,
+          ),
+          itemBuilder: (context, index) => cards[index],
+        );
+      },
     );
   }
 
@@ -341,7 +318,13 @@ class HomeScreen extends StatelessWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 // Determine number of columns based on width
-                int crossAxisCount = constraints.maxWidth > 600 ? 8 : 4;
+                int crossAxisCount = 4;
+                if (constraints.maxWidth > 1000) {
+                  crossAxisCount = 8;
+                } else if (constraints.maxWidth > 600) {
+                  crossAxisCount = 6;
+                }
+                
                 return GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -350,20 +333,21 @@ class HomeScreen extends StatelessWidget {
                     crossAxisCount: crossAxisCount,
                     mainAxisSpacing: 16.h,
                     crossAxisSpacing: 8.w,
-                    mainAxisExtent: 85.h, // Fixed height for each item to ensure alignment
+                    mainAxisExtent: 96.h, // Increased for better alignment and accessibility
                   ),
                   itemBuilder: (context, index) {
                     final actions = [
-                      ("POS", Icons.desktop_windows_outlined, AppRoutes.pos),
-                      ("Stock", Icons.inventory_2_outlined, AppRoutes.inventory),
-                      ("Purchase", Icons.local_shipping_outlined, AppRoutes.purchaseOrder),
-                      ("Customers", Icons.people_outline_rounded, AppRoutes.customers),
-                      ("Service", Icons.handyman_outlined, AppRoutes.serviceJobs),
-                      ("Orders", Icons.assignment_outlined, AppRoutes.salesOrder),
-                      ("History", Icons.history_rounded, AppRoutes.salesHistory),
-                      ("Report", Icons.query_stats_rounded, AppRoutes.reports),
+                      ("POS", Icons.desktop_windows_outlined, AppRoutes.pos, true),
+                      ("Stock", Icons.inventory_2_outlined, AppRoutes.inventory, false),
+                      ("Purchase", Icons.local_shipping_outlined, AppRoutes.purchaseOrder, false),
+                      ("Customers", Icons.people_outline_rounded, AppRoutes.customers, false),
+                      ("Service", Icons.handyman_outlined, AppRoutes.serviceJobs, false),
+                      ("Orders", Icons.assignment_outlined, AppRoutes.salesOrder, false),
+                      ("History", Icons.history_rounded, AppRoutes.salesHistory, false),
+                      ("Report", Icons.query_stats_rounded, AppRoutes.reports, false),
                     ];
-                    return _buildQuickAction(context, actions[index].$1, actions[index].$2, actions[index].$3);
+                    final action = actions[index];
+                    return _buildQuickAction(context, action.$1, action.$2, action.$3, isPrimary: action.$4);
                   },
                 );
               },

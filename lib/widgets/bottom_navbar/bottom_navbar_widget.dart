@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shelfo/screens/inventory/inventory_screen.dart';
 import 'package:shelfo/screens/customer/customer_list_screen.dart';
-import 'package:shelfo/utils/theme/theme.dart';
+import 'package:shelfo/screens/purchase/purchasing_screen.dart';
 import '../../provider/business/navigation_provider.dart';
 import '../../screens/home/home_screen.dart';
-import '../../screens/pos/pos_screen.dart';
 import '../../screens/reports/report_screen.dart';
 import '../../screens/sales/sales_history_screen.dart';
 import '../../screens/sales/sales_order_screen.dart';
@@ -19,7 +18,7 @@ class BottomNavbarWidget extends StatelessWidget {
 
   final _pages = const [
     HomeScreen(),
-    PosScreen(),
+    PurchasingScreen(),
     SalesOrderScreen(),
     InventoryScreen(),
     CustomerListScreen(),
@@ -55,51 +54,46 @@ class BottomNavbarWidget extends StatelessWidget {
               },
               labelType: isDesktop
                   ? NavigationRailLabelType.none
-                  : NavigationRailLabelType.all,
+                  : null, // Uses theme default
               destinations: [
                 NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.home_rounded, size: 24.r),
+                  icon: const Icon(Icons.home_outlined),
+                  selectedIcon: const Icon(Icons.home_rounded),
                   label: const Text("Home"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.monitor_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.monitor_rounded, size: 24.r),
-                  label: const Text("POS"),
+                  icon: const Icon(Icons.local_shipping_outlined),
+                  selectedIcon: const Icon(Icons.local_shipping_rounded),
+                  label: const Text("Purchase"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.shopping_cart_rounded, size: 24.r),
+                  icon: const Icon(Icons.shopping_cart_outlined),
+                  selectedIcon: const Icon(Icons.shopping_cart_rounded),
                   label: const Text("Sales"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.shopping_cart_rounded, size: 24.r),
-                  label: const Text("Sales"),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.inventory_2_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.inventory_2_rounded, size: 24.r),
+                  icon: const Icon(Icons.inventory_2_outlined),
+                  selectedIcon: const Icon(Icons.inventory_2_rounded),
                   label: const Text("Stock"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.people_outline_rounded, size: 24.r),
-                  selectedIcon: Icon(Icons.people_rounded, size: 24.r),
+                  icon: const Icon(Icons.people_outline_rounded),
+                  selectedIcon: const Icon(Icons.people_rounded),
                   label: const Text("Customers"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.bar_chart_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.bar_chart_rounded, size: 24.r),
+                  icon: const Icon(Icons.bar_chart_outlined),
+                  selectedIcon: const Icon(Icons.bar_chart_rounded),
                   label: const Text("Reports"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.history_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.history_rounded, size: 24.r),
+                  icon: const Icon(Icons.history_outlined),
+                  selectedIcon: const Icon(Icons.history_rounded),
                   label: const Text("History"),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.settings_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.settings_rounded, size: 24.r),
+                  icon: const Icon(Icons.settings_outlined),
+                  selectedIcon: const Icon(Icons.settings_rounded),
                   label: const Text("Settings"),
                 ),
               ],
@@ -116,29 +110,28 @@ class BottomNavbarWidget extends StatelessWidget {
       bottomNavigationBar: !showRail
           ? NavigationBar(
               selectedIndex: _getMobileIndex(navProvider.currentIndex),
-              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
               onDestinationSelected: (index) {
                 _setMobileIndex(context, index);
               },
-              destinations: [
+              destinations: const [
                 NavigationDestination(
-                  icon: Icon(Icons.home_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.home_rounded, size: 24.r),
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home_rounded),
                   label: "Home",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.monitor_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.monitor_rounded, size: 24.r),
-                  label: "POS",
+                  icon: Icon(Icons.local_shipping_outlined),
+                  selectedIcon: Icon(Icons.local_shipping_rounded),
+                  label: "Purchase",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.shopping_cart_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.shopping_cart_rounded, size: 24.r),
+                  icon: Icon(Icons.shopping_cart_outlined),
+                  selectedIcon: Icon(Icons.shopping_cart_rounded),
                   label: "Sales",
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.inventory_2_outlined, size: 24.r),
-                  selectedIcon: Icon(Icons.inventory_2_rounded, size: 24.r),
+                  icon: Icon(Icons.inventory_2_outlined),
+                  selectedIcon: Icon(Icons.inventory_2_rounded),
                   label: "Stock",
                 ),
               ],
@@ -148,16 +141,14 @@ class BottomNavbarWidget extends StatelessWidget {
   }
 
   int _getMobileIndex(int currentIndex) {
-    if (currentIndex < 4) return currentIndex;
-    if (currentIndex == 7) return 4;
-    return 0; // Fallback or handle appropriately
+    if (currentIndex >= 0 && currentIndex < 4) return currentIndex;
+    return 0; // Default to first tab if the current index isn't in the mobile navbar
   }
 
   void _setMobileIndex(BuildContext context, int index) {
-    if (index < 4) {
+    // Mobile navbar only has 4 items (0-3)
+    if (index >= 0 && index < 4) {
       context.read<NavigationProvider>().setIndex(index);
-    } else if (index == 4) {
-      context.read<NavigationProvider>().setIndex(7);
     }
   }
 }

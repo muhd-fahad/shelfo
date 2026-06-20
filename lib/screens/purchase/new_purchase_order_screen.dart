@@ -57,7 +57,6 @@ class _NewPurchaseOrderContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final formProvider = context.watch<PurchaseOrderFormProvider>();
     final poProvider = context.read<PurchaseOrderProvider>();
-    final vendorProvider = context.watch<VendorProvider>();
     final productProvider = context.watch<ProductProvider>();
 
     return Scaffold(

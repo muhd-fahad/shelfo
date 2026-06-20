@@ -19,50 +19,49 @@ class QuickActionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final colorScheme = theme.colorScheme;
 
-    return SizedBox(
-      width: 64.w,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          InkWell(
-            onTap: onTap,
-            borderRadius: AppRadius.md,
-            child: Container(
-              width: 56.r,
-              height: 56.r,
-              decoration: ShapeDecoration(
-                color: isPrimary
-                    ? AppColors.primary
-                    : (isDark ? AppColors.darkSurface : AppColors.white),
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: AppRadius.md,
-                  side: isPrimary
-                      ? BorderSide.none
-                      : BorderSide(color: theme.colorScheme.outlineVariant),
-                ),
-              ),
-              child: Icon(
-                icon,
-                color: isPrimary
-                    ? AppColors.white
-                    : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
-                size: 24.r,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.md,
+          child: Container(
+            width: 56.r,
+            height: 56.r,
+            decoration: ShapeDecoration(
+              color: isPrimary
+                  ? colorScheme.primary
+                  : colorScheme.surfaceContainerLow,
+              shape: RoundedSuperellipseBorder(
+                borderRadius: AppRadius.md,
+                side: isPrimary
+                    ? BorderSide.none
+                    : BorderSide(color: colorScheme.outlineVariant),
               ),
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurface,
-              fontSize: 11.sp,
+            child: Icon(
+              icon,
+              color: isPrimary
+                  ? colorScheme.onPrimary
+                  : colorScheme.onSurface,
+              size: 24.r,
             ),
-            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }

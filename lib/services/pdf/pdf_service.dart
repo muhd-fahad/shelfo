@@ -9,11 +9,9 @@ import 'package:intl/intl.dart';
 import '../../models/sale/sale_model.dart';
 import '../../models/business/business_model.dart';
 import '../../models/policy/policy_model.dart';
-import '../../models/invoice/invoice_config_model.dart';
 import '../../services/hive/policy_service.dart';
 import '../../services/hive/invoice_service.dart';
 import '../../utils/formatters/currency_formatter.dart';
-import '../../utils/theme/app_constants/assets.dart';
 
 class PdfService {
   static Future<void> generateAndPrintInvoice(Sale sale, Business? business, dynamic currency) async {

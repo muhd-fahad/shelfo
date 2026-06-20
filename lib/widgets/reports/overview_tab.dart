@@ -22,6 +22,18 @@ class OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reportProvider = context.watch<ReportProvider>();
+    final width = MediaQuery.of(context).size.width;
+
+    int metricCrossAxisCount = 2;
+    double childAspectRatio = 1.3;
+
+    if (width >= AppBreakpoints.desktop) {
+      metricCrossAxisCount = 4;
+      childAspectRatio = 1.5;
+    } else if (width >= AppBreakpoints.tablet) {
+      metricCrossAxisCount = 2;
+      childAspectRatio = 1.6;
+    }
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(20.r),
@@ -29,12 +41,12 @@ class OverviewTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GridView.count(
-            crossAxisCount: 2,
+            crossAxisCount: metricCrossAxisCount,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: AppSpacing.md,
             crossAxisSpacing: AppSpacing.md,
-            childAspectRatio: 1.3,
+            childAspectRatio: childAspectRatio,
             children: [
               ReportMetricCard(
                 title: "Total Revenue",

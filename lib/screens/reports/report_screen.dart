@@ -117,7 +117,7 @@ class ReportScreen extends StatelessWidget {
                 constraints: isLarge ? const BoxConstraints(maxWidth: 600) : null,
                 padding: EdgeInsets.all(4.r),
                 decoration: BoxDecoration(
-                  color: colorScheme.surface,
+                  color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(color: colorScheme.outlineVariant),
                 ),
